@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">应用环境</string>
+    <string name="activity_xposed_not_work">Xposed没有工作</string>
+</resources>
