@@ -16,4 +16,11 @@
     <string name="donate">Donate</string>
     <string name="score">Score</string>
     <string name="about">About</string>
+
+    <string-array name="app_list_long_click">
+        <item>Open</item>
+        <item>Random</item>
+        <item>Detail</item>
+        <item>Delete</item>
+    </string-array>
 </resources>
