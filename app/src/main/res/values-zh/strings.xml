@@ -2,4 +2,8 @@
 <resources>
     <string name="app_name">应用环境</string>
     <string name="activity_xposed_not_work">Xposed没有工作</string>
+    <string name="open_xposed">打开 XPOSED</string>
+    <string name="install_xposed">安装 XPOSED</string>
+    <string name="s1">您的XPOSED看起没有工作，请检查您的XPOSED设置</string>
+    <string name="s2">没有在您的机器中发现XPOSED工作环境，请先安装XPOSED。</string>
 </resources>

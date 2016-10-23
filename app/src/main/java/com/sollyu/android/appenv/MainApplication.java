@@ -2,6 +2,8 @@ package com.sollyu.android.appenv;
 
 import android.app.Application;
 
+import com.beardedhen.androidbootstrap.TypefaceProvider;
+
 /**
  * 作者: Sollyu
  * 时间: 16/10/23
@@ -15,8 +17,10 @@ public class MainApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
         instance = this;
+
+        // Android-Bootstrap 图标注册
+        TypefaceProvider.registerDefaultIconSets();
     }
 
     public static MainApplication getInstance() {

@@ -17,7 +17,7 @@ import com.sollyu.android.appenv.MainApplication;
 public class SplashActivity extends AppCompatActivity {
 
     private final Handler uiHandler = new Handler();
-    private final Integer splashTimeOut = 3 * 1000;
+    private final Integer splashTimeOut = 1 * 1000;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

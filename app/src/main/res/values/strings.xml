@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">AppEnv</string>
     <string name="activity_xposed_not_work">Xposed Not Work</string>
+    <string name="open_xposed">OPEN XPOSED</string>
+    <string name="install_xposed">INSTALL XPOSED</string>
+    <string name="s1">You XPOSED is not work, Please check you XPOSED settings.</string>
+    <string name="s2">Not find XPOSED, Please install XPOSED.</string>
 </resources>

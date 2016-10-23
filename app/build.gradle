@@ -66,4 +66,5 @@ dependencies {
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'eu.chainfire:libsuperuser:1.0.0.+'
     compile 'com.squareup.okhttp:okhttp:2.7.5'
+    compile 'com.beardedhen:androidbootstrap:2.3.0'
 }
