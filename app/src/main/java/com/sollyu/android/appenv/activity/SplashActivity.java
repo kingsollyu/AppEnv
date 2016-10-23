@@ -26,6 +26,7 @@ public class SplashActivity extends AppCompatActivity {
         uiHandler.postDelayed(() -> {
             if (!MainApplication.getInstance().isXposedWork()) {
                 startActivity(new Intent(SplashActivity.this, XposedNotWorkActivity.class));
+                SplashActivity.this.finish();
             }
         }, splashTimeOut);
     }

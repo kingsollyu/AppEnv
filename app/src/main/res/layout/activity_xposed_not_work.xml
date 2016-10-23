@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="8dp"
-        app:bootstrapSize="xl">
+        app:bootstrapSize="lg">
 
         <com.beardedhen.androidbootstrap.AwesomeTextView
             android:id="@+id/text"
