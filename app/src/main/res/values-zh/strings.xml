@@ -15,11 +15,8 @@
     <string name="about">关于</string>
     <string name="navigation_drawer_close">关闭导航</string>
     <string name="navigation_drawer_open">打开导航</string>
-
-    <string-array name="app_list_long_click">
-        <item>打开</item>
-        <item>随机</item>
-        <item>详情</item>
-        <item>删除</item>
-    </string-array>
+    <string name="open">打开</string>
+    <string name="random">随机</string>
+    <string name="detail">详细</string>
+    <string name="delete">删除</string>
 </resources>

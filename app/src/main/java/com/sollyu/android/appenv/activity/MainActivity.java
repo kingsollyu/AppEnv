@@ -15,7 +15,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,9 +26,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.ListHolder;
 import com.sollyu.android.appenv.R;
 import com.sollyu.android.appenv.helper.AppEnvSharedPreferencesHelper;
 import com.sollyu.android.appenv.helper.OtherHelper;
@@ -39,6 +41,7 @@ import com.sollyu.android.appenv.module.AppInfo;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -217,33 +220,72 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             AppInfo appInfo = XposedSharedPreferencesHelper.getInstance().get(applicationInfo.packageName);
             Log.d(TAG, "onBindViewHolder: " + JSON.toJSONString(appInfo));
-            holder.textView1.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), appInfo != null? R.color.bootstrap_brand_success : android.R.color.primary_text_light));
+            holder.textView1.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), appInfo != null ? R.color.bootstrap_brand_success : android.R.color.primary_text_light));
 
             holder.itemView.setOnClickListener(v -> {
                 Snackbar.make(holder.itemView, holder.textView1.getText().toString(), Snackbar.LENGTH_LONG).show();
             });
 
             holder.itemView.setOnLongClickListener(v -> {
-                AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
-                builder.setTitle(holder.textView1.getText());
-                builder.setSingleChoiceItems(R.array.app_list_long_click, -1, (dialog, which) -> {
-                    dialog.dismiss();
-                    switch (which) {
-                        case 0: // Open
-                            holder.itemView.performClick();
-                            break;
-                        case 1: // Random
-                            break;
-                        case 2: // Detail
-                            OtherHelper.getInstance().openAppDetails(holder.itemView.getContext(), holder.textView2.getText().toString());
-                            break;
-                        case 3: // Delete
-                            XposedSharedPreferencesHelper.getInstance().remove(holder.textView2.getText().toString());
-                            uiHandler.post(MainActivity.this::onRefresh);
-                            break;
-                    }
-                });
-                builder.create().show();
+                List<HashMap<String, Object>> mapList = new ArrayList<>();
+
+                HashMap<String, Object> openItem = new HashMap<>();
+                openItem.put("title", getString(R.string.open));
+                openItem.put("icon", R.drawable.ic_delete);
+                mapList.add(openItem);
+
+                openItem = new HashMap<>();
+                openItem.put("title", getString(R.string.random));
+                openItem.put("icon", R.drawable.ic_refresh);
+                mapList.add(openItem);
+
+                openItem = new HashMap<>();
+                openItem.put("title", getString(R.string.detail));
+                openItem.put("icon", R.drawable.ic_info);
+                mapList.add(openItem);
+
+                openItem = new HashMap<>();
+                openItem.put("title", getString(R.string.delete));
+                openItem.put("icon", R.drawable.ic_delete);
+                mapList.add(openItem);
+
+                SimpleAdapter simpleAdapter = new SimpleAdapter(
+                        holder.itemView.getContext(),
+                        mapList,
+                        R.layout.dialog_plus_content,
+                        new String[]{"title", "icon"},
+                        new int[]{R.id.text_view, R.id.image_view});
+
+                DialogPlus dialogPlus = DialogPlus.newDialog(holder.itemView.getContext())
+                        .setExpanded(false)
+                        .setContentHolder(new ListHolder())
+                        .setHeader(R.layout.dialog_plus_header)
+                        .setAdapter(simpleAdapter)
+                        .setOnItemClickListener((dialog, item, view, position1) -> {
+                            dialog.dismiss();
+                            switch (position1) {
+                                case 0: // Open
+                                    holder.itemView.performClick();
+                                    break;
+                                case 1: // Random
+                                    // RandomHelper.getInstance().randomAll(holder.textView2.getText().toString());
+                                    // Snackbar.make(holder.itemView, "一键随机完成", Snackbar.LENGTH_LONG).setAction("强制停止", v1 -> {}).show();
+                                    break;
+                                case 2: // Detail
+                                    OtherHelper.getInstance().openAppDetails(holder.itemView.getContext(), holder.textView2.getText().toString());
+                                    break;
+                                case 3: // Delete
+                                    XposedSharedPreferencesHelper.getInstance().remove(holder.textView2.getText().toString());
+                                    uiHandler.post(MainActivity.this::onRefresh);
+                                    break;
+                            }
+                        })
+                        .create();
+
+                ((TextView) dialogPlus.getHeaderView().findViewById(R.id.text_view1)).setText(holder.textView1.getText());
+                ((TextView) dialogPlus.getHeaderView().findViewById(R.id.text_view2)).setText(holder.textView2.getText());
+
+                dialogPlus.show();
                 return true;
             });
         }
