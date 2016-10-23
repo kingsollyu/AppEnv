@@ -1,9 +1,7 @@
 package com.sollyu.android.appenv.activity;
 
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -11,6 +9,7 @@ import android.view.View;
 import com.beardedhen.androidbootstrap.AwesomeTextView;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.sollyu.android.appenv.R;
+import com.sollyu.android.appenv.helper.OtherHelper;
 
 public class XposedNotWorkActivity extends AppCompatActivity {
 
@@ -35,17 +34,6 @@ public class XposedNotWorkActivity extends AppCompatActivity {
         }
     }
 
-    private View.OnClickListener openXposedInstallerOnClickListener = v -> {
-        Intent intent = getPackageManager().getLaunchIntentForPackage("de.robv.android.xposed.installer");
-        intent.addCategory(Intent.CATEGORY_LAUNCHER);
-        startActivity(intent);
-    };
-
-    private View.OnClickListener installXposedOnClickListener = v -> {
-        try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=de.robv.android.xposed.installer")));
-        } catch (android.content.ActivityNotFoundException anfe) {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=de.robv.android.xposed.installer")));
-        }
-    };
+    private View.OnClickListener openXposedInstallerOnClickListener = v -> OtherHelper.getInstance().openApplication(v.getContext(), "de.robv.android.xposed.installer");
+    private View.OnClickListener installXposedOnClickListener       = v -> OtherHelper.getInstance().openMarket(v.getContext(), "de.robv.android.xposed.installer");
 }
