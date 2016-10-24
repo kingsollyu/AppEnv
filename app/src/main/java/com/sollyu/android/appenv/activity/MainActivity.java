@@ -1,6 +1,7 @@
 package com.sollyu.android.appenv.activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -162,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.nav_refresh) {
             uiHandler.post(this::onRefresh);
         } else if (id == R.id.action_about) {
-            // startActivity(new Intent(this, AboutActivity.class));
+            startActivity(new Intent(this, AboutActivity.class));
         } else if (id == R.id.nav_donate) {
             OtherHelper.getInstance().openUrl(this, "https://mobilecodec.alipay.com/client_download.htm?qrcode=apynckrfcfi5atfy45");
         } else if (id == R.id.nav_score) {

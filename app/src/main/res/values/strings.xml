@@ -20,4 +20,26 @@
     <string name="random">Random</string>
     <string name="detail">Detail</string>
     <string name="delete">Delete</string>
+
+    <string name="about_text">
+        <Data>
+            <![CDATA[
+                    "<h2>AppEnv</h2>"
+                    "Author: king.sollyu<br>"
+                    "Contact: QQ: 191067617 (C.S.T)<br>"
+                    "Description: Dynamically modify the software information<br>"
+                    "Depend: <a href="http://repo.xposed.info/module/de.robv.android.xposed.installer">XPOSED</a> OR <a href="http://en.miui.com/thread-78894-1-1.html">WSM tools</a><br>"
+                    "Update: Historic version <a href="http://appenv.ys168.com/">CLICK HERE</a><br><br>"
+
+                    "Copyright © <a href="http://www.sollyu.com">Sollyu</a> 2015-2016 Version %1$s<br><br>"
+
+                    "<h2>This update</h2>"
+                    "+ Support Android 7.0<br>"
+                    "+ ......<br>"
+
+                    "<br>"
+                    "<br>"
+            ]]>
+        </Data>
+    </string>
 </resources>
