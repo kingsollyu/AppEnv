@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_detail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.sollyu.android.appenv.activity.DetailActivity"
+    tools:showIn="@layout/activity_detail">
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+        <com.sollyu.android.appenv.view.DetailItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClickManufacturer"
+            app:hint="@string/manufacturer"
+            app:icon_text="{fa_university}"
+            app:icon_button="{fa_caret_square_o_down}"
+            />
+
+        <com.sollyu.android.appenv.view.DetailItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClickModel"
+            app:hint="@string/model"
+            app:icon_text="{fa_university}"
+            app:icon_button="{fa_caret_square_o_down}"
+            />
+
+        <com.sollyu.android.appenv.view.DetailItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClickSerial"
+            app:hint="@string/serial"
+            app:icon_text="{fa-tty}"
+            app:icon_button="{fa_random}"
+            />
+
+        <com.sollyu.android.appenv.view.DetailItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClickLineNumber"
+            app:hint="@string/phone_number"
+            app:icon_text="{fa-phone}"
+            app:icon_button="{fa_random}"
+            />
+
+        <com.sollyu.android.appenv.view.DetailItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClickNetworkType"
+            app:hint="@string/phone_network_type"
+            app:icon_text="{fa-rss}"
+            app:icon_button="{fa_caret_square_o_down}"
+            />
+
+        <com.sollyu.android.appenv.view.DetailItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClickDeviceId"
+            app:hint="@string/phone_device_id"
+            app:icon_text="{fa-barcode}"
+            app:icon_button="{fa_random}"
+            />
+    </LinearLayout>
+
+</RelativeLayout>

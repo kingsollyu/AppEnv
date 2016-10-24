@@ -225,7 +225,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             holder.textView1.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), appInfo != null ? R.color.bootstrap_brand_success : android.R.color.primary_text_light));
 
             holder.itemView.setOnClickListener(v -> {
-                Snackbar.make(holder.itemView, holder.textView1.getText().toString(), Snackbar.LENGTH_LONG).show();
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                intent.putExtra("applicationInfo", applicationInfo);
+                holder.itemView.getContext().startActivity(intent);
             });
 
             holder.itemView.setOnLongClickListener(v -> {

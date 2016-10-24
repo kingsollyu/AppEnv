@@ -35,6 +35,11 @@
             android:label="@string/about"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity
+            android:name=".activity.DetailActivity"
+            android:label="@string/detail"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

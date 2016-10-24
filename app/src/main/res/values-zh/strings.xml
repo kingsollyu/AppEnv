@@ -50,4 +50,15 @@
             ]]>
         </Data>
     </string>
+    <string name="random_all">全部随机</string>
+    <string name="run_app">运行程序</string>
+    <string name="wipe_data">清除数据</string>
+    <string name="force_stop_app">强制停止</string>
+    <string name="save_config">保存配置</string>
+    <string name="manufacturer">厂商</string>
+    <string name="model">型号</string>
+    <string name="phone_number">手机号</string>
+    <string name="serial">序列号</string>
+    <string name="phone_network_type">网络类型</string>
+    <string name="phone_device_id">手机IMEI</string>
 </resources>

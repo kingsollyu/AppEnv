@@ -42,4 +42,15 @@
             ]]>
         </Data>
     </string>
+    <string name="random_all">Random All</string>
+    <string name="run_app">Run App</string>
+    <string name="wipe_data">Wipe Data</string>
+    <string name="force_stop_app">Force Stop App</string>
+    <string name="save_config">Save Config</string>
+    <string name="manufacturer">Manufacturer</string>
+    <string name="model">Model</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="serial">Serial</string>
+    <string name="phone_network_type">Phone Network Type</string>
+    <string name="phone_device_id">Phone IMEI</string>
 </resources>

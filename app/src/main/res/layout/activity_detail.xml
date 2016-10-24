@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.sollyu.android.appenv.activity.DetailActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <include layout="@layout/content_detail"/>
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/fab"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        app:menu_labels_ellipsize="end"
+        app:menu_labels_singleLine="true"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@android:drawable/ic_dialog_email">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/menu_random_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_refresh_w"
+            android:onClick="onClickRandomAll"
+            app:fab_colorNormal="#43A047"
+            app:fab_size="mini"
+            app:fab_label="@string/random_all" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/menu_run_app"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_video_youtube_w"
+            android:onClick="onClickRunApp"
+            app:fab_colorNormal="#1565C0"
+            app:fab_size="mini"
+            app:fab_label="@string/run_app" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/menu_clear_app"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_remove_circle_w"
+            android:onClick="onClickClearApp"
+            app:fab_size="mini"
+            app:fab_label="@string/wipe_data" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/menu_force_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_cancel_w"
+            android:onClick="onClickForceStopApp"
+            app:fab_size="mini"
+            app:fab_label="@string/force_stop_app" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/menu_save_config"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_save_w"
+            android:onClick="onClickSaveConfig"
+            app:fab_colorNormal="#FFB805"
+            app:fab_size="mini"
+            app:fab_label="@string/save_config" />
+
+
+    </com.github.clans.fab.FloatingActionMenu>
+
+
+</android.support.design.widget.CoordinatorLayout>
