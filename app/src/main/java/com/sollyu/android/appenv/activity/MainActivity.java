@@ -35,6 +35,7 @@ import com.orhanobut.dialogplus.ListHolder;
 import com.sollyu.android.appenv.R;
 import com.sollyu.android.appenv.helper.AppEnvSharedPreferencesHelper;
 import com.sollyu.android.appenv.helper.OtherHelper;
+import com.sollyu.android.appenv.helper.RandomHelper;
 import com.sollyu.android.appenv.helper.ServerHelper;
 import com.sollyu.android.appenv.helper.XposedSharedPreferencesHelper;
 import com.sollyu.android.appenv.module.AppInfo;
@@ -159,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_refresh) {
-            // onRefresh();
+            uiHandler.post(this::onRefresh);
         } else if (id == R.id.action_about) {
             // startActivity(new Intent(this, AboutActivity.class));
         } else if (id == R.id.nav_donate) {
@@ -231,17 +232,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 HashMap<String, Object> openItem = new HashMap<>();
                 openItem.put("title", getString(R.string.open));
-                openItem.put("icon", R.drawable.ic_delete);
+                openItem.put("icon", R.drawable.ic_crop_landscape);
                 mapList.add(openItem);
 
                 openItem = new HashMap<>();
                 openItem.put("title", getString(R.string.random));
-                openItem.put("icon", R.drawable.ic_refresh);
+                openItem.put("icon", R.drawable.ic_auto_fix);
                 mapList.add(openItem);
 
                 openItem = new HashMap<>();
                 openItem.put("title", getString(R.string.detail));
-                openItem.put("icon", R.drawable.ic_info);
+                openItem.put("icon", R.drawable.ic_info_outline);
                 mapList.add(openItem);
 
                 openItem = new HashMap<>();
@@ -268,8 +269,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     holder.itemView.performClick();
                                     break;
                                 case 1: // Random
-                                    // RandomHelper.getInstance().randomAll(holder.textView2.getText().toString());
-                                    // Snackbar.make(holder.itemView, "一键随机完成", Snackbar.LENGTH_LONG).setAction("强制停止", v1 -> {}).show();
+                                    RandomHelper.getInstance().randomAll(holder.textView2.getText().toString());
+                                    Snackbar.make(holder.itemView, "一键随机完成", Snackbar.LENGTH_LONG).setAction("强制停止", v1 -> {}).show();
                                     break;
                                 case 2: // Detail
                                     OtherHelper.getInstance().openAppDetails(holder.itemView.getContext(), holder.textView2.getText().toString());
