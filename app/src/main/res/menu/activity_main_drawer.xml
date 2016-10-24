@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_refresh"
+            android:icon="@drawable/ic_refresh"
+            android:title="@string/refresh"/>
+        <item
+            android:id="@+id/action_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/settings"/>
+        <item
+            android:id="@+id/action_cloud"
+            android:icon="@drawable/ic_wb_cloudy"
+            android:title="@string/cloud"/>
+    </group>
+
+    <item android:checkableBehavior="single" android:title="@string/other">
+        <menu>
+            <item
+                android:id="@+id/nav_donate"
+                android:icon="@drawable/ic_credit_card"
+                android:title="@string/donate"/>
+            <item
+                android:id="@+id/nav_score"
+                android:icon="@drawable/ic_thumb_up"
+                android:title="@string/score"/>
+            <item
+                android:id="@+id/action_about"
+                android:icon="@drawable/ic_info"
+                android:title="@string/about"/>
+        </menu>
+    </item>
+
+</menu>

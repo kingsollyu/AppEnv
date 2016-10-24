@@ -3,6 +3,7 @@ package com.sollyu.android.appenv;
 import android.app.Application;
 
 import com.beardedhen.androidbootstrap.TypefaceProvider;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 作者: Sollyu
@@ -21,6 +22,10 @@ public class MainApplication extends Application {
 
         // Android-Bootstrap 图标注册
         TypefaceProvider.registerDefaultIconSets();
+
+        MobclickAgent.startWithConfigure(new MobclickAgent.UMAnalyticsConfig(this, "558a1cb667e58e7649000228", BuildConfig.FLAVOR));
+        MobclickAgent.setCatchUncaughtExceptions(true);
+        MobclickAgent.enableEncrypt(true);
     }
 
     public static MainApplication getInstance() {

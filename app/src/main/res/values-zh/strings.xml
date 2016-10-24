@@ -6,4 +6,17 @@
     <string name="install_xposed">安装 XPOSED</string>
     <string name="s1">您的XPOSED看起没有工作，请检查您的XPOSED设置</string>
     <string name="s2">没有在您的机器中发现XPOSED工作环境，请先安装XPOSED。</string>
+    <string name="refresh">刷新</string>
+    <string name="settings">设置</string>
+    <string name="cloud">云端</string>
+    <string name="other">其他</string>
+    <string name="donate">捐赠</string>
+    <string name="score">评分</string>
+    <string name="about">关于</string>
+    <string name="navigation_drawer_close">关闭导航</string>
+    <string name="navigation_drawer_open">打开导航</string>
+    <string name="open">打开</string>
+    <string name="random">随机</string>
+    <string name="detail">详细</string>
+    <string name="delete">删除</string>
 </resources>

@@ -1,5 +1,7 @@
 package com.sollyu.android.appenv.helper;
 
+import com.sollyu.android.appenv.module.AppInfo;
+
 import java.util.Random;
 
 /**
@@ -35,4 +37,8 @@ public class RandomHelper {
         return random.nextInt(max) + min;
     }
 
+    public void randomAll(String packageName) {
+        AppInfo appInfo = new AppInfo();
+
+    }
 }
