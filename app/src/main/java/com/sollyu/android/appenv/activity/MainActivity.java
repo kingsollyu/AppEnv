@@ -1,6 +1,7 @@
 package com.sollyu.android.appenv.activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -61,8 +62,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ArrayList<ApplicationInfo> _DisplayApplicationInfo = new ArrayList<>();
     private List<ApplicationInfo>      applicationInfos        = null;
 
-    private static final int READ_PHONE_STATE_REQUEST_CODE = 227;
-
+    private static final int READ_PHONE_STATE_REQUEST_CODE      = 227;
+    private static final int START_DETAIL_ACTIVITY_REQUEST_CODE = 733;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,11 +90,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         _SwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.SwipeRefreshLayout);
         _SwipeRefreshLayout.setOnRefreshListener(this);
-
-
-        AppInfo appInfo = new AppInfo();
-        appInfo.buildBoard = "dasdfa";
-        XposedSharedPreferencesHelper.getInstance().set(getPackageName(), appInfo);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, READ_PHONE_STATE_REQUEST_CODE);
@@ -162,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.nav_refresh) {
             uiHandler.post(this::onRefresh);
         } else if (id == R.id.action_about) {
-            // startActivity(new Intent(this, AboutActivity.class));
+            startActivity(new Intent(this, AboutActivity.class));
         } else if (id == R.id.nav_donate) {
             OtherHelper.getInstance().openUrl(this, "https://mobilecodec.alipay.com/client_download.htm?qrcode=apynckrfcfi5atfy45");
         } else if (id == R.id.nav_score) {
@@ -198,6 +194,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         _SwipeRefreshLayout.setRefreshing(false);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == START_DETAIL_ACTIVITY_REQUEST_CODE && resultCode == 1) {
+            onRefresh();
+        }
+    }
+
     private void reportPhoneInfo() {
         new Thread(() -> {
             if (!AppEnvSharedPreferencesHelper.getInstance().isReportPhone())
@@ -224,7 +229,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             holder.textView1.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), appInfo != null ? R.color.bootstrap_brand_success : android.R.color.primary_text_light));
 
             holder.itemView.setOnClickListener(v -> {
-                Snackbar.make(holder.itemView, holder.textView1.getText().toString(), Snackbar.LENGTH_LONG).show();
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                intent.putExtra("applicationInfo", applicationInfo);
+                MainActivity.this.startActivityForResult(intent, START_DETAIL_ACTIVITY_REQUEST_CODE);
+                // holder.itemView.getContext().startActivity(intent);
             });
 
             holder.itemView.setOnLongClickListener(v -> {
@@ -269,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     holder.itemView.performClick();
                                     break;
                                 case 1: // Random
-                                    RandomHelper.getInstance().randomAll(holder.textView2.getText().toString());
+                                    RandomHelper.getInstance().randomAll();
                                     Snackbar.make(holder.itemView, "一键随机完成", Snackbar.LENGTH_LONG).setAction("强制停止", v1 -> {}).show();
                                     break;
                                 case 2: // Detail

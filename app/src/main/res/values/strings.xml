@@ -20,4 +20,42 @@
     <string name="random">Random</string>
     <string name="detail">Detail</string>
     <string name="delete">Delete</string>
+
+    <string name="about_text">
+        <Data>
+            <![CDATA[
+                    "<h2>AppEnv</h2>"
+                    "Author: king.sollyu<br>"
+                    "Contact: QQ: 191067617 (C.S.T)<br>"
+                    "Description: Dynamically modify the software information<br>"
+                    "Depend: <a href="http://repo.xposed.info/module/de.robv.android.xposed.installer">XPOSED</a> OR <a href="http://en.miui.com/thread-78894-1-1.html">WSM tools</a><br>"
+                    "Update: Historic version <a href="http://appenv.ys168.com/">CLICK HERE</a><br><br>"
+
+                    "Copyright © <a href="http://www.sollyu.com">Sollyu</a> 2015-2016 Version %1$s<br><br>"
+
+                    "<h2>This update</h2>"
+                    "+ Support Android 7.0<br>"
+                    "+ ......<br>"
+
+                    "<br>"
+                    "<br>"
+            ]]>
+        </Data>
+    </string>
+    <string name="random_all">Random All</string>
+    <string name="run_app">Run App</string>
+    <string name="wipe_data">Wipe Data</string>
+    <string name="force_stop_app">Force Stop App</string>
+    <string name="save_config">Save Config</string>
+    <string name="manufacturer">Manufacturer</string>
+    <string name="model">Model</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="serial">Serial</string>
+    <string name="phone_network_type">Phone Network Type</string>
+    <string name="phone_device_id">Phone IMEI</string>
+    <string name="sim_serial_number">Sim Serial Number</string>
+    <string name="wifi_info_ssid">Wifi Name</string>
+    <string name="wifi_info_mac_address">Mac Address</string>
+    <string name="delete_config">Delete Config</string>
+    <string name="remote_random">Remote Random</string>
 </resources>

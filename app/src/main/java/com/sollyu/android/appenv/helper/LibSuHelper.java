@@ -7,9 +7,9 @@ import eu.chainfire.libsuperuser.Shell;
  * 时间: 16/9/19
  * 联系: sollyu@qq.com
  * 说明:
- *
+ * <p>
  * compile 'eu.chainfire:libsuperuser:1.0.0.+'
- *
+ * <p>
  * 帮助类
  */
 public class LibSuHelper {
@@ -49,6 +49,21 @@ public class LibSuHelper {
         }
 
         rootSession.addCommand(command, code, onCommandResultListener);
+    }
+
+    public void addCommand(String command, int code, OnCommandResultListener onCommandResultListener) {
+        addCommand(command, code, (commandCode, exitCode, output) -> {
+            if (exitCode != code)
+                onCommandResultListener.onFailure(code);
+            else
+                onCommandResultListener.onSuccess(code);
+        });
+    }
+
+    public interface OnCommandResultListener {
+        void onSuccess(int exitCode);
+
+        void onFailure(int exitCode);
     }
 
 }
