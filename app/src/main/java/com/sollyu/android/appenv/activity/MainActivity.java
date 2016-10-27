@@ -62,8 +62,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ArrayList<ApplicationInfo> _DisplayApplicationInfo = new ArrayList<>();
     private List<ApplicationInfo>      applicationInfos        = null;
 
-    private static final int READ_PHONE_STATE_REQUEST_CODE = 227;
-
+    private static final int READ_PHONE_STATE_REQUEST_CODE      = 227;
+    private static final int START_DETAIL_ACTIVITY_REQUEST_CODE = 733;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,11 +90,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         _SwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.SwipeRefreshLayout);
         _SwipeRefreshLayout.setOnRefreshListener(this);
-
-
-        AppInfo appInfo = new AppInfo();
-        appInfo.buildBoard = "dasdfa";
-        XposedSharedPreferencesHelper.getInstance().set(getPackageName(), appInfo);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, READ_PHONE_STATE_REQUEST_CODE);
@@ -199,6 +194,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         _SwipeRefreshLayout.setRefreshing(false);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == START_DETAIL_ACTIVITY_REQUEST_CODE && resultCode == 1) {
+            onRefresh();
+        }
+    }
+
     private void reportPhoneInfo() {
         new Thread(() -> {
             if (!AppEnvSharedPreferencesHelper.getInstance().isReportPhone())
@@ -227,7 +231,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             holder.itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                 intent.putExtra("applicationInfo", applicationInfo);
-                holder.itemView.getContext().startActivity(intent);
+                MainActivity.this.startActivityForResult(intent, START_DETAIL_ACTIVITY_REQUEST_CODE);
+                // holder.itemView.getContext().startActivity(intent);
             });
 
             holder.itemView.setOnLongClickListener(v -> {
@@ -272,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     holder.itemView.performClick();
                                     break;
                                 case 1: // Random
-                                    RandomHelper.getInstance().randomAll(holder.textView2.getText().toString());
+                                    RandomHelper.getInstance().randomAll();
                                     Snackbar.make(holder.itemView, "一键随机完成", Snackbar.LENGTH_LONG).setAction("强制停止", v1 -> {}).show();
                                     break;
                                 case 2: // Detail

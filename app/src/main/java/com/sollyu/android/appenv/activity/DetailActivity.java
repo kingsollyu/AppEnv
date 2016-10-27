@@ -18,6 +18,8 @@ import com.orhanobut.dialogplus.ListHolder;
 import com.sollyu.android.appenv.R;
 import com.sollyu.android.appenv.helper.LibSuHelper;
 import com.sollyu.android.appenv.helper.RandomHelper;
+import com.sollyu.android.appenv.helper.XposedSharedPreferencesHelper;
+import com.sollyu.android.appenv.module.AppInfo;
 import com.sollyu.android.appenv.view.DetailItem;
 import com.umeng.analytics.MobclickAgent;
 
@@ -29,7 +31,8 @@ import java.util.Map;
 
 public class DetailActivity extends AppCompatActivity {
 
-    private ApplicationInfo applicationInfo = null;
+    private ApplicationInfo applicationInfo    = null;
+    private Integer         activityResultCode = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,7 @@ public class DetailActivity extends AppCompatActivity {
             }
         }
 
+        appInfoToUi(XposedSharedPreferencesHelper.getInstance().get(applicationInfo.packageName));
         getOverflowMenu();
     }
 
@@ -138,12 +142,70 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        DetailActivity.this.setResult(activityResultCode);
+        DetailActivity.this.finish();
+        super.onBackPressed();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // getMenuInflater().inflate(R.menu.menu_detail, menu);
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+    private void appInfoToUi(AppInfo appInfo) {
+        if (appInfo == null)
+            return;
+
+        DetailItem manufacturer          = (DetailItem) findViewById(R.id.manufacturer);
+        DetailItem model                 = (DetailItem) findViewById(R.id.model);
+        DetailItem serial                = (DetailItem) findViewById(R.id.serial);
+        DetailItem phone_number          = (DetailItem) findViewById(R.id.phone_number);
+        DetailItem phone_network_type    = (DetailItem) findViewById(R.id.phone_network_type);
+        DetailItem phone_device_id       = (DetailItem) findViewById(R.id.phone_device_id);
+        DetailItem sim_serial_number     = (DetailItem) findViewById(R.id.sim_serial_number);
+        DetailItem wifi_info_ssid        = (DetailItem) findViewById(R.id.wifi_info_ssid);
+        DetailItem wifi_info_mac_address = (DetailItem) findViewById(R.id.wifi_info_mac_address);
+
+        manufacturer.getEditText().setText(appInfo.buildManufacturer);
+        model.getEditText().setText(appInfo.buildModel);
+        serial.getEditText().setText(appInfo.buildSerial);
+        phone_number.getEditText().setText(appInfo.telephonyGetLine1Number);
+        phone_network_type.getEditText().setText(appInfo.telephonyGetNetworkType);
+        phone_device_id.getEditText().setText(appInfo.telephonyGetDeviceId);
+        sim_serial_number.getEditText().setText(appInfo.telephonyGetSimSerialNumber);
+        wifi_info_ssid.getEditText().setText(appInfo.wifiInfoGetSSID);
+        wifi_info_mac_address.getEditText().setText(appInfo.wifiInfoGetMacAddress);
+    }
+
+    private AppInfo uiToAppInfo() {
+        DetailItem manufacturer          = (DetailItem) findViewById(R.id.manufacturer);
+        DetailItem model                 = (DetailItem) findViewById(R.id.model);
+        DetailItem serial                = (DetailItem) findViewById(R.id.serial);
+        DetailItem phone_number          = (DetailItem) findViewById(R.id.phone_number);
+        DetailItem phone_network_type    = (DetailItem) findViewById(R.id.phone_network_type);
+        DetailItem phone_device_id       = (DetailItem) findViewById(R.id.phone_device_id);
+        DetailItem sim_serial_number     = (DetailItem) findViewById(R.id.sim_serial_number);
+        DetailItem wifi_info_ssid        = (DetailItem) findViewById(R.id.wifi_info_ssid);
+        DetailItem wifi_info_mac_address = (DetailItem) findViewById(R.id.wifi_info_mac_address);
+
+        AppInfo appInfo = new AppInfo();
+        appInfo.buildManufacturer = manufacturer.getEditText().getText().toString();
+        appInfo.buildModel = model.getEditText().getText().toString();
+        appInfo.buildSerial = serial.getEditText().getText().toString();
+        appInfo.telephonyGetLine1Number = phone_number.getEditText().getText().toString();
+        appInfo.telephonyGetNetworkType = phone_network_type.getEditText().getText().toString();
+        appInfo.telephonyGetDeviceId = phone_device_id.getEditText().getText().toString();
+        appInfo.telephonyGetSimSerialNumber = sim_serial_number.getEditText().getText().toString();
+        appInfo.wifiInfoGetSSID = wifi_info_ssid.getEditText().getText().toString();
+        appInfo.wifiInfoGetMacAddress = wifi_info_mac_address.getEditText().getText().toString();
+
+        return appInfo;
+    }
+
     public void onClickRandomAll(View view) {
+        appInfoToUi(RandomHelper.getInstance().randomAll());
     }
 
     public void onClickRunApp(View view) {
@@ -173,6 +235,8 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void onClickSaveConfig(View view) {
+        activityResultCode = 1;
+        XposedSharedPreferencesHelper.getInstance().set(applicationInfo.packageName, uiToAppInfo());
     }
 
     public void onClickManufacturer(View view) {
@@ -246,5 +310,30 @@ public class DetailActivity extends AppCompatActivity {
     public void onClickDeviceId(View view) {
         DetailItem detailItem = (DetailItem) view;
         detailItem.getEditText().setText(RandomHelper.getInstance().randomTelephonyGetDeviceId());
+    }
+
+    public void onClickSimSerialNumber(View view) {
+        DetailItem detailItem = (DetailItem) view;
+        detailItem.getEditText().setText(RandomHelper.getInstance().randomTelephonySimSerialNumber());
+    }
+
+    public void onClickWifiInfoSSID(View view) {
+        DetailItem detailItem = (DetailItem) view;
+        detailItem.getEditText().setText(RandomHelper.getInstance().randomWifiInfoSSID());
+    }
+
+    public void onClickWifiInfoMacAddress(View view) {
+        DetailItem detailItem = (DetailItem) view;
+        detailItem.getEditText().setText(RandomHelper.getInstance().randomWifiInfoMacAddress());
+    }
+
+    public void onMenuClearConfig(MenuItem item) {
+        XposedSharedPreferencesHelper.getInstance().remove(applicationInfo.packageName);
+        activityResultCode = 1;
+        DetailActivity.this.setResult(activityResultCode);
+        DetailActivity.this.finish();
+    }
+
+    public void onMenuRemoteRandom(MenuItem item) {
     }
 }

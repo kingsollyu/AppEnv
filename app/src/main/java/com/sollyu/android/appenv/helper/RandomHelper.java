@@ -4,6 +4,7 @@ import android.telephony.TelephonyManager;
 
 import com.sollyu.android.appenv.module.AppInfo;
 import com.sollyu.android.appenv.utils.IMEIGen;
+import com.sollyu.android.appenv.utils.RandomMac;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -76,15 +77,34 @@ public class RandomHelper {
         return hashMap;
     }
 
-    public void randomAll(String packageName) {
+    public AppInfo randomAll() {
         AppInfo appInfo = new AppInfo();
-        appInfo.telephonyGetLine1Number = randomTelephonyGetLine1Number();
         appInfo.buildSerial = randomBuildSerial();
+        appInfo.telephonyGetLine1Number = randomTelephonyGetLine1Number();
         appInfo.telephonyGetDeviceId = randomTelephonyGetDeviceId();
+        appInfo.telephonyGetNetworkType = String.valueOf(randomInt(0, 15));
+        appInfo.telephonyGetSimSerialNumber = randomTelephonySimSerialNumber();
+        appInfo.wifiInfoGetSSID = randomWifiInfoSSID();
+        appInfo.wifiInfoGetMacAddress = randomWifiInfoMacAddress();
+
+        return appInfo;
     }
 
     public String randomTelephonyGetDeviceId() {
         String imeiCode = "86" + randomString(12, false, false, true);
         return imeiCode + IMEIGen.genCode(imeiCode);
+    }
+
+    public String randomTelephonySimSerialNumber() {
+        return randomString(20, false, false, true);
+    }
+
+    public String randomWifiInfoSSID() {
+        String[] strings = new String[]{"TP-", "FAST_", "Tenda_", "TP-LINK_", "MERCURY_"};
+        return strings[randomInt(0, strings.length - 1)] + randomString(randomInt(5, 8), false, true, true);
+    }
+
+    public String randomWifiInfoMacAddress() {
+        return RandomMac.getMacAddrWithFormat(":");
     }
 }

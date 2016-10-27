@@ -61,4 +61,9 @@
     <string name="serial">序列号</string>
     <string name="phone_network_type">网络类型</string>
     <string name="phone_device_id">手机IMEI</string>
+    <string name="sim_serial_number">Sim Serial Number</string>
+    <string name="wifi_info_ssid">Wifi Name</string>
+    <string name="wifi_info_mac_address">Mac Address</string>
+    <string name="delete_config">Delete Config</string>
+    <string name="remote_random">Remote Random</string>
 </resources>

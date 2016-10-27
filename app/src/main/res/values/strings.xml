@@ -53,4 +53,9 @@
     <string name="serial">Serial</string>
     <string name="phone_network_type">Phone Network Type</string>
     <string name="phone_device_id">Phone IMEI</string>
+    <string name="sim_serial_number">Sim Serial Number</string>
+    <string name="wifi_info_ssid">Wifi Name</string>
+    <string name="wifi_info_mac_address">Mac Address</string>
+    <string name="delete_config">Delete Config</string>
+    <string name="remote_random">Remote Random</string>
 </resources>
