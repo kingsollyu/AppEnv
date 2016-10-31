@@ -40,6 +40,9 @@
                     "因本人时间不是太充裕<br>"
                     "非定做用户请在<a href="http://shang.qq.com/wpa/qunwpa?idkey=f7a9290f4c57e49f8f72034ceebf7ef2e09f06fc8410a241d808a585fa664ca3">QQ群</a>或<a href="http://appenv.0xcode.org/">论坛</a>讨论, 添加作者<u>一律拒绝</u><br><br>"
 
+                    "<h2>特别说明</h2><br>"
+                    "请不要使用本软件做任何违法事情， 包括刷单之类操作，如您使用本软件出现任何违法法律，一切后果由您自行承担，和作者无关。<br><br>"
+
                     "<h2>本版更新</h2>"
                     "+ 支持Android 7.0<br>"
                     "+ 支持云端服务<br>"
@@ -61,9 +64,11 @@
     <string name="serial">序列号</string>
     <string name="phone_network_type">网络类型</string>
     <string name="phone_device_id">手机IMEI</string>
-    <string name="sim_serial_number">Sim Serial Number</string>
-    <string name="wifi_info_ssid">Wifi Name</string>
-    <string name="wifi_info_mac_address">Mac Address</string>
-    <string name="delete_config">Delete Config</string>
-    <string name="remote_random">Remote Random</string>
+    <string name="sim_serial_number">Sim卡序号</string>
+    <string name="wifi_info_ssid">Wifi名称</string>
+    <string name="wifi_info_mac_address">Mac地址</string>
+    <string name="delete_config">删除配置</string>
+    <string name="remote_random">云端随机</string>
+    <string name="title_activity_cloud">云端</string>
+    <string name="input_token">输入激活码</string>
 </resources>

@@ -7,7 +7,6 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -62,7 +61,7 @@ public class TokenHelper {
     }
 
     public void setActivate(Boolean activate) {
-        getDefaultSharedPreferences(MainApplication.getInstance()).edit().putBoolean("TOKEN", activate).apply();
+        getDefaultSharedPreferences(MainApplication.getInstance()).edit().putBoolean("ACTIVATE", activate).apply();
     }
 
     public ServerResult info(String token) {
@@ -74,7 +73,6 @@ public class TokenHelper {
 
             return new ServerResult(okHttpClient.newCall(new Request.Builder().url(BuildConfig.SERVER_HOST).post(requestBody).build()).execute().body().string());
         } catch (Exception e) {
-            Log.d(TAG, "info: " + e.getLocalizedMessage(), e);
             return new ServerResult(400, e.getLocalizedMessage(), null);
         }
     }
@@ -144,8 +142,20 @@ public class TokenHelper {
 
             return new ServerResult(okHttpClient.newCall(new Request.Builder().url(BuildConfig.SERVER_HOST).post(formEncodingBuilder.build()).build()).execute().body().string());
         } catch (Exception e) {
-            Log.d(TAG, "devices: " + e.getLocalizedMessage(), e);
             return new ServerResult(400, e.getLocalizedMessage(), "{}");
+        }
+    }
+
+    public ServerResult random() {
+        try {
+            RequestBody requestBody = new FormEncodingBuilder()
+                    .add("service", "Default.Random")
+                    .add("token", getToken())
+                    .build();
+
+            return new ServerResult(okHttpClient.newCall(new Request.Builder().url(BuildConfig.SERVER_HOST).post(requestBody).build()).execute().body().string());
+        } catch (Exception e) {
+            return new ServerResult(400, e.getLocalizedMessage(), null);
         }
     }
 

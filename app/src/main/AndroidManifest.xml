@@ -47,6 +47,9 @@
             android:label="@string/title_activity_cloud"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity android:name=".activity.LoginActivity"
+            android:label="@string/input_token">
+        </activity>
     </application>
 
 </manifest>

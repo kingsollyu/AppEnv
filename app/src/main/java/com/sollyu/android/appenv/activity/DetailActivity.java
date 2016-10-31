@@ -1,8 +1,12 @@
 package com.sollyu.android.appenv.activity;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -18,6 +22,7 @@ import com.orhanobut.dialogplus.ListHolder;
 import com.sollyu.android.appenv.R;
 import com.sollyu.android.appenv.helper.LibSuHelper;
 import com.sollyu.android.appenv.helper.RandomHelper;
+import com.sollyu.android.appenv.helper.TokenHelper;
 import com.sollyu.android.appenv.helper.XposedSharedPreferencesHelper;
 import com.sollyu.android.appenv.module.AppInfo;
 import com.sollyu.android.appenv.view.DetailItem;
@@ -33,6 +38,8 @@ public class DetailActivity extends AppCompatActivity {
 
     private ApplicationInfo applicationInfo    = null;
     private Integer         activityResultCode = 0;
+
+    private Handler uiHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -336,5 +343,52 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void onMenuRemoteRandom(MenuItem item) {
+        if (!TokenHelper.getInstance().isActivate()) {
+            DetailActivity.this.startActivity(new Intent(DetailActivity.this, LoginActivity.class));
+            return;
+        }
+
+        View view = findViewById(R.id.fab);
+        ProgressDialog progressDialog = ProgressDialog.show(view.getContext(), "请稍候...", "正在处理...", true);
+
+        new Thread(() -> {
+            try {
+                TokenHelper.ServerResult serverResult = TokenHelper.getInstance().random();
+
+                progressDialog.dismiss();
+                if (serverResult.getRet() != 200) {
+                    throw new RuntimeException(serverResult.getMsg());
+                }
+
+                AppInfo appInfo = new AppInfo();
+                appInfo.buildManufacturer = serverResult.getDataJson().getString("buildManufacturer");
+                appInfo.buildModel = serverResult.getDataJson().getString("buildModel");
+                appInfo.buildSerial = serverResult.getDataJson().getString("buildSerial");
+                appInfo.telephonyGetLine1Number = serverResult.getDataJson().getString("telephonyGetLine1Number");
+                appInfo.telephonyGetSimOperator = serverResult.getDataJson().getString("telephonyGetSimOperator");
+                appInfo.telephonyGetNetworkType = serverResult.getDataJson().getString("telephonyGetNetworkType");
+                appInfo.telephonyGetDeviceId = serverResult.getDataJson().getString("telephonyGetDeviceId");
+                appInfo.telephonyGetSimSerialNumber = serverResult.getDataJson().getString("telephonyGetSimSerialNumber");
+                appInfo.wifiInfoGetSSID = serverResult.getDataJson().getString("wifiInfoGetSSID");
+                appInfo.wifiInfoGetMacAddress = serverResult.getDataJson().getString("wifiInfoGetMacAddress");
+                appInfo.settingsSecureAndroidId = serverResult.getDataJson().getString("settingsSecureAndroidId");
+                appInfo.webUserAgent = serverResult.getDataJson().getString("webUserAgent");
+                appInfo.displayDip = serverResult.getDataJson().getString("displayDip");
+
+                uiHandler.post(() -> appInfoToUi(appInfo));
+                Snackbar.make(view, "远程随机成功！可用点数 -2！", Snackbar.LENGTH_LONG).show();
+            } catch (Exception e) {
+                TokenHelper.getInstance().setActivate(false);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(DetailActivity.this);
+                builder.setTitle("错误");
+                builder.setMessage(e.getMessage());
+                builder.setPositiveButton("重新输入激活码", (dialog, which) -> startActivityForResult(new Intent(DetailActivity.this, LoginActivity.class), 0));
+                builder.setNegativeButton("取消", null);
+                builder.setCancelable(false);
+                uiHandler.post(() -> builder.create().show());
+            }
+
+        }).start();
     }
 }

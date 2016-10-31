@@ -58,5 +58,6 @@
     <string name="wifi_info_mac_address">Mac Address</string>
     <string name="delete_config">Delete Config</string>
     <string name="remote_random">Remote Random</string>
-    <string name="title_activity_cloud">CloudActivity</string>
+    <string name="title_activity_cloud">Cloud</string>
+    <string name="input_token">Input Token</string>
 </resources>
