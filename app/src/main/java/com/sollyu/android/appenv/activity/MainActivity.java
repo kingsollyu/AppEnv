@@ -37,7 +37,7 @@ import com.sollyu.android.appenv.R;
 import com.sollyu.android.appenv.helper.AppEnvSharedPreferencesHelper;
 import com.sollyu.android.appenv.helper.OtherHelper;
 import com.sollyu.android.appenv.helper.RandomHelper;
-import com.sollyu.android.appenv.helper.ServerHelper;
+import com.sollyu.android.appenv.helper.TokenHelper;
 import com.sollyu.android.appenv.helper.XposedSharedPreferencesHelper;
 import com.sollyu.android.appenv.module.AppInfo;
 
@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.action_settings) {
             // startActivity(new Intent(this, SettingsActivity.class));
         } else if (id == R.id.action_cloud) {
-            // startActivity(new Intent(this, CloudActivity.class));
+            startActivity(new Intent(this, CloudActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void reportPhoneInfo() {
         new Thread(() -> {
             if (!AppEnvSharedPreferencesHelper.getInstance().isReportPhone())
-                AppEnvSharedPreferencesHelper.getInstance().setReportPhone(ServerHelper.getInstance().devices(MainActivity.this).getCode() == 400);
+                AppEnvSharedPreferencesHelper.getInstance().setReportPhone(TokenHelper.getInstance().devices(MainActivity.this).getRet() == 200);
         }).start();
     }
 

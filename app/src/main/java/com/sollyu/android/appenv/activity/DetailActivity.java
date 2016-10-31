@@ -237,6 +237,7 @@ public class DetailActivity extends AppCompatActivity {
     public void onClickSaveConfig(View view) {
         activityResultCode = 1;
         XposedSharedPreferencesHelper.getInstance().set(applicationInfo.packageName, uiToAppInfo());
+        Snackbar.make(view, "Save config success.", Snackbar.LENGTH_LONG).show();
     }
 
     public void onClickManufacturer(View view) {

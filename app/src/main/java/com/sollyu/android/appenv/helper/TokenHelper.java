@@ -4,44 +4,82 @@ import android.content.Context;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.sollyu.android.appenv.BuildConfig;
+import com.sollyu.android.appenv.MainApplication;
 import com.sollyu.android.appenv.module.AppInfo;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
-import com.umeng.analytics.MobclickAgent;
+import com.squareup.okhttp.RequestBody;
 
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Field;
 
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 /**
  * 作者: Sollyu
- * 时间: 16/10/23
+ * 时间: 16/10/31
  * 联系: sollyu@qq.com
  * 说明:
  */
-public class ServerHelper {
-    private static final ServerHelper instance = new ServerHelper();
+public class TokenHelper {
+    private static final String       TAG        = "AppEnv";
+    private static final TokenHelper  instance   = new TokenHelper();
+    private static final ServerResult TOKEN_NULL = new ServerResult("{\"ret\":400,\"msg\":\"Token is null.\",\"data\":\"\"}");
 
     private OkHttpClient okHttpClient = new OkHttpClient();
 
-    private ServerHelper() {
+    private TokenHelper() {
     }
 
-    public static ServerHelper getInstance() {
+    public static TokenHelper getInstance() {
         return instance;
     }
 
-    public Response devices(Context context) {
+    public String getToken() {
+        String token = PreferenceManager.getDefaultSharedPreferences(MainApplication.getInstance()).getString("TOKEN", null);
+        if (token == null || token.isEmpty())
+            throw new RuntimeException("Token is null");
+        return token;
+    }
+
+    public void setToken(String token) {
+        getDefaultSharedPreferences(MainApplication.getInstance()).edit().putString("TOKEN", token).apply();
+    }
+
+    public Boolean isActivate() {
+        return PreferenceManager.getDefaultSharedPreferences(MainApplication.getInstance()).getBoolean("ACTIVATE", false);
+    }
+
+    public void setActivate(Boolean activate) {
+        getDefaultSharedPreferences(MainApplication.getInstance()).edit().putBoolean("TOKEN", activate).apply();
+    }
+
+    public ServerResult info(String token) {
+        try {
+            RequestBody requestBody = new FormEncodingBuilder()
+                    .add("service", "Default.Info")
+                    .add("token", token)
+                    .build();
+
+            return new ServerResult(okHttpClient.newCall(new Request.Builder().url(BuildConfig.SERVER_HOST).post(requestBody).build()).execute().body().string());
+        } catch (Exception e) {
+            Log.d(TAG, "info: " + e.getLocalizedMessage(), e);
+            return new ServerResult(400, e.getLocalizedMessage(), null);
+        }
+    }
+
+    public ServerResult devices(Context context) {
         try {
             AppInfo          appInfo          = new AppInfo();
             TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
@@ -104,38 +142,44 @@ public class ServerHelper {
                 }
             }
 
-            return new Response(okHttpClient.newCall(new Request.Builder().url(BuildConfig.SERVER_HOST).post(formEncodingBuilder.build()).build()).execute().body().string());
-        } catch (IOException e) {
-            MobclickAgent.reportError(context, e);
-            return new Response(400, e.getLocalizedMessage(), "{}");
+            return new ServerResult(okHttpClient.newCall(new Request.Builder().url(BuildConfig.SERVER_HOST).post(formEncodingBuilder.build()).build()).execute().body().string());
+        } catch (Exception e) {
+            Log.d(TAG, "devices: " + e.getLocalizedMessage(), e);
+            return new ServerResult(400, e.getLocalizedMessage(), "{}");
         }
     }
 
-    public class Response {
-        private int        code     = 400;
-        private String     msg      = null;
-        private String     data     = null;
-        private JSONObject dataJson = null;
 
-        public Response(String jsonString) {
-            JSONObject jsonObject = JSON.parseObject(jsonString);
+    public static class ServerResult {
+        private int        ret           = 400;
+        private String     msg           = "unknown";
+        private String     data          = "";
+        private JSONObject dataJson      = null;
+        private JSONObject rawJsonObject = null;
 
-            code = jsonObject.getInteger("code");
-            msg = jsonObject.getString("msg");
-            data = jsonObject.getString("data");
-            dataJson = jsonObject.getJSONObject("data");
+        public ServerResult(String rawString) {
+            rawJsonObject = JSONObject.parseObject(rawString);
+            if (rawJsonObject == null) {
+                ret = 400;
+                msg = "error json data";
+            } else {
+                ret = rawJsonObject.getInteger("ret");
+                msg = rawJsonObject.getString("msg");
+                data = rawJsonObject.getString("data");
+
+                if (rawJsonObject.get("data") instanceof JSONObject)
+                    dataJson = rawJsonObject.getJSONObject("data");
+            }
         }
 
-        public Response(int code, String msg, String data) {
-            this.code = code;
+        public ServerResult(int code, String msg, String data) {
+            this.ret = code;
             this.msg = msg;
             this.data = data;
-
-            dataJson = JSON.parseObject(data);
         }
 
-        public int getCode() {
-            return code;
+        public int getRet() {
+            return ret;
         }
 
         public String getMsg() {
@@ -148,6 +192,15 @@ public class ServerHelper {
 
         public JSONObject getDataJson() {
             return dataJson;
+        }
+
+        public JSONObject getRawJsonObject() {
+            return rawJsonObject;
+        }
+
+        @Override
+        public String toString() {
+            return JSON.toJSONString(this);
         }
     }
 
