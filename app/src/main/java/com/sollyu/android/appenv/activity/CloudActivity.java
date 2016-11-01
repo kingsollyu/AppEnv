@@ -8,7 +8,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -136,7 +135,7 @@ public class CloudActivity extends AppCompatActivity {
                     throw new RuntimeException(serverResult.getMsg());
                 }
 
-                Snackbar.make(view, "Upload config success. times - 1.", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(view, R.string.upload_success, Snackbar.LENGTH_LONG).show();
             } catch (Exception e) {
                 Snackbar.make(view, e.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
             } finally {
@@ -169,7 +168,7 @@ public class CloudActivity extends AppCompatActivity {
                 String temp = "";
                 if ((temp = serverResult.getDataJson().getString("app")) != null) {
                     if (!appSettingFile.delete()) {
-                        throw new IOException("删除文件错误");
+                        throw new IOException(getString(R.string.delete_file_error));
                     }
                     FileUtils.writeStringToFile(appSettingFile, temp, "UTF-8");
                 }
@@ -180,7 +179,7 @@ public class CloudActivity extends AppCompatActivity {
                     FileUtils.writeStringToFile(solutionFile, temp, "UTF-8");
                 }
 
-                Snackbar.make(view, "Download config success. but you need restart. times - 1.", Snackbar.LENGTH_LONG).setAction("Exit", v -> System.exit(0)).show();
+                Snackbar.make(view, R.string.download_sccess, Snackbar.LENGTH_LONG).setAction(R.string.exit, v -> System.exit(0)).show();
             } catch (Exception e) {
                 Snackbar.make(view, e.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
             } finally {
@@ -207,7 +206,7 @@ public class CloudActivity extends AppCompatActivity {
                 }
 
                 FileUtils.writeStringToFile(new File(view.getContext().getFilesDir(), "phone.json"), JSON.toJSONString(serverResult.getDataJson(), true), "UTF-8");
-                Snackbar.make(view, "Get last phone list success. times - 1.", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(view, R.string.get_last_phone_sccess, Snackbar.LENGTH_LONG).show();
             } catch (Exception e) {
                 Snackbar.make(view, e.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
             } finally {
@@ -280,9 +279,8 @@ public class CloudActivity extends AppCompatActivity {
                     }
 
                     uiHandler.post(dialogPlus::dismiss);
-                    uiHandler.postDelayed(() -> Snackbar.make(view, "Share device success. Thank you very much.", Snackbar.LENGTH_LONG).show(), 500);
+                    uiHandler.postDelayed(() -> Snackbar.make(view, R.string.share_device_success, Snackbar.LENGTH_LONG).show(), 500);
                 } catch (Exception e) {
-                    Log.e(TAG, "onClickShare: " + e.getLocalizedMessage(), e);
                     Snackbar.make(view, e.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
                 } finally {
                     progressDialog.dismiss();

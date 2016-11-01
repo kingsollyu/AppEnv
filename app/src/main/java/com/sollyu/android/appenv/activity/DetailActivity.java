@@ -57,7 +57,7 @@ public class DetailActivity extends AppCompatActivity {
             PhoneHelper.getInstance().reload(this);
         } catch (Exception e) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("错误");
+            builder.setTitle(R.string.error);
             builder.setMessage("程序出现严重错误: \n" + Log.getStackTraceString(e));
             builder.setPositiveButton(android.R.string.ok, (dialog, which) -> DetailActivity.this.finish());
             builder.setCancelable(false);
@@ -233,7 +233,7 @@ public class DetailActivity extends AppCompatActivity {
     public void onClickRunApp(View view) {
         LibSuHelper.getInstance().addCommand("monkey -p " + applicationInfo.packageName + " -c android.intent.category.LAUNCHER 1", 0, (commandCode, exitCode, output) -> {
             if (exitCode != 0) {
-                Snackbar.make(view, "start app error: " + exitCode, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(view, getString(R.string.start_app_error) + exitCode, Snackbar.LENGTH_LONG).show();
             }
         });
     }
@@ -241,25 +241,25 @@ public class DetailActivity extends AppCompatActivity {
     public void onClickClearApp(View view) {
         LibSuHelper.getInstance().addCommand("pm clear " + applicationInfo.packageName, 0, (commandCode, exitCode, output) -> {
             if (exitCode != 0)
-                Snackbar.make(view, "wipe data error: " + exitCode, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(view, getString(R.string.wipe_data_error) + exitCode, Snackbar.LENGTH_LONG).show();
             else
-                Snackbar.make(view, "wipe data success.", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(view, R.string.wipe_data_sccess, Snackbar.LENGTH_LONG).show();
         });
     }
 
     public void onClickForceStopApp(View view) {
         LibSuHelper.getInstance().addCommand("am force-stop " + applicationInfo.packageName, 0, (commandCode, exitCode, output) -> {
             if (exitCode != 0)
-                Snackbar.make(view, "force stop app error: " + exitCode, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(view, getString(R.string.force_stop_error) + exitCode, Snackbar.LENGTH_LONG).show();
             else
-                Snackbar.make(view, "force stop app success.", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(view, R.string.force_stop_success, Snackbar.LENGTH_LONG).show();
         });
     }
 
     public void onClickSaveConfig(View view) {
         activityResultCode = 1;
         XposedSharedPreferencesHelper.getInstance().set(applicationInfo.packageName, uiToAppInfo());
-        Snackbar.make(view, "Save config success.", Snackbar.LENGTH_LONG).show();
+        Snackbar.make(view, R.string.save_config_success, Snackbar.LENGTH_LONG).show();
     }
 
     public void onClickManufacturer(View view) {
@@ -283,8 +283,8 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void onClickModel(View view) {
-        DetailItem buildManufacturer = (DetailItem) findViewById(R.id.manufacturer);
-        HashMap<String, String> hashMap = PhoneHelper.getInstance().getModelList(buildManufacturer.getEditText().getText().toString());
+        DetailItem              buildManufacturer = (DetailItem) findViewById(R.id.manufacturer);
+        HashMap<String, String> hashMap           = PhoneHelper.getInstance().getModelList(buildManufacturer.getEditText().getText().toString());
 
         ArrayList<String> selectStringArrayList = new ArrayList<>();
         for (Map.Entry<String, String> entry : hashMap.entrySet()) {
@@ -379,7 +379,7 @@ public class DetailActivity extends AppCompatActivity {
             return;
         }
 
-        View view = findViewById(R.id.fab);
+        View           view           = findViewById(R.id.fab);
         ProgressDialog progressDialog = ProgressDialog.show(view.getContext(), getString(R.string.wait), getString(R.string.processing), true);
 
         new Thread(() -> {

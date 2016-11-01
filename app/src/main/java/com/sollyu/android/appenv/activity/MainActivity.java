@@ -35,6 +35,7 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ListHolder;
 import com.sollyu.android.appenv.R;
 import com.sollyu.android.appenv.helper.AppEnvSharedPreferencesHelper;
+import com.sollyu.android.appenv.helper.LibSuHelper;
 import com.sollyu.android.appenv.helper.OtherHelper;
 import com.sollyu.android.appenv.helper.RandomHelper;
 import com.sollyu.android.appenv.helper.TokenHelper;
@@ -278,7 +279,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     break;
                                 case 1: // Random
                                     XposedSharedPreferencesHelper.getInstance().set(holder.textView2.getText().toString(), RandomHelper.getInstance().randomAll());
-                                    uiHandler.postDelayed(() -> Snackbar.make(holder.itemView, "一键随机完成", Snackbar.LENGTH_LONG).setAction("强制停止", v1 -> {
+                                    uiHandler.postDelayed(() -> Snackbar.make(view, R.string.random_success, Snackbar.LENGTH_LONG).setAction(R.string.force_stop, v1 -> {
+                                        LibSuHelper.getInstance().addCommand("am force-stop " + applicationInfo.packageName, 0, (commandCode, exitCode, output) -> {
+                                            if (exitCode != 0)
+                                                Snackbar.make(findViewById(R.id.content_main), getString(R.string.force_stop_error) + exitCode, Snackbar.LENGTH_LONG).show();
+                                            else
+                                                Snackbar.make(findViewById(R.id.content_main), R.string.force_stop_success, Snackbar.LENGTH_LONG).show();
+                                        });
                                     }).show(), 250);
                                     onRefresh();
                                     break;
