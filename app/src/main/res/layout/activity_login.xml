@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_login"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.sollyu.android.appenv.activity.LoginActivity">
+
+    <com.beardedhen.androidbootstrap.BootstrapWell
+        android:id="@+id/bootstrapWell"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="8dp"
+        app:bootstrapSize="lg">
+
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="因租用网上服务器费用比较贵，所以云端功能暂定为收费300次/1元的价格进行收费(无时间限制)。收费功能均为使用服务器的功能，不付费不影响正常功能的使用。"
+            android:textAlignment="viewStart"/>
+    </com.beardedhen.androidbootstrap.BootstrapWell>
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/button_activate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/activate"
+        android:onClick="onClickActivate"
+        app:bootstrapBrand="success"
+        app:bootstrapSize="lg"
+        app:buttonMode="regular"
+        app:showOutline="false"
+        app:roundedCorners="true"
+        />
+
+    <com.beardedhen.androidbootstrap.AwesomeTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/order"
+        android:textAlignment="viewStart"
+        android:layout_below="@+id/bootstrapWell"
+        android:layout_alignEnd="@+id/bootstrapWell"
+        android:onClick="onClickOrder"
+        app:bootstrapBrand="regular"/>
+
+    <com.beardedhen.androidbootstrap.BootstrapEditText
+        android:id="@+id/edit_text_token"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/input_token"
+        app:bootstrapSize="md"
+        app:bootstrapBrand="info"
+        app:roundedCorners="true"
+        android:layout_above="@+id/button_activate"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="11dp"/>
+
+
+</RelativeLayout>

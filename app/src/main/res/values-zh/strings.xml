@@ -40,9 +40,14 @@
                     "因本人时间不是太充裕<br>"
                     "非定做用户请在<a href="http://shang.qq.com/wpa/qunwpa?idkey=f7a9290f4c57e49f8f72034ceebf7ef2e09f06fc8410a241d808a585fa664ca3">QQ群</a>或<a href="http://appenv.0xcode.org/">论坛</a>讨论, 添加作者<u>一律拒绝</u><br><br>"
 
+                    "<h2>特别说明</h2>"
+                    "请不要使用本软件做任何违法事情， 包括刷单之类操作，如您使用本软件出现任何违法法律，一切后果由您自行承担和作者无关。<br><br>"
+
                     "<h2>本版更新</h2>"
                     "+ 支持Android 7.0<br>"
+                    "+ 随机生成IMEI增加识别算法<br>"
                     "+ 支持云端服务<br>"
+                    "+ 增加英文语言<br>"
                     "+ 全新界面<br>"
 
                     "<br>"
@@ -61,9 +66,35 @@
     <string name="serial">序列号</string>
     <string name="phone_network_type">网络类型</string>
     <string name="phone_device_id">手机IMEI</string>
-    <string name="sim_serial_number">Sim Serial Number</string>
-    <string name="wifi_info_ssid">Wifi Name</string>
-    <string name="wifi_info_mac_address">Mac Address</string>
-    <string name="delete_config">Delete Config</string>
-    <string name="remote_random">Remote Random</string>
+    <string name="sim_serial_number">Sim卡序号</string>
+    <string name="wifi_info_ssid">Wifi名称</string>
+    <string name="wifi_info_mac_address">Mac地址</string>
+    <string name="delete_config">删除配置</string>
+    <string name="remote_random">云端随机</string>
+    <string name="title_activity_cloud">云端</string>
+    <string name="input_token">输入激活码</string>
+    <string name="activate">激活</string>
+    <string name="order">咨询购买?</string>
+    <string name="token_can_not_null">激活码不能为空</string>
+    <string name="wait">请稍候</string>
+    <string name="processing">正在处理...</string>
+    <string name="upload">上传</string>
+    <string name="download">下载</string>
+    <string name="get_last_phone_list">获得最新机型列表</string>
+    <string name="share_devices">分享机型</string>
+    <string name="force_stop_error">强制停止错误：</string>
+    <string name="force_stop_success">强制停止成功</string>
+    <string name="random_success">一键随机完成</string>
+    <string name="force_stop">强制停止</string>
+    <string name="save_config_success">保存配置成功</string>
+    <string name="wipe_data_error">清空数据错误：</string>
+    <string name="wipe_data_sccess">清空数据成功</string>
+    <string name="start_app_error">启动应用错误</string>
+    <string name="error">错误</string>
+    <string name="upload_success">上传配置成功。使用次数-1</string>
+    <string name="delete_file_error">删除文件错误</string>
+    <string name="download_sccess">下载配置成功，但需要再打开本程序才能生效。使用次数-1</string>
+    <string name="get_last_phone_sccess">获取最新的机型列表成功。使用次数-1</string>
+    <string name="share_device_success">分享机型成功，非常感谢您的贡献。</string>
+    <string name="exit">退出</string>
 </resources>

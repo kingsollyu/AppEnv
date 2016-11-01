@@ -1,0 +1,87 @@
+{
+  "联想": [
+    {
+      "manufacturer": "Lenovo",
+      "model": "Lenovo K30-T",
+      "name": "联想K3"
+    }
+  ],
+  "乐视": [
+    {
+      "manufacturer": "LeMobile",
+      "model": "Le X620",
+      "name": "乐视2"
+    },
+    {
+      "manufacturer": "LeMobile",
+      "model": "Le X525",
+      "name": "乐视2 Pro"
+    },
+    {
+      "manufacturer": "Letv",
+      "model": "X600",
+      "name": "乐视1"
+    },
+    {
+      "manufacturer": "Letv",
+      "model": "X800+",
+      "name": "乐视1 Pro"
+    },
+    {
+      "manufacturer": "Letv",
+      "model": "Letv X500",
+      "name": "乐视1 S"
+    },
+    {
+      "manufacturer": "Letv",
+      "model": "Letv X501",
+      "name": "乐视1 S 太子妃版"
+    }
+  ],
+  "华为": [
+    {
+      "manufacturer": "HUAWEI",
+      "model": "ATH-AL00",
+      "name": "荣耀7i"
+    },
+    {
+      "manufacturer": "HUAWEI",
+      "model": "H60-L21",
+      "name": "荣耀6至尊版"
+    },
+    {
+      "manufacturer": "HUAWEI",
+      "model": "PE-TL10",
+      "name": "荣耀6 Plus"
+    }
+  ],
+  "HTC": [
+    {
+      "manufacturer": "HTC",
+      "model": "HTC M9e",
+      "name": "HTC One M9"
+    },
+    {
+      "manufacturer": "HTC",
+      "model": "HTC One A9",
+      "name": "HTC One A9"
+    }
+  ],
+  "OPPO": [
+    {
+      "manufacturer": "OPPO",
+      "model": "OPPO R9m",
+      "name": "OPPO R9"
+    },
+    {
+      "manufacturer": "OPPO",
+      "model": "x9007",
+      "name": "OPPO Find7"
+    },
+    {
+      "manufacturer": "OPPO",
+      "model": "x909t",
+      "name": "OPPO Find5"
+    }
+  ]
+}

@@ -1,10 +1,15 @@
 package com.sollyu.android.appenv.activity;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +22,9 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ListHolder;
 import com.sollyu.android.appenv.R;
 import com.sollyu.android.appenv.helper.LibSuHelper;
+import com.sollyu.android.appenv.helper.PhoneHelper;
 import com.sollyu.android.appenv.helper.RandomHelper;
+import com.sollyu.android.appenv.helper.TokenHelper;
 import com.sollyu.android.appenv.helper.XposedSharedPreferencesHelper;
 import com.sollyu.android.appenv.module.AppInfo;
 import com.sollyu.android.appenv.view.DetailItem;
@@ -26,6 +33,7 @@ import com.umeng.analytics.MobclickAgent;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +41,8 @@ public class DetailActivity extends AppCompatActivity {
 
     private ApplicationInfo applicationInfo    = null;
     private Integer         activityResultCode = 0;
+
+    private Handler uiHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +52,18 @@ public class DetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         applicationInfo = getIntent().getParcelableExtra("applicationInfo");
+
+        try {
+            PhoneHelper.getInstance().reload(this);
+        } catch (Exception e) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.error);
+            builder.setMessage("程序出现严重错误: \n" + Log.getStackTraceString(e));
+            builder.setPositiveButton(android.R.string.ok, (dialog, which) -> DetailActivity.this.finish());
+            builder.setCancelable(false);
+            builder.create().show();
+            return;
+        }
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setHomeButtonEnabled(true);
@@ -211,7 +233,7 @@ public class DetailActivity extends AppCompatActivity {
     public void onClickRunApp(View view) {
         LibSuHelper.getInstance().addCommand("monkey -p " + applicationInfo.packageName + " -c android.intent.category.LAUNCHER 1", 0, (commandCode, exitCode, output) -> {
             if (exitCode != 0) {
-                Snackbar.make(view, "start app error: " + exitCode, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(view, getString(R.string.start_app_error) + exitCode, Snackbar.LENGTH_LONG).show();
             }
         });
     }
@@ -219,37 +241,29 @@ public class DetailActivity extends AppCompatActivity {
     public void onClickClearApp(View view) {
         LibSuHelper.getInstance().addCommand("pm clear " + applicationInfo.packageName, 0, (commandCode, exitCode, output) -> {
             if (exitCode != 0)
-                Snackbar.make(view, "wipe data error: " + exitCode, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(view, getString(R.string.wipe_data_error) + exitCode, Snackbar.LENGTH_LONG).show();
             else
-                Snackbar.make(view, "wipe data success.", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(view, R.string.wipe_data_sccess, Snackbar.LENGTH_LONG).show();
         });
     }
 
     public void onClickForceStopApp(View view) {
         LibSuHelper.getInstance().addCommand("am force-stop " + applicationInfo.packageName, 0, (commandCode, exitCode, output) -> {
             if (exitCode != 0)
-                Snackbar.make(view, "force stop app error: " + exitCode, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(view, getString(R.string.force_stop_error) + exitCode, Snackbar.LENGTH_LONG).show();
             else
-                Snackbar.make(view, "force stop app success.", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(view, R.string.force_stop_success, Snackbar.LENGTH_LONG).show();
         });
     }
 
     public void onClickSaveConfig(View view) {
         activityResultCode = 1;
         XposedSharedPreferencesHelper.getInstance().set(applicationInfo.packageName, uiToAppInfo());
+        Snackbar.make(view, R.string.save_config_success, Snackbar.LENGTH_LONG).show();
     }
 
     public void onClickManufacturer(View view) {
-
-        ArrayList<String> selectStringArrayList = new ArrayList<>();
-        selectStringArrayList.add("小米");
-        selectStringArrayList.add("魅族");
-        selectStringArrayList.add("360");
-        selectStringArrayList.add("乐视");
-        selectStringArrayList.add("金立");
-        selectStringArrayList.add("酷派");
-        selectStringArrayList.add("联想");
-
+        ArrayList<String> selectStringArrayList = PhoneHelper.getInstance().getManufacturerList();
 
         DialogPlus dialogPlus = DialogPlus.newDialog(view.getContext())
                 .setHeader(R.layout.dialog_plus_header)
@@ -269,7 +283,32 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void onClickModel(View view) {
+        DetailItem              buildManufacturer = (DetailItem) findViewById(R.id.manufacturer);
+        HashMap<String, String> hashMap           = PhoneHelper.getInstance().getModelList(buildManufacturer.getEditText().getText().toString());
 
+        ArrayList<String> selectStringArrayList = new ArrayList<>();
+        for (Map.Entry<String, String> entry : hashMap.entrySet()) {
+            if (!selectStringArrayList.contains(entry.getKey())) {
+                selectStringArrayList.add(entry.getKey());
+            }
+        }
+        Collections.sort(selectStringArrayList, String.CASE_INSENSITIVE_ORDER);
+
+        DialogPlus dialogPlus = DialogPlus.newDialog(view.getContext())
+                .setHeader(R.layout.dialog_plus_header)
+                .setContentHolder(new ListHolder())
+                .setAdapter(new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, selectStringArrayList))
+                .setOnItemClickListener((dialog, item, view1, position) -> {
+                    DetailItem detailItem = (DetailItem) view;
+                    detailItem.getEditText().setText(hashMap.get(selectStringArrayList.get(position)));
+                    dialog.dismiss();
+                })
+                .setExpanded(true)
+                .create();
+
+        ((TextView) dialogPlus.getHeaderView().findViewById(R.id.text_view1)).setText(R.string.manufacturer);
+
+        dialogPlus.show();
     }
 
     public void onClickSerial(View view) {
@@ -335,5 +374,52 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void onMenuRemoteRandom(MenuItem item) {
+        if (!TokenHelper.getInstance().isActivate()) {
+            DetailActivity.this.startActivity(new Intent(DetailActivity.this, LoginActivity.class));
+            return;
+        }
+
+        View           view           = findViewById(R.id.fab);
+        ProgressDialog progressDialog = ProgressDialog.show(view.getContext(), getString(R.string.wait), getString(R.string.processing), true);
+
+        new Thread(() -> {
+            try {
+                TokenHelper.ServerResult serverResult = TokenHelper.getInstance().random();
+
+                progressDialog.dismiss();
+                if (serverResult.getRet() != 200) {
+                    throw new RuntimeException(serverResult.getMsg());
+                }
+
+                AppInfo appInfo = new AppInfo();
+                appInfo.buildManufacturer = serverResult.getDataJson().getString("buildManufacturer");
+                appInfo.buildModel = serverResult.getDataJson().getString("buildModel");
+                appInfo.buildSerial = serverResult.getDataJson().getString("buildSerial");
+                appInfo.telephonyGetLine1Number = serverResult.getDataJson().getString("telephonyGetLine1Number");
+                appInfo.telephonyGetSimOperator = serverResult.getDataJson().getString("telephonyGetSimOperator");
+                appInfo.telephonyGetNetworkType = serverResult.getDataJson().getString("telephonyGetNetworkType");
+                appInfo.telephonyGetDeviceId = serverResult.getDataJson().getString("telephonyGetDeviceId");
+                appInfo.telephonyGetSimSerialNumber = serverResult.getDataJson().getString("telephonyGetSimSerialNumber");
+                appInfo.wifiInfoGetSSID = serverResult.getDataJson().getString("wifiInfoGetSSID");
+                appInfo.wifiInfoGetMacAddress = serverResult.getDataJson().getString("wifiInfoGetMacAddress");
+                appInfo.settingsSecureAndroidId = serverResult.getDataJson().getString("settingsSecureAndroidId");
+                appInfo.webUserAgent = serverResult.getDataJson().getString("webUserAgent");
+                appInfo.displayDip = serverResult.getDataJson().getString("displayDip");
+
+                uiHandler.post(() -> appInfoToUi(appInfo));
+                Snackbar.make(view, "远程随机成功！可用点数 -2！", Snackbar.LENGTH_LONG).show();
+            } catch (Exception e) {
+                TokenHelper.getInstance().setActivate(false);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(DetailActivity.this);
+                builder.setTitle("错误");
+                builder.setMessage(e.getMessage());
+                builder.setPositiveButton("重新输入激活码", (dialog, which) -> startActivityForResult(new Intent(DetailActivity.this, LoginActivity.class), 0));
+                builder.setNegativeButton("取消", null);
+                builder.setCancelable(false);
+                uiHandler.post(() -> builder.create().show());
+            }
+
+        }).start();
     }
 }

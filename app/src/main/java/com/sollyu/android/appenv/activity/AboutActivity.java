@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.sollyu.android.appenv.BuildConfig;
 import com.sollyu.android.appenv.R;
+import com.sollyu.android.appenv.helper.OtherHelper;
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -23,7 +24,13 @@ public class AboutActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show());
+        fab.setOnClickListener(v -> {
+            try {
+                OtherHelper.getInstance().sendEmail(v.getContext(), "mailto:admin@sollyu.com");
+            } catch (Exception e) {
+                Snackbar.make(v, "Not fine email app.", Snackbar.LENGTH_LONG).show();
+            }
+        });
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setHomeButtonEnabled(true);

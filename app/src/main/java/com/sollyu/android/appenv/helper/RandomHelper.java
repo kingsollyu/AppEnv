@@ -6,7 +6,9 @@ import com.sollyu.android.appenv.module.AppInfo;
 import com.sollyu.android.appenv.utils.IMEIGen;
 import com.sollyu.android.appenv.utils.RandomMac;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -78,7 +80,20 @@ public class RandomHelper {
     }
 
     public AppInfo randomAll() {
+        ArrayList<String>       manufacturerStringArrayList = PhoneHelper.getInstance().getManufacturerList();
+        String                  randomManufacturer          = manufacturerStringArrayList.get(randomInt(0, manufacturerStringArrayList.size() - 1));
+        HashMap<String, String> hashMap                     = PhoneHelper.getInstance().getModelList(randomManufacturer);
+
+        ArrayList<String> selectStringArrayList = new ArrayList<>();
+        for (Map.Entry<String, String> entry : hashMap.entrySet()) {
+            if (!selectStringArrayList.contains(entry.getKey())) {
+                selectStringArrayList.add(entry.getKey());
+            }
+        }
+
         AppInfo appInfo = new AppInfo();
+        appInfo.buildManufacturer = randomManufacturer;
+        appInfo.buildModel = hashMap.get(selectStringArrayList.get(randomInt(0, selectStringArrayList.size() - 1)));
         appInfo.buildSerial = randomBuildSerial();
         appInfo.telephonyGetLine1Number = randomTelephonyGetLine1Number();
         appInfo.telephonyGetDeviceId = randomTelephonyGetDeviceId();

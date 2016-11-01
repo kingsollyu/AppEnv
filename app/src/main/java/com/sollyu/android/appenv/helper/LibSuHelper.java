@@ -41,7 +41,7 @@ public class LibSuHelper {
      */
     public void addCommand(String command, int code, Shell.OnCommandResultListener onCommandResultListener) {
         if (rootSession == null || !rootSession.isRunning()) {
-            rootSession = new Shell.Builder().useSU().setWantSTDERR(true).setWatchdogTimeout(60).setMinimalLogging(true).open();
+            rootSession = new Shell.Builder().useSU().setWantSTDERR(true).setWatchdogTimeout(30000).setMinimalLogging(true).open();
         }
 
         if ((rootSession == null || !rootSession.isRunning()) && onCommandResultListener != null) {

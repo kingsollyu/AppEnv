@@ -35,9 +35,10 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ListHolder;
 import com.sollyu.android.appenv.R;
 import com.sollyu.android.appenv.helper.AppEnvSharedPreferencesHelper;
+import com.sollyu.android.appenv.helper.LibSuHelper;
 import com.sollyu.android.appenv.helper.OtherHelper;
 import com.sollyu.android.appenv.helper.RandomHelper;
-import com.sollyu.android.appenv.helper.ServerHelper;
+import com.sollyu.android.appenv.helper.TokenHelper;
 import com.sollyu.android.appenv.helper.XposedSharedPreferencesHelper;
 import com.sollyu.android.appenv.module.AppInfo;
 
@@ -166,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.action_settings) {
             // startActivity(new Intent(this, SettingsActivity.class));
         } else if (id == R.id.action_cloud) {
-            // startActivity(new Intent(this, CloudActivity.class));
+            startActivity(new Intent(this, CloudActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -206,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void reportPhoneInfo() {
         new Thread(() -> {
             if (!AppEnvSharedPreferencesHelper.getInstance().isReportPhone())
-                AppEnvSharedPreferencesHelper.getInstance().setReportPhone(ServerHelper.getInstance().devices(MainActivity.this).getCode() == 400);
+                AppEnvSharedPreferencesHelper.getInstance().setReportPhone(TokenHelper.getInstance().devices(MainActivity.this).getRet() == 200);
         }).start();
     }
 
@@ -277,8 +278,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     holder.itemView.performClick();
                                     break;
                                 case 1: // Random
-                                    RandomHelper.getInstance().randomAll();
-                                    Snackbar.make(holder.itemView, "一键随机完成", Snackbar.LENGTH_LONG).setAction("强制停止", v1 -> {}).show();
+                                    XposedSharedPreferencesHelper.getInstance().set(holder.textView2.getText().toString(), RandomHelper.getInstance().randomAll());
+                                    uiHandler.postDelayed(() -> Snackbar.make(view, R.string.random_success, Snackbar.LENGTH_LONG).setAction(R.string.force_stop, v1 -> {
+                                        LibSuHelper.getInstance().addCommand("am force-stop " + applicationInfo.packageName, 0, (commandCode, exitCode, output) -> {
+                                            if (exitCode != 0)
+                                                Snackbar.make(findViewById(R.id.content_main), getString(R.string.force_stop_error) + exitCode, Snackbar.LENGTH_LONG).show();
+                                            else
+                                                Snackbar.make(findViewById(R.id.content_main), R.string.force_stop_success, Snackbar.LENGTH_LONG).show();
+                                        });
+                                    }).show(), 250);
+                                    onRefresh();
                                     break;
                                 case 2: // Detail
                                     OtherHelper.getInstance().openAppDetails(holder.itemView.getContext(), holder.textView2.getText().toString());
