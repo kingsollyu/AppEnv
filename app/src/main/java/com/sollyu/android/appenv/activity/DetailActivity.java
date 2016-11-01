@@ -349,7 +349,7 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         View view = findViewById(R.id.fab);
-        ProgressDialog progressDialog = ProgressDialog.show(view.getContext(), "请稍候...", "正在处理...", true);
+        ProgressDialog progressDialog = ProgressDialog.show(view.getContext(), getString(R.string.wait), getString(R.string.processing), true);
 
         new Thread(() -> {
             try {

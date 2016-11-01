@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onClickActivate(View view) {
         if (tokenBootstrapEditText.getText().toString().isEmpty()) {
-            Snackbar.make(view, "激活码不能为空", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(view, R.string.token_can_not_null, Snackbar.LENGTH_LONG).show();
             return;
         }
 

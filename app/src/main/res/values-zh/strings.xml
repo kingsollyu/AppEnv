@@ -71,4 +71,9 @@
     <string name="remote_random">云端随机</string>
     <string name="title_activity_cloud">云端</string>
     <string name="input_token">输入激活码</string>
+    <string name="activate">激活</string>
+    <string name="order">咨询购买?</string>
+    <string name="token_can_not_null">激活码不能为空</string>
+    <string name="wait">请稍候</string>
+    <string name="processing">正在处理...</string>
 </resources>

@@ -64,7 +64,7 @@ dependencies {
     compile 'com.alibaba:fastjson:1.1.54.android'
     compile 'com.github.clans:fab:1.6.4'
     compile 'com.umeng.analytics:analytics:latest.integration'
-    compile 'eu.chainfire:libsuperuser:1.0.0.+'
+    compile 'eu.chainfire:libsuperuser:1.0.0.201608240809'
     compile 'com.squareup.okhttp:okhttp:2.7.5'
     compile 'com.beardedhen:androidbootstrap:2.3.0'
     compile 'com.orhanobut:dialogplus:1.11'

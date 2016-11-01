@@ -60,4 +60,9 @@
     <string name="remote_random">Remote Random</string>
     <string name="title_activity_cloud">Cloud</string>
     <string name="input_token">Input Token</string>
+    <string name="activate">Activate</string>
+    <string name="order">Order</string>
+    <string name="token_can_not_null">Token can not be null</string>
+    <string name="wait">Wait</string>
+    <string name="processing">Processing…</string>
 </resources>
