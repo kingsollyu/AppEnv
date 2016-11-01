@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ListHolder;
 import com.sollyu.android.appenv.R;
 import com.sollyu.android.appenv.helper.LibSuHelper;
+import com.sollyu.android.appenv.helper.PhoneHelper;
 import com.sollyu.android.appenv.helper.RandomHelper;
 import com.sollyu.android.appenv.helper.TokenHelper;
 import com.sollyu.android.appenv.helper.XposedSharedPreferencesHelper;
@@ -31,6 +33,7 @@ import com.umeng.analytics.MobclickAgent;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +52,18 @@ public class DetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         applicationInfo = getIntent().getParcelableExtra("applicationInfo");
+
+        try {
+            PhoneHelper.getInstance().reload(this);
+        } catch (Exception e) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("错误");
+            builder.setMessage("程序出现严重错误: \n" + Log.getStackTraceString(e));
+            builder.setPositiveButton(android.R.string.ok, (dialog, which) -> DetailActivity.this.finish());
+            builder.setCancelable(false);
+            builder.create().show();
+            return;
+        }
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setHomeButtonEnabled(true);
@@ -248,16 +263,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void onClickManufacturer(View view) {
-
-        ArrayList<String> selectStringArrayList = new ArrayList<>();
-        selectStringArrayList.add("小米");
-        selectStringArrayList.add("魅族");
-        selectStringArrayList.add("360");
-        selectStringArrayList.add("乐视");
-        selectStringArrayList.add("金立");
-        selectStringArrayList.add("酷派");
-        selectStringArrayList.add("联想");
-
+        ArrayList<String> selectStringArrayList = PhoneHelper.getInstance().getManufacturerList();
 
         DialogPlus dialogPlus = DialogPlus.newDialog(view.getContext())
                 .setHeader(R.layout.dialog_plus_header)
@@ -277,7 +283,32 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void onClickModel(View view) {
+        DetailItem buildManufacturer = (DetailItem) findViewById(R.id.manufacturer);
+        HashMap<String, String> hashMap = PhoneHelper.getInstance().getModelList(buildManufacturer.getEditText().getText().toString());
 
+        ArrayList<String> selectStringArrayList = new ArrayList<>();
+        for (Map.Entry<String, String> entry : hashMap.entrySet()) {
+            if (!selectStringArrayList.contains(entry.getKey())) {
+                selectStringArrayList.add(entry.getKey());
+            }
+        }
+        Collections.sort(selectStringArrayList, String.CASE_INSENSITIVE_ORDER);
+
+        DialogPlus dialogPlus = DialogPlus.newDialog(view.getContext())
+                .setHeader(R.layout.dialog_plus_header)
+                .setContentHolder(new ListHolder())
+                .setAdapter(new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, selectStringArrayList))
+                .setOnItemClickListener((dialog, item, view1, position) -> {
+                    DetailItem detailItem = (DetailItem) view;
+                    detailItem.getEditText().setText(hashMap.get(selectStringArrayList.get(position)));
+                    dialog.dismiss();
+                })
+                .setExpanded(true)
+                .create();
+
+        ((TextView) dialogPlus.getHeaderView().findViewById(R.id.text_view1)).setText(R.string.manufacturer);
+
+        dialogPlus.show();
     }
 
     public void onClickSerial(View view) {

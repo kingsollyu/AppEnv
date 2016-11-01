@@ -38,11 +38,7 @@ public class LoginActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        try {
-            tokenBootstrapEditText.setText(TokenHelper.getInstance().getToken());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        tokenBootstrapEditText.setText(TokenHelper.getInstance().getToken());
     }
 
     @SuppressWarnings("deprecation")

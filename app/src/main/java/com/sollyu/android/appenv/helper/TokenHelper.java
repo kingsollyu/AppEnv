@@ -47,9 +47,7 @@ public class TokenHelper {
     }
 
     public String getToken() {
-        String token = PreferenceManager.getDefaultSharedPreferences(MainApplication.getInstance()).getString("TOKEN", null);
-        if (token == null || token.isEmpty())
-            throw new RuntimeException("Token is null");
+        String token = PreferenceManager.getDefaultSharedPreferences(MainApplication.getInstance()).getString("TOKEN", "");
         return token;
     }
 

@@ -50,6 +50,16 @@
         <activity android:name=".activity.LoginActivity"
             android:label="@string/input_token">
         </activity>
+
+        <meta-data
+            android:name="xposedmodule"
+            android:value="true"/>
+        <meta-data
+            android:name="xposeddescription"
+            android:value="这个可以伪装手机软件显示的手机型号"/>
+        <meta-data
+            android:name="xposedminversion"
+            android:value="2+"/>
     </application>
 
 </manifest>

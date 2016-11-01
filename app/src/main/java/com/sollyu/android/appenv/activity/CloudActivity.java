@@ -81,16 +81,13 @@ public class CloudActivity extends AppCompatActivity {
     private void checkTokenIsWork() {
         new Thread(() -> {
             TokenHelper.ServerResult serverResult = TokenHelper.getInstance().info(TokenHelper.getInstance().getToken());
-            Log.d(TAG, "checkTokenIsWork: " + serverResult);
             if (serverResult.getRet() != 200) {
                 TokenHelper.getInstance().setActivate(false);
                 AlertDialog.Builder builder = new AlertDialog.Builder(CloudActivity.this);
                 builder.setTitle("提示");
                 builder.setMessage("您的激活码已经不可以继续使用\n原因: " + serverResult.getMsg());
                 builder.setPositiveButton("重新输入激活码", (dialog, which) -> startActivityForResult(new Intent(CloudActivity.this, LoginActivity.class), 0));
-                builder.setNegativeButton("关闭", (dialog, which) -> {
-                    CloudActivity.this.finish();
-                });
+                builder.setNegativeButton("关闭", (dialog, which) -> CloudActivity.this.finish());
                 builder.setCancelable(false);
                 uiHandler.post(() -> builder.create().show());
             } else {
@@ -282,7 +279,7 @@ public class CloudActivity extends AppCompatActivity {
                         throw new RuntimeException(serverResult.getMsg());
                     }
 
-                    uiHandler.post(dialogPlus::dismiss) ;
+                    uiHandler.post(dialogPlus::dismiss);
                     uiHandler.postDelayed(() -> Snackbar.make(view, "Share device success. Thank you very much.", Snackbar.LENGTH_LONG).show(), 500);
                 } catch (Exception e) {
                     Log.e(TAG, "onClickShare: " + e.getLocalizedMessage(), e);

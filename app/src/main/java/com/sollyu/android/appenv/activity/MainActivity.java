@@ -277,8 +277,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     holder.itemView.performClick();
                                     break;
                                 case 1: // Random
-                                    RandomHelper.getInstance().randomAll();
-                                    Snackbar.make(holder.itemView, "一键随机完成", Snackbar.LENGTH_LONG).setAction("强制停止", v1 -> {}).show();
+                                    XposedSharedPreferencesHelper.getInstance().set(holder.textView2.getText().toString(), RandomHelper.getInstance().randomAll());
+                                    uiHandler.postDelayed(() -> Snackbar.make(holder.itemView, "一键随机完成", Snackbar.LENGTH_LONG).setAction("强制停止", v1 -> {
+                                    }).show(), 250);
+                                    onRefresh();
                                     break;
                                 case 2: // Detail
                                     OtherHelper.getInstance().openAppDetails(holder.itemView.getContext(), holder.textView2.getText().toString());
