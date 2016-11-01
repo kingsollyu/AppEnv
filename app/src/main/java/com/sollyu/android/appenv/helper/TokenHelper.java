@@ -7,6 +7,7 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.util.Base64;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -76,6 +77,66 @@ public class TokenHelper {
             return new ServerResult(400, e.getLocalizedMessage(), null);
         }
     }
+
+    public ServerResult phone() {
+        try {
+            return new ServerResult(okHttpClient.newCall(new Request.Builder().url(BuildConfig.SERVER_HOST).post(new FormEncodingBuilder().add("service", "Default.Phone").add("token", getToken()).build()).build()).execute().body().string());
+        } catch (Exception e) {
+            return new ServerResult(400, e.getLocalizedMessage(), null);
+        }
+    }
+
+    public ServerResult share(String manufacturer, String model, String name, String reason) {
+        try {
+            RequestBody requestBody = new FormEncodingBuilder()
+                    .add("service", "Default.Share")
+                    .add("token", getToken())
+                    .add("manufacturer", manufacturer)
+                    .add("model", model)
+                    .add("name", name)
+                    .add("reason", reason)
+                    .build();
+
+            return new ServerResult(okHttpClient.newCall(new Request.Builder().url(BuildConfig.SERVER_HOST).post(requestBody).build()).execute().body().string());
+        } catch (Exception e) {
+            return new ServerResult(400, e.getLocalizedMessage(), null);
+        }
+    }
+
+    public ServerResult upload(String app, String xposed, String solution) {
+        try {
+            RequestBody requestBody = new FormEncodingBuilder()
+                    .add("service", "Default.Upload")
+                    .add("token", getToken())
+                    .add("xposed", Base64.encodeToString(xposed.getBytes(), Base64.NO_WRAP))
+                    .add("app", Base64.encodeToString(app.getBytes(), Base64.NO_WRAP))
+                    .add("solution", Base64.encodeToString(solution.getBytes(), Base64.NO_WRAP))
+                    .build();
+
+            return new ServerResult(okHttpClient.newCall(new Request.Builder().url(BuildConfig.SERVER_HOST).post(requestBody).build()).execute().body().string());
+        } catch (Exception e) {
+            return new ServerResult(400, e.getLocalizedMessage(), null);
+        }
+    }
+
+    /**
+     * 下载配置
+     *
+     * @return
+     */
+    public ServerResult download() {
+        try {
+            RequestBody requestBody = new FormEncodingBuilder()
+                    .add("service", "Default.Download")
+                    .add("token", getToken())
+                    .build();
+
+            return new ServerResult(okHttpClient.newCall(new Request.Builder().url(BuildConfig.SERVER_HOST).post(requestBody).build()).execute().body().string());
+        } catch (Exception e) {
+            return new ServerResult(400, e.getLocalizedMessage(), null);
+        }
+    }
+
 
     public ServerResult devices(Context context) {
         try {

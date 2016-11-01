@@ -3,8 +3,10 @@ package com.sollyu.android.appenv.helper;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
+import android.util.DisplayMetrics;
 
 /**
  * 作者: Sollyu
@@ -40,6 +42,12 @@ public class OtherHelper {
         context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
     }
 
+    public void sendEmail(Context context, String email) {
+        Intent data = new Intent(Intent.ACTION_SENDTO);
+        data.setData(Uri.parse(email));
+        context.startActivity(data);
+    }
+
     public void openAppDetails(Context context, String packageName) {
         Intent intent = new Intent();
 
@@ -63,4 +71,18 @@ public class OtherHelper {
     public boolean isUserAppllication(ApplicationInfo applicationInfo) {
         return (applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0;
     }
+
+    /**
+     * This method converts dp unit to equivalent pixels, depending on device density.
+     *
+     * @param dp      A value in dp (density independent pixels) unit. Which we need to convert into pixels
+     * @param context Context to get resources and device specific display metrics
+     * @return A float value to represent px equivalent to dp depending on device density
+     */
+    public float convertDpToPixel(Context context, float dp) {
+        Resources      resources = context.getResources();
+        DisplayMetrics metrics   = resources.getDisplayMetrics();
+        return dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+    }
+
 }

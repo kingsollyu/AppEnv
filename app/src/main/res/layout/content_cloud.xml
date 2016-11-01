@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -14,4 +14,108 @@
     tools:context="com.sollyu.android.appenv.activity.CloudActivity"
     tools:showIn="@layout/activity_cloud">
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.beardedhen.androidbootstrap.BootstrapWell
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:bootstrapSize="xl">
+
+            <com.beardedhen.androidbootstrap.AwesomeTextView
+                android:id="@+id/info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewStart"
+                app:bootstrapBrand="success"
+                app:bootstrapText="Token:\ntimes:\nrange:"
+                app:fontAwesomeIcon="fa_android"
+                app:typicon="ty_anchor"
+                />
+        </com.beardedhen.androidbootstrap.BootstrapWell>
+
+        <com.beardedhen.androidbootstrap.BootstrapWell
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            app:bootstrapSize="xl">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:stretchColumns="*"
+                >
+
+                <TableRow>
+
+                    <com.beardedhen.androidbootstrap.BootstrapButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="onClickUpload"
+                        android:text="@string/upload"
+                        app:bootstrapBrand="success"
+                        app:bootstrapSize="lg"
+                        app:buttonMode="regular"
+                        app:roundedCorners="true"
+                        app:showOutline="false"/>
+
+                    <com.beardedhen.androidbootstrap.BootstrapButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/bootstrap_button_default_corner_radius"
+                        android:onClick="onClickDownload"
+                        android:text="@string/download"
+                        app:bootstrapBrand="success"
+                        app:bootstrapSize="lg"
+                        app:buttonMode="regular"
+                        app:roundedCorners="true"
+                        app:showOutline="false"/>
+                </TableRow>
+            </TableLayout>
+
+        </com.beardedhen.androidbootstrap.BootstrapWell>
+
+        <com.beardedhen.androidbootstrap.BootstrapWell
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:bootstrapSize="xl">
+
+            <com.beardedhen.androidbootstrap.BootstrapButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onClickPhone"
+                android:text="@string/get_last_phone_list"
+                app:bootstrapBrand="success"
+                app:bootstrapSize="lg"
+                app:buttonMode="regular"
+                app:roundedCorners="true"
+                app:showOutline="false"
+                />
+        </com.beardedhen.androidbootstrap.BootstrapWell>
+
+        <com.beardedhen.androidbootstrap.BootstrapWell
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:bootstrapSize="xl">
+
+            <com.beardedhen.androidbootstrap.BootstrapButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onClickShare"
+                android:text="@string/share_devices"
+                app:bootstrapBrand="success"
+                app:bootstrapSize="lg"
+                app:buttonMode="regular"
+                app:roundedCorners="true"
+                app:showOutline="false"
+                />
+        </com.beardedhen.androidbootstrap.BootstrapWell>
+
+    </LinearLayout>
+</ScrollView>

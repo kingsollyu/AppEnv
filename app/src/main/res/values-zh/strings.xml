@@ -41,10 +41,11 @@
                     "非定做用户请在<a href="http://shang.qq.com/wpa/qunwpa?idkey=f7a9290f4c57e49f8f72034ceebf7ef2e09f06fc8410a241d808a585fa664ca3">QQ群</a>或<a href="http://appenv.0xcode.org/">论坛</a>讨论, 添加作者<u>一律拒绝</u><br><br>"
 
                     "<h2>特别说明</h2><br>"
-                    "请不要使用本软件做任何违法事情， 包括刷单之类操作，如您使用本软件出现任何违法法律，一切后果由您自行承担，和作者无关。<br><br>"
+                    "请不要使用本软件做任何违法事情， 包括刷单之类操作，如您使用本软件出现任何违法法律，一切后果由您自行承担和作者无关。<br><br>"
 
                     "<h2>本版更新</h2>"
                     "+ 支持Android 7.0<br>"
+                    "+ 随机生成IMEI增加识别算法<br>"
                     "+ 支持云端服务<br>"
                     "+ 全新界面<br>"
 
@@ -76,4 +77,8 @@
     <string name="token_can_not_null">激活码不能为空</string>
     <string name="wait">请稍候</string>
     <string name="processing">正在处理...</string>
+    <string name="upload">Upload</string>
+    <string name="download">Download</string>
+    <string name="get_last_phone_list">Get Last Phone List</string>
+    <string name="share_devices">Share Devices</string>
 </resources>

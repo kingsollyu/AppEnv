@@ -65,4 +65,8 @@
     <string name="token_can_not_null">Token can not be null</string>
     <string name="wait">Wait</string>
     <string name="processing">Processing…</string>
+    <string name="upload">Upload</string>
+    <string name="download">Download</string>
+    <string name="get_last_phone_list">Get Last Phone List</string>
+    <string name="share_devices">Share Devices</string>
 </resources>
