@@ -48,8 +48,13 @@
             android:label="@string/title_activity_cloud"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".activity.LoginActivity"
+        <activity
+            android:name=".activity.LoginActivity"
             android:label="@string/input_token">
+        </activity>
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:label="@string/settings">
         </activity>
 
         <meta-data

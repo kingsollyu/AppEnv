@@ -87,4 +87,7 @@
     <string name="search">Serach</string>
     <string name="hook_all">Hook All</string>
     <string name="hookUser">Hook User</string>
+    <string name="general">General</string>
+    <string name="author">Author</string>
+    <string name="show_system_app">Show system app</string>
 </resources>

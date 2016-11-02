@@ -17,7 +17,7 @@ android {
             buildConfigField "String", "SERVER_HOST", '"http://192.168.199.243/AppEnvApi/Public/appenv/"'
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "String", "SERVER_HOST", '"http://123.56.133.209/AppEnvApi/"'
         }
@@ -46,8 +46,8 @@ android {
         props.setProperty("versionBuild" , String.valueOf(versionBuild + 1))
         props.store(propsFile.newWriter(), "gradle auto stroe")
 
-        // defaultConfig.versionName = versionSuffix + '.' + versionBuild
-        // defaultConfig.versionCode = allBuildCount
+        defaultConfig.versionName = versionSuffix + '.' + versionBuild
+        defaultConfig.versionCode = allBuildCount
     }
     android.applicationVariants.all { variant ->
         variant.outputs.each { output ->

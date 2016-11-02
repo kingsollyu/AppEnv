@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/general" >
+        <SwitchPreference android:key="show_system_app" android:defaultValue="false" android:title="@string/show_system_app"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/about" >
+        <Preference android:title="@string/about" android:summary="@string/author" android:key="about" android:icon="@drawable/ic_info" />
+    </PreferenceCategory>
+</PreferenceScreen>

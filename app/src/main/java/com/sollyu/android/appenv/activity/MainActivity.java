@@ -6,6 +6,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -36,6 +37,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ListHolder;
+import com.sollyu.android.appenv.BuildConfig;
 import com.sollyu.android.appenv.R;
 import com.sollyu.android.appenv.helper.AppEnvSharedPreferencesHelper;
 import com.sollyu.android.appenv.helper.LibSuHelper;
@@ -65,8 +67,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ArrayList<ApplicationInfo> _DisplayApplicationInfo = new ArrayList<>();
     private List<ApplicationInfo>      applicationInfos        = null;
 
-    private static final int READ_PHONE_STATE_REQUEST_CODE      = 227;
-    private static final int START_DETAIL_ACTIVITY_REQUEST_CODE = 733;
+    private static final int READ_PHONE_STATE_REQUEST_CODE       = 227;
+    private static final int START_DETAIL_ACTIVITY_REQUEST_CODE  = 733;
+    private static final int START_SETTING_ACTIVITY_REQUEST_CODE = 21;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_score) {
             OtherHelper.getInstance().openMarket(this, getPackageName());
         } else if (id == R.id.action_settings) {
-            // startActivity(new Intent(this, SettingsActivity.class));
+            startActivityForResult(new Intent(this, SettingsActivity.class), START_SETTING_ACTIVITY_REQUEST_CODE);
         } else if (id == R.id.action_cloud) {
             startActivity(new Intent(this, CloudActivity.class));
         }
@@ -194,14 +197,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onRefresh() {
-
+    public synchronized void onRefresh() {
         _NormalRecyclerViewAdapter.notifyItemRangeRemoved(0, _DisplayApplicationInfo.size());
         _DisplayApplicationInfo.clear();
 
+        ArrayList<String> ignorePackageName = new ArrayList<>();
+        ignorePackageName.add("android");
+        ignorePackageName.add(BuildConfig.APPLICATION_ID);
+        ignorePackageName.add("de.robv.android.xposed.installer");
+
         int hasConfigIndex = 0;
         for (ApplicationInfo applicationInfo : applicationInfos) {
-            if (OtherHelper.getInstance().isUserAppllication(applicationInfo)) {
+            if (ignorePackageName.contains(applicationInfo.packageName)) {
+                continue;
+            }
+
+            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("show_system_app", false) || OtherHelper.getInstance().isUserAppllication(applicationInfo)) {
                 if (XposedSharedPreferencesHelper.getInstance().get(applicationInfo.packageName) != null) {
                     _DisplayApplicationInfo.add(hasConfigIndex++, applicationInfo);
                 } else {
@@ -209,6 +220,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         }
+        _NormalRecyclerViewAdapter.setmOriginalValues(_DisplayApplicationInfo);
         _NormalRecyclerViewAdapter.notifyDataSetChanged();
         _SwipeRefreshLayout.setRefreshing(false);
     }
@@ -220,6 +232,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (requestCode == START_DETAIL_ACTIVITY_REQUEST_CODE && resultCode == 1) {
             onRefresh();
         }
+        if (requestCode == START_SETTING_ACTIVITY_REQUEST_CODE && resultCode == 1) {
+            onRefresh();
+        }
+
     }
 
     private void reportPhoneInfo() {
@@ -248,8 +264,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private class NormalRecyclerViewAdapter extends RecyclerView.Adapter<NormalRecyclerViewAdapter.NormalTextViewHolder> implements Filterable {
-
-        public ArrayList<ApplicationInfo> mOriginalValues = null;
+        private ArrayList<ApplicationInfo> mOriginalValues = new ArrayList<>();
 
         @Override
         public NormalRecyclerViewAdapter.NormalTextViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -350,16 +365,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return _DisplayApplicationInfo.size();
         }
 
+        public void setmOriginalValues(ArrayList<ApplicationInfo> mOriginalValues) {
+            this.mOriginalValues = mOriginalValues;
+        }
+
         @Override
         public Filter getFilter() {
             return new Filter() {
                 @Override
                 protected FilterResults performFiltering(CharSequence constraint) {
                     FilterResults filterResults = new FilterResults();
-
-                    if (mOriginalValues == null) {
-                        mOriginalValues = new ArrayList<>(_DisplayApplicationInfo);
-                    }
 
                     if (constraint == null || constraint.length() == 0) {
                         ArrayList<ApplicationInfo> applicationInfoArrayList = new ArrayList<>(mOriginalValues);
@@ -368,9 +383,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         return filterResults;
                     }
 
-                    String prefixString = constraint.toString().toLowerCase();
-                    final ArrayList<ApplicationInfo> values = mOriginalValues;
-                    final int count = mOriginalValues.size();
+                    String                           prefixString = constraint.toString().toLowerCase();
+                    final ArrayList<ApplicationInfo> values       = mOriginalValues;
+                    final int                        count        = mOriginalValues.size();
 
                     final ArrayList<ApplicationInfo> newValues = new ArrayList<>(count);
                     for (int i = 0; i < count; i++) {

@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.sollyu.android.appenv.BuildConfig;
 import com.sollyu.android.appenv.MainApplication;
 
 /**
@@ -25,7 +24,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         uiHandler.postDelayed(() -> {
-            if (!BuildConfig.DEBUG && !MainApplication.getInstance().isXposedWork()) {
+            if (!MainApplication.getInstance().isXposedWork()) {
                 startActivity(new Intent(SplashActivity.this, XposedNotWorkActivity.class));
                 SplashActivity.this.finish();
                 return;

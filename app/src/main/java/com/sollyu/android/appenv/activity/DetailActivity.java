@@ -22,6 +22,7 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ListHolder;
 import com.sollyu.android.appenv.R;
 import com.sollyu.android.appenv.helper.LibSuHelper;
+import com.sollyu.android.appenv.helper.OtherHelper;
 import com.sollyu.android.appenv.helper.PhoneHelper;
 import com.sollyu.android.appenv.helper.RandomHelper;
 import com.sollyu.android.appenv.helper.TokenHelper;
@@ -86,6 +87,17 @@ public class DetailActivity extends AppCompatActivity {
                     getSupportActionBar().setTitle(applicationInfo.loadLabel(getPackageManager()));
                     break;
             }
+        }
+
+        if (!OtherHelper.getInstance().isUserAppllication(applicationInfo)) {
+            Snackbar.make(findViewById(R.id.content_main), "不建议修改系统应用，修改系统应用可能会手机无法开机", Snackbar.LENGTH_LONG).show();
+        }
+
+        if (applicationInfo.packageName.equals("com.sina.weibo")) {
+            Snackbar.make(findViewById(R.id.content_main), "微博显示的机型有点少，如不能正常显示请更改再尝试", Snackbar.LENGTH_LONG).show();
+        }
+        if (applicationInfo.packageName.equals("com.qzone")) {
+            Snackbar.make(findViewById(R.id.content_main), "如果您随意填写机型QQ空间将会把您填写的变成小写", Snackbar.LENGTH_LONG).show();
         }
 
         appInfoToUi(XposedSharedPreferencesHelper.getInstance().get(applicationInfo.packageName));
