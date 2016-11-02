@@ -84,4 +84,10 @@
     <string name="get_last_phone_sccess">Get last phone list success. times - 1.</string>
     <string name="share_device_success">Share device success. Thank you very much.</string>
     <string name="exit">Exit</string>
+    <string name="search">Serach</string>
+    <string name="hook_all">Hook All</string>
+    <string name="hookUser">Hook User</string>
+    <string name="general">General</string>
+    <string name="author">Author</string>
+    <string name="show_system_app">Show system app</string>
 </resources>

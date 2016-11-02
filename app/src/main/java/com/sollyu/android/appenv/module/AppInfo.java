@@ -1,5 +1,7 @@
 package com.sollyu.android.appenv.module;
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 
 import java.lang.reflect.Field;
@@ -11,24 +13,26 @@ import java.lang.reflect.Field;
  * 说明:
  */
 public class AppInfo {
-    public String buildDisplay            = null;
-    public String buildProduct            = null;
-    public String buildDevice             = null;
-    public String buildBoard              = null;
-    public String buildManufacturer       = null;
-    public String buildBrand              = null;
-    public String buildModel              = null;
-    public String buildBootloader         = null;
-    public String buildRadio              = null;
-    public String buildHardware           = null;
-    public String buildSerial             = null;
-    public String buildType               = null;
-    public String buildUser               = null;
-    public String buildHost               = null;
-    public String buildTags               = null;
-    public String buildCpuAbi             = null;
-    public String buildCpuAbi2            = null;
-    public String buildFingerprint        = null;
+    private static final String TAG = "AppEnv";
+
+    public String buildDisplay      = null;
+    public String buildProduct      = null;
+    public String buildDevice       = null;
+    public String buildBoard        = null;
+    public String buildManufacturer = null;
+    public String buildBrand        = null;
+    public String buildModel        = null;
+    public String buildBootloader   = null;
+    public String buildRadio        = null;
+    public String buildHardware     = null;
+    public String buildSerial       = null;
+    public String buildType         = null;
+    public String buildUser         = null;
+    public String buildHost         = null;
+    public String buildTags         = null;
+    public String buildCpuAbi       = null;
+    public String buildCpuAbi2      = null;
+    public String buildFingerprint  = null;
 
     public String buildVersionIncremental = null;
     public String buildVersionRelease     = null;
@@ -75,7 +79,7 @@ public class AppInfo {
             try {
                 if (field.get(this) != null)
                     return false;
-            } catch (IllegalAccessException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -85,5 +89,30 @@ public class AppInfo {
 
     public com.alibaba.fastjson.JSONObject toJSON() {
         return (com.alibaba.fastjson.JSONObject) JSON.toJSON(this);
+    }
+
+    public void merge(AppInfo allAppInfo) {
+        Log.d(TAG, "merge() called with: allAppInfo = [" + allAppInfo + "]");
+
+        for (Field field : this.getClass().getFields()) {
+            try {
+                Object thisObject  = field.get(this);
+                Object mergeObject = field.get(allAppInfo);
+
+
+                if (thisObject == null  && mergeObject != null) {
+                    field.setAccessible(true);
+                    field.set(this, mergeObject);
+                    continue;
+                }
+
+                if (thisObject instanceof String && thisObject.toString().isEmpty() && mergeObject != null) {
+                    field.setAccessible(true);
+                    field.set(this, mergeObject);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

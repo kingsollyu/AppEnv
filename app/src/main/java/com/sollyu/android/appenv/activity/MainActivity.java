@@ -6,6 +6,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -19,6 +20,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +28,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -33,6 +37,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ListHolder;
+import com.sollyu.android.appenv.BuildConfig;
 import com.sollyu.android.appenv.R;
 import com.sollyu.android.appenv.helper.AppEnvSharedPreferencesHelper;
 import com.sollyu.android.appenv.helper.LibSuHelper;
@@ -56,15 +61,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Handler         uiHandler       = new Handler();
     private ExecutorService executorService = Executors.newFixedThreadPool(1);
 
-    private RecyclerView              _RecyclerView              = null;
     private NormalRecyclerViewAdapter _NormalRecyclerViewAdapter = null;
     private SwipeRefreshLayout        _SwipeRefreshLayout        = null;
 
     private ArrayList<ApplicationInfo> _DisplayApplicationInfo = new ArrayList<>();
     private List<ApplicationInfo>      applicationInfos        = null;
 
-    private static final int READ_PHONE_STATE_REQUEST_CODE      = 227;
-    private static final int START_DETAIL_ACTIVITY_REQUEST_CODE = 733;
+    private static final int READ_PHONE_STATE_REQUEST_CODE       = 227;
+    private static final int START_DETAIL_ACTIVITY_REQUEST_CODE  = 733;
+    private static final int START_SETTING_ACTIVITY_REQUEST_CODE = 21;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        _RecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        RecyclerView _RecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         _RecyclerView.setLayoutManager(new LinearLayoutManager(this));
         _RecyclerView.setAdapter(_NormalRecyclerViewAdapter = new NormalRecyclerViewAdapter());
 
@@ -132,6 +137,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setIconified(true);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                _NormalRecyclerViewAdapter.getFilter().filter(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                _NormalRecyclerViewAdapter.getFilter().filter(newText);
+                return true;
+            }
+        });
         return true;
     }
 
@@ -165,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_score) {
             OtherHelper.getInstance().openMarket(this, getPackageName());
         } else if (id == R.id.action_settings) {
-            // startActivity(new Intent(this, SettingsActivity.class));
+            startActivityForResult(new Intent(this, SettingsActivity.class), START_SETTING_ACTIVITY_REQUEST_CODE);
         } else if (id == R.id.action_cloud) {
             startActivity(new Intent(this, CloudActivity.class));
         }
@@ -176,14 +197,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onRefresh() {
-
+    public synchronized void onRefresh() {
         _NormalRecyclerViewAdapter.notifyItemRangeRemoved(0, _DisplayApplicationInfo.size());
         _DisplayApplicationInfo.clear();
 
+        ArrayList<String> ignorePackageName = new ArrayList<>();
+        ignorePackageName.add("android");
+        ignorePackageName.add(BuildConfig.APPLICATION_ID);
+        ignorePackageName.add("de.robv.android.xposed.installer");
+
         int hasConfigIndex = 0;
         for (ApplicationInfo applicationInfo : applicationInfos) {
-            if (OtherHelper.getInstance().isUserAppllication(applicationInfo)) {
+            if (ignorePackageName.contains(applicationInfo.packageName)) {
+                continue;
+            }
+
+            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("show_system_app", false) || OtherHelper.getInstance().isUserAppllication(applicationInfo)) {
                 if (XposedSharedPreferencesHelper.getInstance().get(applicationInfo.packageName) != null) {
                     _DisplayApplicationInfo.add(hasConfigIndex++, applicationInfo);
                 } else {
@@ -191,6 +220,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         }
+        _NormalRecyclerViewAdapter.setmOriginalValues(_DisplayApplicationInfo);
         _NormalRecyclerViewAdapter.notifyDataSetChanged();
         _SwipeRefreshLayout.setRefreshing(false);
     }
@@ -202,6 +232,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (requestCode == START_DETAIL_ACTIVITY_REQUEST_CODE && resultCode == 1) {
             onRefresh();
         }
+        if (requestCode == START_SETTING_ACTIVITY_REQUEST_CODE && resultCode == 1) {
+            onRefresh();
+        }
+
     }
 
     private void reportPhoneInfo() {
@@ -211,7 +245,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }).start();
     }
 
-    private class NormalRecyclerViewAdapter extends RecyclerView.Adapter<NormalRecyclerViewAdapter.NormalTextViewHolder> {
+    public void onMenuHookAll(MenuItem item) {
+        ApplicationInfo applicationInfo = new ApplicationInfo();
+        applicationInfo.packageName = XposedSharedPreferencesHelper.KEY_ALL;
+
+        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+        intent.putExtra("applicationInfo", applicationInfo);
+        MainActivity.this.startActivityForResult(intent, 0);
+    }
+
+    public void onMenuHookUser(MenuItem item) {
+        ApplicationInfo applicationInfo = new ApplicationInfo();
+        applicationInfo.packageName = XposedSharedPreferencesHelper.KEY_USER;
+
+        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+        intent.putExtra("applicationInfo", applicationInfo);
+        MainActivity.this.startActivityForResult(intent, 0);
+    }
+
+    private class NormalRecyclerViewAdapter extends RecyclerView.Adapter<NormalRecyclerViewAdapter.NormalTextViewHolder> implements Filterable {
+        private ArrayList<ApplicationInfo> mOriginalValues = new ArrayList<>();
 
         @Override
         public NormalRecyclerViewAdapter.NormalTextViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -233,7 +286,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                 intent.putExtra("applicationInfo", applicationInfo);
                 MainActivity.this.startActivityForResult(intent, START_DETAIL_ACTIVITY_REQUEST_CODE);
-                // holder.itemView.getContext().startActivity(intent);
             });
 
             holder.itemView.setOnLongClickListener(v -> {
@@ -311,6 +363,50 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @Override
         public int getItemCount() {
             return _DisplayApplicationInfo.size();
+        }
+
+        public void setmOriginalValues(ArrayList<ApplicationInfo> mOriginalValues) {
+            this.mOriginalValues = mOriginalValues;
+        }
+
+        @Override
+        public Filter getFilter() {
+            return new Filter() {
+                @Override
+                protected FilterResults performFiltering(CharSequence constraint) {
+                    FilterResults filterResults = new FilterResults();
+
+                    if (constraint == null || constraint.length() == 0) {
+                        ArrayList<ApplicationInfo> applicationInfoArrayList = new ArrayList<>(mOriginalValues);
+                        filterResults.values = applicationInfoArrayList;
+                        filterResults.count = applicationInfoArrayList.size();
+                        return filterResults;
+                    }
+
+                    String                           prefixString = constraint.toString().toLowerCase();
+                    final ArrayList<ApplicationInfo> values       = mOriginalValues;
+                    final int                        count        = mOriginalValues.size();
+
+                    final ArrayList<ApplicationInfo> newValues = new ArrayList<>(count);
+                    for (int i = 0; i < count; i++) {
+                        final ApplicationInfo applicationInfo = values.get(i);
+
+                        if (applicationInfo.packageName.toLowerCase().contains(prefixString) || applicationInfo.loadLabel(getPackageManager()).toString().toLowerCase().contains(prefixString))
+                            newValues.add(applicationInfo);
+                    }
+
+                    filterResults.values = newValues;
+                    filterResults.count = newValues.size();
+
+                    return filterResults;
+                }
+
+                @Override
+                protected void publishResults(CharSequence constraint, FilterResults results) {
+                    _DisplayApplicationInfo = (ArrayList<ApplicationInfo>) results.values;
+                    notifyDataSetChanged();
+                }
+            };
         }
 
         class NormalTextViewHolder extends RecyclerView.ViewHolder {

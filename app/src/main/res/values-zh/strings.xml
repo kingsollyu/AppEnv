@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">应用环境</string>
+    <string name="app_name">应用变量</string>
     <string name="activity_xposed_not_work">Xposed没有工作</string>
     <string name="open_xposed">打开 XPOSED</string>
     <string name="install_xposed">安装 XPOSED</string>
-    <string name="s1">您的XPOSED看起没有工作，请检查您的XPOSED设置</string>
+    <string name="s1">您的XPOSED看起没有工作，请检查您的XPOSED设置。\n如果您确定您的XPOSED安装正确，请重新在模块中『勾选』应用变量并『重启』手机。</string>
     <string name="s2">没有在您的机器中发现XPOSED工作环境，请先安装XPOSED。</string>
     <string name="refresh">刷新</string>
     <string name="settings">设置</string>
@@ -29,6 +29,7 @@
                     "说明: 动态修改软件信息<br>"
                     "依赖: <a href="http://repo.xposed.info/module/de.robv.android.xposed.installer">xposed</a> 或者 <a href="http://en.miui.com/thread-78894-1-1.html">wsm tools</a><br>"
                     "更新: 历史版本<a href="http://appenv.ys168.com/">点击这里</a><br>"
+                    "视频: 软件教程<a href="http://appenv.ys168.com/">点击这里</a><br>"
                     "微信: 公众号: 应用变量<br>"
                     "备注: 本人承接类似软件定制开发(非诚勿扰)<br><br>"
 
@@ -97,4 +98,10 @@
     <string name="get_last_phone_sccess">获取最新的机型列表成功。使用次数-1</string>
     <string name="share_device_success">分享机型成功，非常感谢您的贡献。</string>
     <string name="exit">退出</string>
+    <string name="search">搜索</string>
+    <string name="hook_all">拦截所有</string>
+    <string name="hookUser">拦截第三方</string>
+    <string name="general">General</string>
+    <string name="author">Author</string>
+    <string name="show_system_app">Show system app</string>
 </resources>
