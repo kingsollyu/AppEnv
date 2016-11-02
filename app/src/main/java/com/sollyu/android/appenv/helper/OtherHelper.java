@@ -85,4 +85,7 @@ public class OtherHelper {
         return dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
+    public boolean isNull(Object o) {
+        return o == null || o instanceof String && o.toString().isEmpty();
+    }
 }

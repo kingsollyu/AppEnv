@@ -32,7 +32,7 @@ public class XposedSharedPreferencesHelper {
     }
 
     public SharedPreferences getSharedPreferences() {
-        return MainApplication.getInstance().getSharedPreferences("XPOSED", Context.MODE_PRIVATE);
+        return MainApplication.getInstance().getSharedPreferences("XPOSED", Context.MODE_WORLD_READABLE | Context.MODE_WORLD_WRITEABLE);
     }
 
     public AppInfo get(String packageName) {

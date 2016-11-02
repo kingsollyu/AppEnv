@@ -97,4 +97,7 @@
     <string name="get_last_phone_sccess">获取最新的机型列表成功。使用次数-1</string>
     <string name="share_device_success">分享机型成功，非常感谢您的贡献。</string>
     <string name="exit">退出</string>
+    <string name="search">搜索</string>
+    <string name="hook_all">拦截所有</string>
+    <string name="hookUser">拦截第三方</string>
 </resources>
