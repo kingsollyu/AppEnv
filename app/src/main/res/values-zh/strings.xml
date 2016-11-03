@@ -29,7 +29,7 @@
                     "说明: 动态修改软件信息<br>"
                     "依赖: <a href="http://repo.xposed.info/module/de.robv.android.xposed.installer">xposed</a> 或者 <a href="http://en.miui.com/thread-78894-1-1.html">wsm tools</a><br>"
                     "更新: 历史版本<a href="http://appenv.ys168.com/">点击这里</a><br>"
-                    "视频: 软件教程<a href="http://appenv.ys168.com/">点击这里</a><br>"
+                    "视频: 软件教程<a href="http://www.bilibili.com/video/av6928436//">点击这里</a><br>"
                     "微信: 公众号: 应用变量<br>"
                     "备注: 本人承接类似软件定制开发(非诚勿扰)<br><br>"
 
@@ -89,19 +89,24 @@
     <string name="force_stop">强制停止</string>
     <string name="save_config_success">保存配置成功</string>
     <string name="wipe_data_error">清空数据错误：</string>
-    <string name="wipe_data_sccess">清空数据成功</string>
+    <string name="wipe_data_success">清空数据成功</string>
     <string name="start_app_error">启动应用错误</string>
     <string name="error">错误</string>
     <string name="upload_success">上传配置成功。使用次数-1</string>
     <string name="delete_file_error">删除文件错误</string>
-    <string name="download_sccess">下载配置成功，但需要再打开本程序才能生效。使用次数-1</string>
+    <string name="download_success">下载配置成功，但需要再打开本程序才能生效。使用次数-1</string>
     <string name="get_last_phone_sccess">获取最新的机型列表成功。使用次数-1</string>
     <string name="share_device_success">分享机型成功，非常感谢您的贡献。</string>
     <string name="exit">退出</string>
     <string name="search">搜索</string>
     <string name="hook_all">拦截所有</string>
-    <string name="hookUser">拦截第三方</string>
-    <string name="general">General</string>
-    <string name="author">Author</string>
-    <string name="show_system_app">Show system app</string>
+    <string name="hook_user">拦截第三方</string>
+    <string name="general">常规</string>
+    <string name="author">作者</string>
+    <string name="show_system_app">显示系统应用</string>
+    <string name="share_manufacturer">厂商</string>
+    <string name="share_model">型号</string>
+    <string name="share_name">名称</string>
+    <string name="share_reason">理由</string>
+    <string name="share">分享</string>
 </resources>

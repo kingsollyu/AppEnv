@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -64,7 +63,6 @@ public class LoginActivity extends AppCompatActivity {
 
         new Thread(() -> {
             TokenHelper.ServerResult serverResult = TokenHelper.getInstance().info(tokenBootstrapEditText.getText().toString());
-            Log.d(TAG, "onClickActivate: " + serverResult);
             if (serverResult.getRet() != 200) {
                 uiHandler.post(() -> {
                     tokenBootstrapEditText.setBootstrapBrand(DefaultBootstrapBrand.DANGER);
@@ -86,7 +84,6 @@ public class LoginActivity extends AppCompatActivity {
             TokenHelper.getInstance().setActivate(true);
             setResult(1);
             LoginActivity.this.finish();
-
         }).start();
     }
 }

@@ -19,7 +19,7 @@
 
     <item android:id="@+id/action_hook_user"
           android:orderInCategory="102"
-          android:title="@string/hookUser"
+          android:title="@string/hook_user"
           android:icon="@drawable/ic_folder_shared"
           android:onClick="onMenuHookUser"
           app:showAsAction="never"/>

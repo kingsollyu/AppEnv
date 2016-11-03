@@ -71,14 +71,14 @@ public class DetailActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
             switch (applicationInfo.packageName) {
-                case "all":
-                    getSupportActionBar().setTitle("全局拦截");
+                case XposedSharedPreferencesHelper.KEY_ALL:
+                    getSupportActionBar().setTitle(R.string.hook_all);
                     findViewById(R.id.menu_run_app).setEnabled(false);
                     findViewById(R.id.menu_clear_app).setEnabled(false);
                     findViewById(R.id.menu_force_stop).setEnabled(false);
                     break;
-                case "user":
-                    getSupportActionBar().setTitle("第三方拦截");
+                case XposedSharedPreferencesHelper.KEY_USER:
+                    getSupportActionBar().setTitle(R.string.hook_user);
                     findViewById(R.id.menu_run_app).setEnabled(false);
                     findViewById(R.id.menu_clear_app).setEnabled(false);
                     findViewById(R.id.menu_force_stop).setEnabled(false);
@@ -255,7 +255,7 @@ public class DetailActivity extends AppCompatActivity {
             if (exitCode != 0)
                 Snackbar.make(view, getString(R.string.wipe_data_error) + exitCode, Snackbar.LENGTH_LONG).show();
             else
-                Snackbar.make(view, R.string.wipe_data_sccess, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(view, R.string.wipe_data_success, Snackbar.LENGTH_LONG).show();
         });
     }
 
