@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">应用变量</string>
+    <string name="activity_xposed_not_work">Xposed没有工作</string>
+    <string name="open_xposed">打开 XPOSED</string>
+    <string name="install_xposed">安装 XPOSED</string>
+    <string name="s1">您的XPOSED看起没有工作，请检查您的XPOSED设置。\n如果您确定您的XPOSED安装正确，请重新在模块中『勾选』应用变量并『重启』手机。</string>
+    <string name="s2">没有在您的机器中发现XPOSED工作环境，请先安装XPOSED。</string>
+    <string name="refresh">刷新</string>
+    <string name="settings">设置</string>
+    <string name="cloud">云端</string>
+    <string name="other">其他</string>
+    <string name="donate">捐赠</string>
+    <string name="score">评分</string>
+    <string name="about">关于</string>
+    <string name="navigation_drawer_close">关闭导航</string>
+    <string name="navigation_drawer_open">打开导航</string>
+    <string name="open">打开</string>
+    <string name="random">随机</string>
+    <string name="detail">详细</string>
+    <string name="delete">删除</string>
+
+    <string name="about_text">
+        <Data>
+            <![CDATA[
+                    "<h2>应用变量</h2>"
+                    "作者: king.sollyu<br>"
+                    "联系: QQ: 191067617 (C.S.T)<br>"
+                    "说明: 动态修改软件信息<br>"
+                    "依赖: <a href="http://repo.xposed.info/module/de.robv.android.xposed.installer">xposed</a> 或者 <a href="http://en.miui.com/thread-78894-1-1.html">wsm tools</a><br>"
+                    "更新: 历史版本<a href="http://appenv.ys168.com/">点击这里</a><br>"
+                    "视频: 软件教程<a href="http://www.bilibili.com/video/av6928436//">点击这里</a><br>"
+                    "微信: 公众号: 应用变量<br>"
+                    "备注: 本人承接类似软件定制开发(非诚勿扰)<br><br>"
+
+                    "Copyright © <a href="http://www.sollyu.com">Sollyu</a> 2015-2016 Version %1$s<br><br>"
+
+                    "<h2>版本维护</h2>"
+                    "如果您是定做用户请尝试联系作者<br>"
+                    "如果非定做用户请前往交流群: <a href="http://shang.qq.com/wpa/qunwpa?idkey=f7a9290f4c57e49f8f72034ceebf7ef2e09f06fc8410a241d808a585fa664ca3">73426544</a><br>"
+                    "因本人时间不是太充裕<br>"
+                    "非定做用户请在<a href="http://shang.qq.com/wpa/qunwpa?idkey=f7a9290f4c57e49f8f72034ceebf7ef2e09f06fc8410a241d808a585fa664ca3">QQ群</a>或<a href="http://appenv.0xcode.org/">论坛</a>讨论, 添加作者<u>一律拒绝</u><br><br>"
+
+                    "<h2>特别说明</h2>"
+                    "请不要使用本软件做任何违法事情， 包括刷单之类操作，如您使用本软件出现任何违法法律，一切后果由您自行承担和作者无关。<br><br>"
+
+                    "<h2>本版更新</h2>"
+                    "+ 支持Android 7.0<br>"
+                    "+ 随机生成IMEI增加识别算法<br>"
+                    "+ 支持云端服务<br>"
+                    "+ 增加英文语言<br>"
+                    "+ 全新界面<br>"
+
+                    "<br>"
+                    "<br>"
+            ]]>
+        </Data>
+    </string>
+    <string name="random_all">全部随机</string>
+    <string name="run_app">运行程序</string>
+    <string name="wipe_data">清除数据</string>
+    <string name="force_stop_app">强制停止</string>
+    <string name="save_config">保存配置</string>
+    <string name="manufacturer">厂商</string>
+    <string name="model">型号</string>
+    <string name="phone_number">手机号</string>
+    <string name="serial">序列号</string>
+    <string name="phone_network_type">网络类型</string>
+    <string name="phone_device_id">手机IMEI</string>
+    <string name="sim_serial_number">Sim卡序号</string>
+    <string name="wifi_info_ssid">Wifi名称</string>
+    <string name="wifi_info_mac_address">Mac地址</string>
+    <string name="delete_config">删除配置</string>
+    <string name="remote_random">云端随机</string>
+    <string name="title_activity_cloud">云端</string>
+    <string name="input_token">输入激活码</string>
+    <string name="activate">激活</string>
+    <string name="order">咨询购买?</string>
+    <string name="token_can_not_null">激活码不能为空</string>
+    <string name="wait">请稍候</string>
+    <string name="processing">正在处理...</string>
+    <string name="upload">上传</string>
+    <string name="download">下载</string>
+    <string name="get_last_phone_list">获得最新机型列表</string>
+    <string name="share_devices">分享机型</string>
+    <string name="force_stop_error">强制停止错误：</string>
+    <string name="force_stop_success">强制停止成功</string>
+    <string name="random_success">一键随机完成</string>
+    <string name="force_stop">强制停止</string>
+    <string name="save_config_success">保存配置成功</string>
+    <string name="wipe_data_error">清空数据错误：</string>
+    <string name="wipe_data_success">清空数据成功</string>
+    <string name="start_app_error">启动应用错误</string>
+    <string name="error">错误</string>
+    <string name="upload_success">上传配置成功。使用次数-1</string>
+    <string name="delete_file_error">删除文件错误</string>
+    <string name="download_success">下载配置成功，但需要再打开本程序才能生效。使用次数-1</string>
+    <string name="get_last_phone_sccess">获取最新的机型列表成功。使用次数-1</string>
+    <string name="share_device_success">分享机型成功，非常感谢您的贡献。</string>
+    <string name="exit">退出</string>
+    <string name="search">搜索</string>
+    <string name="hook_all">拦截所有</string>
+    <string name="hook_user">拦截第三方</string>
+    <string name="general">常规</string>
+    <string name="author">作者</string>
+    <string name="show_system_app">显示系统应用</string>
+    <string name="share_manufacturer">厂商</string>
+    <string name="share_model">型号</string>
+    <string name="share_name">名称</string>
+    <string name="share_reason">理由</string>
+    <string name="share">分享</string>
+</resources>

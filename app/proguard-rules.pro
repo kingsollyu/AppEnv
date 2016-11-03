@@ -15,3 +15,47 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+
+# 代码混淆压缩比，在0和7之间，默认为5，一般不需要改
+-optimizationpasses 7
+
+# 不做预校验，preverify是proguard的4个步骤之一
+# Android不需要preverify，去掉这一步可加快混淆速度
+ -dontpreverify
+
+# 混淆时应用侵入式重载
+-overloadaggressively
+
+# 确定统一的混淆类的成员名称来增加混淆
+-useuniqueclassmembernames
+
+# 混淆时不会产生形形色色的类名
+-dontusemixedcaseclassnames
+
+# 不混淆第三方jar
+-dontskipnonpubliclibraryclasses
+
+# 不使用大小写混合
+-dontusemixedcaseclassnames
+
+# 有了verbose这句话，混淆后就会生成映射文件
+# 包含有类名->混淆后类名的映射关系
+# 然后使用printmapping指定映射文件的名称
+-verbose
+-printmapping proguardMapping.txt
+
+# 抛出异常时保留代码行号，在异常分析中可以方便定位
+-keepattributes SourceFile,LineNumberTable
+
+# 混淆时所采用的算法
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
+
+-keep class android.** {*;}
+
+-keep class * implements de.robv.android.xposed.IXposedHookLoadPackage {
+    public void handleLoadPackage(de.robv.android.xposed.callbacks.XC_LoadPackage$LoadPackageParam);
+}
+-keep class com.sollyu.android.appenv.MainApplication {
+    public boolean isXposedWork();
+}

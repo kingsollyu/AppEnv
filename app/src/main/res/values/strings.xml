@@ -1,3 +1,98 @@
 <resources>
     <string name="app_name">AppEnv</string>
+    <string name="activity_xposed_not_work">Xposed Not Work</string>
+    <string name="open_xposed">OPEN XPOSED</string>
+    <string name="install_xposed">INSTALL XPOSED</string>
+    <string name="s1">You XPOSED is not work, Please check you XPOSED settings.</string>
+    <string name="s2">Not find XPOSED, Please install XPOSED.</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="refresh">Refresh</string>
+    <string name="settings">Settings</string>
+    <string name="cloud">Cloud</string>
+    <string name="other">Other</string>
+    <string name="donate">Donate</string>
+    <string name="score">Score</string>
+    <string name="about">About</string>
+    <string name="open">Open</string>
+    <string name="random">Random</string>
+    <string name="detail">Detail</string>
+    <string name="delete">Delete</string>
+
+    <string name="about_text">
+        <Data>
+            <![CDATA[
+                    "<h2>AppEnv</h2>"
+                    "Author: king.sollyu<br>"
+                    "Contact: QQ: 191067617 (C.S.T)<br>"
+                    "Description: Dynamically modify the software information<br>"
+                    "Depend: <a href="http://repo.xposed.info/module/de.robv.android.xposed.installer">XPOSED</a> OR <a href="http://en.miui.com/thread-78894-1-1.html">WSM tools</a><br>"
+                    "Update: Historic version <a href="http://appenv.ys168.com/">CLICK HERE</a><br><br>"
+
+                    "Copyright © <a href="http://www.sollyu.com">Sollyu</a> 2015-2016 Version %1$s<br><br>"
+
+                    "<h2>This update</h2>"
+                    "+ Support Android 7.0<br>"
+                    "+ ......<br>"
+
+                    "<br>"
+                    "<br>"
+            ]]>
+        </Data>
+    </string>
+    <string name="random_all">Random All</string>
+    <string name="run_app">Run App</string>
+    <string name="wipe_data">Wipe Data</string>
+    <string name="force_stop_app">Force Stop App</string>
+    <string name="save_config">Save Config</string>
+    <string name="manufacturer">Manufacturer</string>
+    <string name="model">Model</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="serial">Serial</string>
+    <string name="phone_network_type">Phone Network Type</string>
+    <string name="phone_device_id">Phone IMEI</string>
+    <string name="sim_serial_number">Sim Serial Number</string>
+    <string name="wifi_info_ssid">Wifi Name</string>
+    <string name="wifi_info_mac_address">Mac Address</string>
+    <string name="delete_config">Delete Config</string>
+    <string name="remote_random">Remote Random</string>
+    <string name="title_activity_cloud">Cloud</string>
+    <string name="input_token">Input Token</string>
+    <string name="activate">Activate</string>
+    <string name="order">Order</string>
+    <string name="token_can_not_null">Token can not be null</string>
+    <string name="wait">Wait</string>
+    <string name="processing">Processing…</string>
+    <string name="upload">Upload</string>
+    <string name="download">Download</string>
+    <string name="get_last_phone_list">Get Last Phone List</string>
+    <string name="share_devices">Share Devices</string>
+    <string name="force_stop_error">"force stop app error: "</string>
+    <string name="force_stop_success">force stop app success.</string>
+    <string name="random_success">Random All Success</string>
+    <string name="force_stop">Force Stop</string>
+    <string name="save_config_success">Save config success.</string>
+    <string name="wipe_data_error">"wipe data error: "</string>
+    <string name="wipe_data_success">wipe data success.</string>
+    <string name="start_app_error">"start app error: "</string>
+    <string name="error">Error</string>
+    <string name="upload_success">Upload config success. times - 1.</string>
+    <string name="delete_file_error">Delete File Error</string>
+    <string name="download_success">Download config success. but you need restart. times - 1.</string>
+    <string name="get_last_phone_sccess">Get last phone list success. times - 1.</string>
+    <string name="share_device_success">Share device success. Thank you very much.</string>
+    <string name="exit">Exit</string>
+    <string name="search">Serach</string>
+    <string name="hook_all">Hook All</string>
+    <string name="hook_user">Hook User</string>
+    <string name="general">General</string>
+    <string name="author">Author</string>
+    <string name="show_system_app">Show system app</string>
+    <string name="share_manufacturer">Manufacturer</string>
+    <string name="share_model">Model</string>
+    <string name="share_name">Name</string>
+    <string name="share_reason">Reason</string>
+    <string name="share">Share</string>
 </resources>
