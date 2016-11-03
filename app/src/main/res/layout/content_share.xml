@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 app:bootstrapBrand="success"
-                app:bootstrapText="Manufacturer"
+                app:bootstrapText="@string/share_manufacturer"
                 app:fontAwesomeIcon="fa_android"
                 app:typicon="ty_anchor"
                 />
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 app:bootstrapBrand="success"
-                app:bootstrapText="Model             "
+                app:bootstrapText="@string/share_model"
                 app:fontAwesomeIcon="fa_android"
                 app:typicon="ty_anchor"
                 />
@@ -85,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 app:bootstrapBrand="success"
-                app:bootstrapText="Name              "
+                app:bootstrapText="@string/share_name"
                 app:fontAwesomeIcon="fa_android"
                 app:typicon="ty_anchor"
                 />
@@ -115,7 +115,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 app:bootstrapBrand="success"
-                app:bootstrapText="Reason           "
+                app:bootstrapText="@string/share_reason"
                 app:fontAwesomeIcon="fa_android"
                 app:typicon="ty_anchor"
                 />
@@ -144,7 +144,7 @@
                 android:id="@+id/share"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Share"
+                android:text="@string/share"
                 app:bootstrapBrand="success"
                 app:bootstrapSize="lg"
                 app:buttonMode="regular"

@@ -179,7 +179,7 @@ public class CloudActivity extends AppCompatActivity {
                     FileUtils.writeStringToFile(solutionFile, temp, "UTF-8");
                 }
 
-                Snackbar.make(view, R.string.download_sccess, Snackbar.LENGTH_LONG).setAction(R.string.exit, v -> System.exit(0)).show();
+                Snackbar.make(view, R.string.download_success, Snackbar.LENGTH_LONG).setAction(R.string.exit, v -> System.exit(0)).show();
             } catch (Exception e) {
                 Snackbar.make(view, e.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
             } finally {
