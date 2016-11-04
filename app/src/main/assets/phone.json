@@ -1,87 +1,366 @@
 {
+  "华为": [
+    {
+      "name": "荣耀7i",
+      "manufacturer": "HUAWEI",
+      "model": "ATH-AL00"
+    },
+    {
+      "name": "荣耀6至尊版",
+      "manufacturer": "HUAWEI",
+      "model": "H60-L21"
+    },
+    {
+      "name": "荣耀6 Plus",
+      "manufacturer": "HUAWEI",
+      "model": "PE-TL10"
+    }
+  ],
   "联想": [
     {
+      "name": "联想K3",
       "manufacturer": "Lenovo",
-      "model": "Lenovo K30-T",
-      "name": "联想K3"
+      "model": "Lenovo K30-T"
     }
   ],
   "乐视": [
     {
+      "name": "乐视2",
       "manufacturer": "LeMobile",
-      "model": "Le X620",
-      "name": "乐视2"
+      "model": "Le X620"
     },
     {
+      "name": "乐视2 Pro",
       "manufacturer": "LeMobile",
-      "model": "Le X525",
-      "name": "乐视2 Pro"
+      "model": "Le X525"
     },
     {
+      "name": "乐视1",
       "manufacturer": "Letv",
-      "model": "X600",
-      "name": "乐视1"
+      "model": "X600"
     },
     {
+      "name": "乐视1 Pro",
       "manufacturer": "Letv",
-      "model": "X800+",
-      "name": "乐视1 Pro"
+      "model": "X800+"
     },
     {
+      "name": "乐视1 S",
       "manufacturer": "Letv",
-      "model": "Letv X500",
-      "name": "乐视1 S"
+      "model": "Letv X500"
     },
     {
+      "name": "乐视1 S 太子妃版",
       "manufacturer": "Letv",
-      "model": "Letv X501",
-      "name": "乐视1 S 太子妃版"
-    }
-  ],
-  "华为": [
-    {
-      "manufacturer": "HUAWEI",
-      "model": "ATH-AL00",
-      "name": "荣耀7i"
-    },
-    {
-      "manufacturer": "HUAWEI",
-      "model": "H60-L21",
-      "name": "荣耀6至尊版"
-    },
-    {
-      "manufacturer": "HUAWEI",
-      "model": "PE-TL10",
-      "name": "荣耀6 Plus"
+      "model": "Letv X501"
     }
   ],
   "HTC": [
     {
+      "name": "HTC One M9",
       "manufacturer": "HTC",
-      "model": "HTC M9e",
-      "name": "HTC One M9"
+      "model": "HTC M9e"
     },
     {
+      "name": "HTC One A9",
       "manufacturer": "HTC",
-      "model": "HTC One A9",
-      "name": "HTC One A9"
+      "model": "HTC One A9"
     }
   ],
   "OPPO": [
     {
+      "name": "OPPO R9",
       "manufacturer": "OPPO",
-      "model": "OPPO R9m",
-      "name": "OPPO R9"
+      "model": "OPPO R9m"
     },
     {
+      "name": "OPPO Find7",
       "manufacturer": "OPPO",
-      "model": "x9007",
-      "name": "OPPO Find7"
+      "model": "x9007"
     },
     {
+      "name": "OPPO Find5",
       "manufacturer": "OPPO",
-      "model": "x909t",
-      "name": "OPPO Find5"
+      "model": "x909t"
+    },
+    {
+      "name": "OPPO R7",
+      "manufacturer": "OPPO",
+      "model": "OPPO R7"
+    },
+    {
+      "name": "OPPO R7S",
+      "manufacturer": "OPPO",
+      "model": "OPPO R7S"
+    }
+  ],
+  "锤子": [
+    {
+      "name": "锤子 T1",
+      "manufacturer": "Smartisan",
+      "model": "SM705"
+    },
+    {
+      "name": "锤子 T2",
+      "manufacturer": "Smartisan",
+      "model": "SM801"
+    },
+    {
+      "name": "坚果",
+      "manufacturer": "Smartisan",
+      "model": "YQ601"
+    },
+    {
+      "name": "锤子 T3",
+      "manufacturer": "Smartisan",
+      "model": "SM901"
+    }
+  ],
+  "小米": [
+    {
+      "name": "小米2S",
+      "manufacturer": "Xiaomi",
+      "model": "MI 2S"
+    },
+    {
+      "name": "小米3",
+      "manufacturer": "Xiaomi",
+      "model": "MI 3"
+    },
+    {
+      "name": "小米4",
+      "manufacturer": "Xiaomi",
+      "model": "MI 4LTE"
+    },
+    {
+      "name": "小米4C",
+      "manufacturer": "Xiaomi",
+      "model": "MI-4C"
+    },
+    {
+      "name": "小米4S",
+      "manufacturer": "Xiaomi",
+      "model": "MI 4S"
+    },
+    {
+      "name": "小米5",
+      "manufacturer": "Xiaomi",
+      "model": "MI 5"
+    },
+    {
+      "name": "小米NOTE",
+      "manufacturer": "Xiaomi",
+      "model": "MI NOTE LTE"
+    },
+    {
+      "name": "小米MAX",
+      "manufacturer": "Xiaomi",
+      "model": "MI MAX"
+    },
+    {
+      "name": "小米NOTE 2",
+      "manufacturer": "Xiaomi",
+      "model": "MI NOTE 2"
+    },
+    {
+      "name": "小米NOTE 顶配版",
+      "manufacturer": "Xiaomi",
+      "model": "MI NOTE PRO"
+    },
+    {
+      "name": "红米Note3",
+      "manufacturer": "Xiaomi",
+      "model": "Redmi Note 3"
+    },
+    {
+      "name": "小米平板2",
+      "manufacturer": "Xiaomi",
+      "model": "MI Pad 2"
+    },
+    {
+      "name": "小米5S",
+      "manufacturer": "Xiaomi",
+      "model": "2016080 "
+    },
+    {
+      "name": "小米 Note 4",
+      "manufacturer": "Xiaomi",
+      "model": "2016060"
+    },
+    {
+      "name": "小米MIX",
+      "manufacturer": "Xiaomi",
+      "model": "MIX"
+    }
+  ],
+  "一加": [
+    {
+      "name": "一加手机1",
+      "manufacturer": "OnePlus",
+      "model": "A1001"
+    },
+    {
+      "name": "一加手机2",
+      "manufacturer": "OnePlus",
+      "model": "ONE A2001"
+    },
+    {
+      "name": "一加手机3",
+      "manufacturer": "OnePlus",
+      "model": "OnePlus A3000"
+    }
+  ],
+  "中兴": [
+    {
+      "name": "中兴 AXON 天机 MAX",
+      "manufacturer": "ZTE",
+      "model": "ZTE C2016"
+    },
+    {
+      "name": "中兴 AXON 天机 MINI",
+      "manufacturer": "ZTE",
+      "model": "ZTE B2015"
+    },
+    {
+      "name": "中兴 AXON 天机",
+      "manufacturer": "ZTE",
+      "model": "ZTE A2015"
+    },
+    {
+      "name": "中兴 星星2号",
+      "manufacturer": "ZTE",
+      "model": "ZTE G720C"
+    },
+    {
+      "name": "努比亚Z11 mini全网通",
+      "manufacturer": "ZTE",
+      "model": "NX529J"
+    },
+    {
+      "name": "努比亚大牛 Z9 Max",
+      "manufacturer": "ZTE",
+      "model": "NX512J"
+    },
+    {
+      "name": "努比亚小牛4 Z9 Mini",
+      "manufacturer": "ZTE",
+      "model": "NX511J"
+    },
+    {
+      "name": "ZTE国民指纹机BladeA1",
+      "manufacturer": "ZTE",
+      "model": "ZTE C880U"
+    }
+  ],
+  "格力": [
+    {
+      "name": "格力手机1",
+      "manufacturer": "GREE",
+      "model": "G0111"
+    },
+    {
+      "name": "格力手机1s",
+      "manufacturer": "GREE",
+      "model": "G0121"
+    },
+    {
+      "name": "格力手机2",
+      "manufacturer": "GREE",
+      "model": "G0128"
+    }
+  ],
+  "魅族": [
+    {
+      "name": "MX2",
+      "manufacturer": "Meizu",
+      "model": "MX2"
+    },
+    {
+      "name": "MX3",
+      "manufacturer": "Meizu",
+      "model": "M355"
+    },
+    {
+      "name": "MX4",
+      "manufacturer": "Meizu",
+      "model": "MX4"
+    },
+    {
+      "name": "MX4 Pro",
+      "manufacturer": "Meizu",
+      "model": "MX4 Pro"
+    },
+    {
+      "name": "MX5",
+      "manufacturer": "Meizu",
+      "model": "M575M"
+    },
+    {
+      "name": "PRO 6",
+      "manufacturer": "Meizu",
+      "model": "PRO 6"
+    },
+    {
+      "name": "魅蓝3",
+      "manufacturer": "Meizu",
+      "model": "魅蓝3"
+    },
+    {
+      "name": "魅蓝 note",
+      "manufacturer": "Meizu",
+      "model": "m1 note"
+    },
+    {
+      "name": "魅蓝3 note",
+      "manufacturer": "Meizu",
+      "model": "m3 note"
+    },
+    {
+      "name": "魅蓝metal",
+      "manufacturer": "Meizu",
+      "model": "m1 metal"
+    }
+  ],
+  "三星": [
+    {
+      "name": "Galaxy S6 Edge+",
+      "manufacturer": "samsung",
+      "model": "SM-G9280"
+    },
+    {
+      "name": "Galaxy Note7",
+      "manufacturer": "samsung",
+      "model": "SM-N9300"
+    },
+    {
+      "name": "Galaxy S7 edge",
+      "manufacturer": "samsung",
+      "model": "SM-G9350"
+    },
+    {
+      "name": "Galaxy S7",
+      "manufacturer": "samsung",
+      "model": "SM-G9300"
+    },
+    {
+      "name": "Galaxy C7",
+      "manufacturer": "samsung",
+      "model": "SM-W2017 "
+    },
+    {
+      "name": "Galaxy ON5",
+      "manufacturer": "samsung",
+      "model": "SM-G5520"
+    },
+    {
+      "name": "Galaxy ON5",
+      "manufacturer": "samsung",
+      "model": "SM-G5520"
+    },
+    {
+      "name": "Galaxy C9 Pro",
+      "manufacturer": "samsung",
+      "model": "SM-C9000"
     }
   ]
 }

@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 
 import com.beardedhen.androidbootstrap.AwesomeTextView;
 import com.sollyu.android.appenv.R;
+import com.sollyu.android.appenv.helper.OtherHelper;
 
 import java.lang.reflect.Method;
 
@@ -65,6 +66,7 @@ public class DetailItem extends LinearLayout {
         }
 
         onClickMethodName = attrs.getAttributeValue(ANDROID_NAME_SPACE, "onClick");
+        buttonAwesomeTextView.setTextSize(OtherHelper.getInstance().sp2px(this.getContext(), 10));
         buttonAwesomeTextView.setOnClickListener(v -> {
             try {
                 Method method = context.getClass().getMethod(onClickMethodName, View.class);
@@ -73,6 +75,7 @@ public class DetailItem extends LinearLayout {
                 e.printStackTrace();
             }
         });
+
 
         typedArray.recycle();
 
