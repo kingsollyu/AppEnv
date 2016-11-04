@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.sollyu.android.appenv.R;
+import com.tencent.bugly.beta.Beta;
 
 /**
  * 作者: Sollyu
@@ -73,6 +74,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             findPreference("show_system_app").setOnPreferenceChangeListener(this);
             findPreference("about").setOnPreferenceClickListener(this);
+            findPreference("update").setOnPreferenceClickListener(this);
         }
 
         /**
@@ -86,6 +88,9 @@ public class SettingsActivity extends AppCompatActivity {
             switch (preference.getKey()) {
                 case "about":
                     startActivity(new Intent(settingsActivity, AboutActivity.class));
+                    break;
+                case "update":
+                    Beta.checkUpgrade();
                     break;
             }
             return false;

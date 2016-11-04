@@ -1,11 +1,15 @@
 package com.sollyu.android.appenv.activity;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +20,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.orhanobut.dialogplus.DialogPlus;
@@ -25,6 +30,7 @@ import com.sollyu.android.appenv.helper.LibSuHelper;
 import com.sollyu.android.appenv.helper.OtherHelper;
 import com.sollyu.android.appenv.helper.PhoneHelper;
 import com.sollyu.android.appenv.helper.RandomHelper;
+import com.sollyu.android.appenv.helper.SolutionHelper;
 import com.sollyu.android.appenv.helper.TokenHelper;
 import com.sollyu.android.appenv.helper.XposedSharedPreferencesHelper;
 import com.sollyu.android.appenv.module.AppInfo;
@@ -37,11 +43,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class DetailActivity extends AppCompatActivity {
 
-    private ApplicationInfo applicationInfo    = null;
-    private Integer         activityResultCode = 0;
+    private static final int WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 45;
+
+    private ApplicationInfo applicationInfo                      = null;
+    private Integer         activityResultCode                   = 0;
+    private Boolean         wipeDataConfirm                      = false;
 
     private Handler uiHandler = new Handler();
 
@@ -90,7 +101,7 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         if (!OtherHelper.getInstance().isUserAppllication(applicationInfo)) {
-            Snackbar.make(findViewById(R.id.content_main), "不建议修改系统应用，修改系统应用可能会手机无法开机", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(findViewById(R.id.content_main), "不建议修改系统应用，修改系统应用可能会手机无法启动", Snackbar.LENGTH_LONG).show();
         }
 
         if (applicationInfo.packageName.equals("com.sina.weibo")) {
@@ -251,12 +262,27 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void onClickClearApp(View view) {
-        LibSuHelper.getInstance().addCommand("pm clear " + applicationInfo.packageName, 0, (commandCode, exitCode, output) -> {
-            if (exitCode != 0)
-                Snackbar.make(view, getString(R.string.wipe_data_error) + exitCode, Snackbar.LENGTH_LONG).show();
-            else
-                Snackbar.make(view, R.string.wipe_data_success, Snackbar.LENGTH_LONG).show();
-        });
+        if (wipeDataConfirm) {
+            wipeDataConfirm = false;
+            LibSuHelper.getInstance().addCommand("pm clear " + applicationInfo.packageName, 0, (commandCode, exitCode, output) -> {
+                if (exitCode != 0)
+                    Snackbar.make(view, getString(R.string.wipe_data_error) + exitCode, Snackbar.LENGTH_LONG).show();
+                else
+                    Snackbar.make(view, R.string.wipe_data_success, Snackbar.LENGTH_LONG).show();
+            });
+        } else {
+            wipeDataConfirm = true;
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    if (wipeDataConfirm) {
+                        Snackbar.make(view, "清除数据为敏感操作，请在2秒内连续点击次。", Snackbar.LENGTH_LONG).show();
+                    }
+                    wipeDataConfirm = false;
+                }
+            }, 2000);
+        }
+
     }
 
     public void onClickForceStopApp(View view) {
@@ -341,6 +367,8 @@ public class DetailActivity extends AppCompatActivity {
             displayArrayList.add(entry.getKey());
         }
 
+        Collections.sort(displayArrayList, String.CASE_INSENSITIVE_ORDER);
+
         DialogPlus dialogPlus = DialogPlus.newDialog(view.getContext())
                 .setHeader(R.layout.dialog_plus_header)
                 .setContentHolder(new ListHolder())
@@ -424,7 +452,7 @@ public class DetailActivity extends AppCompatActivity {
                 TokenHelper.getInstance().setActivate(false);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(DetailActivity.this);
-                builder.setTitle("错误");
+                builder.setTitle(R.string.error);
                 builder.setMessage(e.getMessage());
                 builder.setPositiveButton("重新输入激活码", (dialog, which) -> startActivityForResult(new Intent(DetailActivity.this, LoginActivity.class), 0));
                 builder.setNegativeButton("取消", null);
@@ -433,5 +461,93 @@ public class DetailActivity extends AppCompatActivity {
             }
 
         }).start();
+    }
+
+    public void onMenuSaveSolution(MenuItem item) {
+        if (ContextCompat.checkSelfPermission(DetailActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(DetailActivity.this, new String[]{Manifest.permission.READ_PHONE_STATE}, WRITE_EXTERNAL_STORAGE_REQUEST_CODE);
+            return;
+        }
+
+        AppInfo appInfo = uiToAppInfo();
+        if (appInfo.isEmpty()) {
+            Snackbar.make(findViewById(R.id.content_detail), "您没有界面中填写任何的内容，保存有何用。", Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
+        EditText editText = new EditText(DetailActivity.this);
+        editText.setHint("保存方案的名称");
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(DetailActivity.this);
+        builder.setIcon(R.drawable.ic_save);
+        builder.setTitle("保存方案");
+        builder.setView(editText);
+        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+            try {
+                if (editText.getText().toString().length() == 0)
+                    throw new RuntimeException("保存方案名称为空");
+
+                SolutionHelper.getInstance().put(editText.getText().toString(), appInfo);
+                Snackbar.make(findViewById(R.id.content_detail), "保存方案成功: " + editText.getText().toString(), Snackbar.LENGTH_LONG).show();
+            } catch (Throwable throwable) {
+                Snackbar.make(findViewById(R.id.content_detail), "保存方案失败: " + throwable.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, null);
+        builder.create().show();
+    }
+
+    public void onMenuLoadSolution(MenuItem item) {
+        final View view = findViewById(R.id.content_detail);
+        ArrayList<String> displayArrayList = SolutionHelper.getInstance().list();
+        if (displayArrayList.size() == 0) {
+            Snackbar.make(view, "没有任何方案", Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
+        Collections.sort(displayArrayList, String.CASE_INSENSITIVE_ORDER);
+
+        DialogPlus dialogPlus = DialogPlus.newDialog(view.getContext())
+                .setHeader(R.layout.dialog_plus_header)
+                .setContentHolder(new ListHolder())
+                .setAdapter(new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, displayArrayList))
+                .setOnItemClickListener((dialog, item1, view1, position) -> appInfoToUi(SolutionHelper.getInstance().get(displayArrayList.get(position))))
+                .setExpanded(true)
+                .create();
+
+        ((TextView) dialogPlus.getHeaderView().findViewById(R.id.text_view1)).setText(R.string.load_solution);
+
+        dialogPlus.show();
+    }
+
+    public void onMenuDeleteSolution(MenuItem item) {
+        final View view = findViewById(R.id.content_detail);
+        ArrayList<String> displayArrayList = SolutionHelper.getInstance().list();
+        if (displayArrayList.size() == 0) {
+            Snackbar.make(view, "没有任何方案", Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
+        Collections.sort(displayArrayList, String.CASE_INSENSITIVE_ORDER);
+
+        DialogPlus dialogPlus = DialogPlus.newDialog(view.getContext())
+                .setHeader(R.layout.dialog_plus_header)
+                .setContentHolder(new ListHolder())
+                .setAdapter(new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, displayArrayList))
+                .setOnItemClickListener((dialog, item1, view1, position) -> {
+                    dialog.dismiss();
+                    SolutionHelper.getInstance().remove(displayArrayList.get(position));
+                    uiHandler.postDelayed(() -> Snackbar.make(view, "删除方案成功: " + displayArrayList.get(position), Snackbar.LENGTH_LONG).show(), 250);
+                })
+                .setExpanded(true)
+                .create();
+
+        ((TextView) dialogPlus.getHeaderView().findViewById(R.id.text_view1)).setText(R.string.delete_solution);
+
+        dialogPlus.show();
+
+    }
+
+    public void onMenuDownloadSolution(MenuItem item) {
     }
 }

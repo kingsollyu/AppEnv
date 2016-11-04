@@ -22,6 +22,7 @@ import com.orhanobut.dialogplus.ViewHolder;
 import com.sollyu.android.appenv.BuildConfig;
 import com.sollyu.android.appenv.R;
 import com.sollyu.android.appenv.helper.OtherHelper;
+import com.sollyu.android.appenv.helper.SolutionHelper;
 import com.sollyu.android.appenv.helper.TokenHelper;
 
 import org.apache.commons.io.FileUtils;
@@ -53,9 +54,9 @@ public class CloudActivity extends AppCompatActivity {
 
         if (!TokenHelper.getInstance().isActivate()) {
             startActivityForResult(new Intent(this, LoginActivity.class), 0);
+        }else{
+            checkTokenIsWork();
         }
-
-        checkTokenIsWork();
     }
 
     @SuppressWarnings("deprecation")
@@ -74,7 +75,9 @@ public class CloudActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != 1) {
             this.finish();
+            return;
         }
+        checkTokenIsWork();
     }
 
     private void checkTokenIsWork() {
@@ -114,7 +117,7 @@ public class CloudActivity extends AppCompatActivity {
 
                 File appSettingFile    = new File("/data/data/" + BuildConfig.APPLICATION_ID + "/shared_prefs/" + BuildConfig.APPLICATION_ID + "_preferences.xml");
                 File xposedSettingFile = new File("/data/data/" + BuildConfig.APPLICATION_ID + "/shared_prefs/XPOSED.xml");
-                File solutionFile      = new File("/data/data/" + BuildConfig.APPLICATION_ID + "/shared_prefs/solution.xml");
+                File solutionFile      = SolutionHelper.SOLUTION_FILE;
 
                 if (appSettingFile.exists()) {
                     appSettingContent = FileUtils.readFileToString(appSettingFile, "UTF-8");
@@ -163,7 +166,7 @@ public class CloudActivity extends AppCompatActivity {
 
                 File appSettingFile    = new File("/data/data/" + BuildConfig.APPLICATION_ID + "/shared_prefs/" + BuildConfig.APPLICATION_ID + "_preferences.xml");
                 File xposedSettingFile = new File("/data/data/" + BuildConfig.APPLICATION_ID + "/shared_prefs/XPOSED.xml");
-                File solutionFile      = new File("/data/data/" + BuildConfig.APPLICATION_ID + "/shared_prefs/solution.xml");
+                File solutionFile      = SolutionHelper.SOLUTION_FILE;
 
                 String temp = "";
                 if ((temp = serverResult.getDataJson().getString("app")) != null) {
