@@ -4,6 +4,9 @@ import android.app.Application;
 
 import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.sollyu.android.appenv.helper.PhoneHelper;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
 
 import org.apache.commons.io.FileUtils;
@@ -32,8 +35,17 @@ public class MainApplication extends Application {
         TypefaceProvider.registerDefaultIconSets();
 
         MobclickAgent.startWithConfigure(new MobclickAgent.UMAnalyticsConfig(this, "558a1cb667e58e7649000228", BuildConfig.FLAVOR));
-        MobclickAgent.setCatchUncaughtExceptions(true);
+        MobclickAgent.setCatchUncaughtExceptions(false);
         MobclickAgent.enableEncrypt(true);
+
+        CrashReport.UserStrategy userStrategy = new CrashReport.UserStrategy(getApplicationContext());
+        userStrategy.setAppChannel(BuildConfig.FLAVOR);
+        userStrategy.setAppVersion(BuildConfig.VERSION_NAME);
+        userStrategy.setAppPackageName(BuildConfig.APPLICATION_ID);
+        CrashReport.initCrashReport(getApplicationContext(), BuildConfig.BUGLY_APPID, BuildConfig.DEBUG);
+
+        Bugly.init(getApplicationContext(), BuildConfig.BUGLY_APPID, BuildConfig.DEBUG);
+        Beta.init(getApplicationContext(), BuildConfig.DEBUG);
 
         // 释放文件
         try {

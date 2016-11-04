@@ -5,6 +5,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/about" >
+        <Preference android:title="@string/check_update" android:summary="@string/check_update_summary" android:key="update" android:icon="@drawable/ic_system_update" />
         <Preference android:title="@string/about" android:summary="@string/author" android:key="about" android:icon="@drawable/ic_info" />
     </PreferenceCategory>
 </PreferenceScreen>

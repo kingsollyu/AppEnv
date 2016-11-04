@@ -113,11 +113,13 @@
     <string name="hook_all">拦截所有</string>
     <string name="hook_user">拦截第三方</string>
     <string name="general">常规</string>
-    <string name="author">作者</string>
+    <string name="author">作者: King.Sollyu</string>
     <string name="show_system_app">显示系统应用</string>
     <string name="share_manufacturer">厂商</string>
     <string name="share_model">型号</string>
     <string name="share_name">名称</string>
     <string name="share_reason">理由</string>
     <string name="share">分享</string>
+    <string name="check_update">检查更新</string>
+    <string name="check_update_summary">检查是否有更新的版本</string>
 </resources>

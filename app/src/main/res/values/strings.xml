@@ -95,4 +95,6 @@
     <string name="share_name">Name</string>
     <string name="share_reason">Reason</string>
     <string name="share">Share</string>
+    <string name="check_update">Check Update</string>
+    <string name="check_update_summary">Check for newer versions</string>
 </resources>

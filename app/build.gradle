@@ -11,6 +11,8 @@ android {
 
         versionCode 1
         versionName "1.0.0"
+
+        buildConfigField "String", "BUGLY_APPID", '"900058009"'
     }
     buildTypes {
         debug {
@@ -68,4 +70,6 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.7.5'
     compile 'com.beardedhen:androidbootstrap:2.3.0'
     compile 'com.orhanobut:dialogplus:1.11'
+    compile 'com.tencent.bugly:crashreport:2.3.1'
+    compile 'com.tencent.bugly:crashreport_upgrade:1.1.7'
 }
