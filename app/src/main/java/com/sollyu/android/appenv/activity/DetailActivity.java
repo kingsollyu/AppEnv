@@ -255,6 +255,7 @@ public class DetailActivity extends AppCompatActivity {
 
     public void onClickClearApp(View view) {
         if (wipeDataConfirm) {
+            wipeDataConfirm = false;
             LibSuHelper.getInstance().addCommand("pm clear " + applicationInfo.packageName, 0, (commandCode, exitCode, output) -> {
                 if (exitCode != 0)
                     Snackbar.make(view, getString(R.string.wipe_data_error) + exitCode, Snackbar.LENGTH_LONG).show();
@@ -266,7 +267,9 @@ public class DetailActivity extends AppCompatActivity {
             new Timer().schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    Snackbar.make(view, "清除数据为敏感操作，请在2秒内连续点击次。", Snackbar.LENGTH_LONG).show();
+                    if (wipeDataConfirm) {
+                        Snackbar.make(view, "清除数据为敏感操作，请在2秒内连续点击次。", Snackbar.LENGTH_LONG).show();
+                    }
                     wipeDataConfirm = false;
                 }
             }, 2000);
@@ -355,6 +358,8 @@ public class DetailActivity extends AppCompatActivity {
         for (Map.Entry<String, Object> entry : hashMap.entrySet()) {
             displayArrayList.add(entry.getKey());
         }
+
+        Collections.sort(displayArrayList, String.CASE_INSENSITIVE_ORDER);
 
         DialogPlus dialogPlus = DialogPlus.newDialog(view.getContext())
                 .setHeader(R.layout.dialog_plus_header)
