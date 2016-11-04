@@ -9,8 +9,8 @@ android {
         targetSdkVersion 24
         jackOptions { enabled true }
 
-        versionCode 1
-        versionName "1.0.0"
+        versionCode 420
+        versionName "1.0.0.420"
 
         buildConfigField "String", "BUGLY_APPID", '"900058009"'
     }

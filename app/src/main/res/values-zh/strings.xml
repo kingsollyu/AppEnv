@@ -122,4 +122,9 @@
     <string name="share">分享</string>
     <string name="check_update">检查更新</string>
     <string name="check_update_summary">检查是否有更新的版本</string>
+    <string name="save_solution">保存方案</string>
+    <string name="load_solution">加载方案</string>
+    <string name="delete_solution">删除方案</string>
+    <string name="download_solution">下载方案</string>
+    <string name="solution">方案选项</string>
 </resources>
