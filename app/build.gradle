@@ -46,8 +46,8 @@ android {
         props.setProperty("versionBuild" , String.valueOf(versionBuild + 1))
         props.store(propsFile.newWriter(), "gradle auto stroe")
 
-        defaultConfig.versionName = versionSuffix + '.' + versionBuild
-        defaultConfig.versionCode = allBuildCount
+        // defaultConfig.versionName = versionSuffix + '.' + versionBuild
+        // defaultConfig.versionCode = allBuildCount
     }
     android.applicationVariants.all { variant ->
         variant.outputs.each { output ->

@@ -50,7 +50,18 @@
                     "+ 支持云端服务<br>"
                     "+ 增加英文语言<br>"
                     "+ 全新界面<br>"
+                    "<br>"
 
+                    "<h2>开源组许可</h2>"
+                    "FastJson             => <a href="https://github.com/alibaba/fastjson/blob/master/license.txt">Apache 2.0 license</a>.<br>"
+                    "OkHttp               => <a href="https://raw.githubusercontent.com/square/okhttp/master/LICENSE.txt">Apache 2.0 license</a>.<br>"
+                    "LibSuperuser         => <a href="https://raw.githubusercontent.com/Chainfire/libsuperuser/master/LICENSE">Apache 2.0 license</a>.<br>"
+                    "FloatingActionButton => <a href="https://raw.githubusercontent.com/Clans/FloatingActionButton/master/LICENSE">Apache 2.0 license</a>.<br>"
+                    "Commons-IO           => <a href="https://raw.githubusercontent.com/apache/commons-io/master/LICENSE.txt">Apache 2.0 license</a>.<br>"
+                    "Android-Bootstrap    => <a href="https://raw.githubusercontent.com/Bearded-Hen/Android-Bootstrap/master/LICENSE.txt">The MIT License</a><br>"
+
+                    "<br>"
+                    "<br>"
                     "<br>"
                     "<br>"
             ]]>

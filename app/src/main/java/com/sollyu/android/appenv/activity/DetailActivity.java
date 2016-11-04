@@ -37,11 +37,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class DetailActivity extends AppCompatActivity {
 
     private ApplicationInfo applicationInfo    = null;
     private Integer         activityResultCode = 0;
+    private Boolean         wipeDataConfirm    = false;
 
     private Handler uiHandler = new Handler();
 
@@ -90,7 +93,7 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         if (!OtherHelper.getInstance().isUserAppllication(applicationInfo)) {
-            Snackbar.make(findViewById(R.id.content_main), "不建议修改系统应用，修改系统应用可能会手机无法开机", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(findViewById(R.id.content_main), "不建议修改系统应用，修改系统应用可能会手机无法启动", Snackbar.LENGTH_LONG).show();
         }
 
         if (applicationInfo.packageName.equals("com.sina.weibo")) {
@@ -251,12 +254,24 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void onClickClearApp(View view) {
-        LibSuHelper.getInstance().addCommand("pm clear " + applicationInfo.packageName, 0, (commandCode, exitCode, output) -> {
-            if (exitCode != 0)
-                Snackbar.make(view, getString(R.string.wipe_data_error) + exitCode, Snackbar.LENGTH_LONG).show();
-            else
-                Snackbar.make(view, R.string.wipe_data_success, Snackbar.LENGTH_LONG).show();
-        });
+        if (wipeDataConfirm) {
+            LibSuHelper.getInstance().addCommand("pm clear " + applicationInfo.packageName, 0, (commandCode, exitCode, output) -> {
+                if (exitCode != 0)
+                    Snackbar.make(view, getString(R.string.wipe_data_error) + exitCode, Snackbar.LENGTH_LONG).show();
+                else
+                    Snackbar.make(view, R.string.wipe_data_success, Snackbar.LENGTH_LONG).show();
+            });
+        } else {
+            wipeDataConfirm = true;
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    Snackbar.make(view, "清除数据为敏感操作，请在2秒内连续点击次。", Snackbar.LENGTH_LONG).show();
+                    wipeDataConfirm = false;
+                }
+            }, 2000);
+        }
+
     }
 
     public void onClickForceStopApp(View view) {
@@ -424,7 +439,7 @@ public class DetailActivity extends AppCompatActivity {
                 TokenHelper.getInstance().setActivate(false);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(DetailActivity.this);
-                builder.setTitle("错误");
+                builder.setTitle(R.string.error);
                 builder.setMessage(e.getMessage());
                 builder.setPositiveButton("重新输入激活码", (dialog, which) -> startActivityForResult(new Intent(DetailActivity.this, LoginActivity.class), 0));
                 builder.setNegativeButton("取消", null);
