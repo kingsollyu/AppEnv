@@ -60,22 +60,23 @@ public class RandomHelper {
 
     public HashMap<String, Object> getTelephonyGetNetworkTypeList() {
         HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("GPRS (2G)" , TelephonyManager.NETWORK_TYPE_GPRS);
-        hashMap.put("CDMA (3G)" , TelephonyManager.NETWORK_TYPE_CDMA);
-        hashMap.put("HSDPA(3G+)", TelephonyManager.NETWORK_TYPE_HSDPA);
-        hashMap.put("HSUPA(3G+)", TelephonyManager.NETWORK_TYPE_HSUPA);
-        hashMap.put("LTE  (4G)" , TelephonyManager.NETWORK_TYPE_LTE);
-        hashMap.put("EDGE"      , TelephonyManager.NETWORK_TYPE_EDGE);
-        hashMap.put("UMTS"      , TelephonyManager.NETWORK_TYPE_UMTS);
-        hashMap.put("EVDO_0"    , TelephonyManager.NETWORK_TYPE_EVDO_0);
-        hashMap.put("EVDO_A"    , TelephonyManager.NETWORK_TYPE_EVDO_A);
-        hashMap.put("1xRTT"     , TelephonyManager.NETWORK_TYPE_1xRTT);
-        hashMap.put("HSPA"      , TelephonyManager.NETWORK_TYPE_HSPA);
-        hashMap.put("IDEN"      , TelephonyManager.NETWORK_TYPE_IDEN);
-        hashMap.put("EVDO_B"    , TelephonyManager.NETWORK_TYPE_EVDO_B);
-        hashMap.put("EHRPD"     , TelephonyManager.NETWORK_TYPE_EHRPD);
-        hashMap.put("HSPAP"     , TelephonyManager.NETWORK_TYPE_HSPAP);
-        hashMap.put("Unknown"   , TelephonyManager.NETWORK_TYPE_UNKNOWN);
+        hashMap.put("00.Unknown"   , TelephonyManager.NETWORK_TYPE_UNKNOWN);
+        hashMap.put("01.GPRS (2G)" , TelephonyManager.NETWORK_TYPE_GPRS);
+        hashMap.put("02.CDMA (3G)" , TelephonyManager.NETWORK_TYPE_CDMA);
+        hashMap.put("03.HSDPA(3G+)", TelephonyManager.NETWORK_TYPE_HSDPA);
+        hashMap.put("04.HSUPA(3G+)", TelephonyManager.NETWORK_TYPE_HSUPA);
+        hashMap.put("05.LTE  (4G)" , TelephonyManager.NETWORK_TYPE_LTE);
+        hashMap.put("06.WIFI"      , 99);
+        hashMap.put("07.EDGE"      , TelephonyManager.NETWORK_TYPE_EDGE);
+        hashMap.put("08.UMTS"      , TelephonyManager.NETWORK_TYPE_UMTS);
+        hashMap.put("09.EVDO_0"    , TelephonyManager.NETWORK_TYPE_EVDO_0);
+        hashMap.put("10.EVDO_A"    , TelephonyManager.NETWORK_TYPE_EVDO_A);
+        hashMap.put("11.1xRTT"     , TelephonyManager.NETWORK_TYPE_1xRTT);
+        hashMap.put("12.HSPA"      , TelephonyManager.NETWORK_TYPE_HSPA);
+        hashMap.put("13.IDEN"      , TelephonyManager.NETWORK_TYPE_IDEN);
+        hashMap.put("14.EVDO_B"    , TelephonyManager.NETWORK_TYPE_EVDO_B);
+        hashMap.put("15.EHRPD"     , TelephonyManager.NETWORK_TYPE_EHRPD);
+        hashMap.put("16.HSPAP"     , TelephonyManager.NETWORK_TYPE_HSPAP);
         return hashMap;
     }
 

@@ -1,5 +1,7 @@
 package com.sollyu.android.appenv;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
@@ -10,8 +12,10 @@ import com.sollyu.android.appenv.module.AppInfo;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
+import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
+import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
@@ -62,10 +66,12 @@ public class MainXposed implements IXposedHookLoadPackage, IXposedHookZygoteInit
             if (!OtherHelper.getInstance().isNull(packageAppInfo.buildManufacturer)) {
                 XposedHookHelper.getInstances(loadPackageParam).Build.MANUFACTURER(packageAppInfo.buildManufacturer);
                 XposedHookHelper.getInstances(loadPackageParam).Build.BRAND(packageAppInfo.buildManufacturer);
+                XposedHookHelper.getInstances(loadPackageParam).Build.PRODUCT(packageAppInfo.buildManufacturer);
             }
             if (!OtherHelper.getInstance().isNull(packageAppInfo.buildModel)) {
                 XposedHookHelper.getInstances(loadPackageParam).Build.MODEL(packageAppInfo.buildModel);
                 XposedHookHelper.getInstances(loadPackageParam).Build.DEVICE(packageAppInfo.buildModel);
+                XposedHookHelper.getInstances(loadPackageParam).Build.HARDWARE(packageAppInfo.buildModel);
             }
             if (!OtherHelper.getInstance().isNull(packageAppInfo.buildSerial)) {
                 XposedHookHelper.getInstances(loadPackageParam).Build.SERIAL(packageAppInfo.buildSerial);
@@ -78,7 +84,16 @@ public class MainXposed implements IXposedHookLoadPackage, IXposedHookZygoteInit
                 XposedHookHelper.getInstances(loadPackageParam).Telephony.getSimOperatorName(packageAppInfo.telephonyGetSimOperatorName);
             }
             if (!OtherHelper.getInstance().isNull(packageAppInfo.telephonyGetPhoneType)) {
-                XposedHookHelper.getInstances(loadPackageParam).Telephony.getPhoneType(Integer.parseInt(packageAppInfo.telephonyGetPhoneType));
+                // 拦截网络状态
+                XposedBridge.hookAllMethods(NetworkInfo.class, "getType", new XC_MethodHook() {
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        param.setResult(packageAppInfo.telephonyGetPhoneType.equals("99") ? ConnectivityManager.TYPE_WIFI : ConnectivityManager.TYPE_MOBILE);
+                    }
+                });
+                // 设置手机SIM网络状态
+                if (!packageAppInfo.telephonyGetPhoneType.equals("99"))
+                    XposedHookHelper.getInstances(loadPackageParam).Telephony.getPhoneType(Integer.parseInt(packageAppInfo.telephonyGetPhoneType));
             }
             if (!OtherHelper.getInstance().isNull(packageAppInfo.telephonyGetDeviceId)) {
                 XposedHookHelper.getInstances(loadPackageParam).Telephony.getDeviceId(packageAppInfo.telephonyGetDeviceId);

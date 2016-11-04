@@ -9,8 +9,10 @@ android {
         targetSdkVersion 24
         jackOptions { enabled true }
 
-        versionCode 1
-        versionName "1.0.0"
+        versionCode 490
+        versionName "1.0.0.490"
+
+        buildConfigField "String", "BUGLY_APPID", '"900058009"'
     }
     buildTypes {
         debug {
@@ -46,8 +48,8 @@ android {
         props.setProperty("versionBuild" , String.valueOf(versionBuild + 1))
         props.store(propsFile.newWriter(), "gradle auto stroe")
 
-        defaultConfig.versionName = versionSuffix + '.' + versionBuild
-        defaultConfig.versionCode = allBuildCount
+        // defaultConfig.versionName = versionSuffix + '.' + versionBuild
+        // defaultConfig.versionCode = allBuildCount
     }
     android.applicationVariants.all { variant ->
         variant.outputs.each { output ->
@@ -68,4 +70,6 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.7.5'
     compile 'com.beardedhen:androidbootstrap:2.3.0'
     compile 'com.orhanobut:dialogplus:1.11'
+    compile 'com.tencent.bugly:crashreport:2.3.1'
+    compile 'com.tencent.bugly:crashreport_upgrade:1.1.7'
 }

@@ -1,7 +1,5 @@
 package com.sollyu.android.appenv.module;
 
-import android.util.Log;
-
 import com.alibaba.fastjson.JSON;
 
 import java.lang.reflect.Field;
@@ -77,7 +75,7 @@ public class AppInfo {
     public boolean isEmpty() {
         for (Field field : this.getClass().getFields()) {
             try {
-                if (field.get(this) != null)
+                if (field.get(this) != null && !field.get(this).toString().isEmpty())
                     return false;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -92,8 +90,6 @@ public class AppInfo {
     }
 
     public void merge(AppInfo allAppInfo) {
-        Log.d(TAG, "merge() called with: allAppInfo = [" + allAppInfo + "]");
-
         for (Field field : this.getClass().getFields()) {
             try {
                 Object thisObject  = field.get(this);
