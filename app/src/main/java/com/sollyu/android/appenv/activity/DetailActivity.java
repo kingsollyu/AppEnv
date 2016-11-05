@@ -203,48 +203,52 @@ public class DetailActivity extends AppCompatActivity {
         if (appInfo == null)
             return;
 
-        DetailItem manufacturer          = (DetailItem) findViewById(R.id.manufacturer);
-        DetailItem model                 = (DetailItem) findViewById(R.id.model);
-        DetailItem serial                = (DetailItem) findViewById(R.id.serial);
-        DetailItem phone_number          = (DetailItem) findViewById(R.id.phone_number);
-        DetailItem phone_network_type    = (DetailItem) findViewById(R.id.phone_network_type);
-        DetailItem phone_device_id       = (DetailItem) findViewById(R.id.phone_device_id);
-        DetailItem sim_serial_number     = (DetailItem) findViewById(R.id.sim_serial_number);
-        DetailItem wifi_info_ssid        = (DetailItem) findViewById(R.id.wifi_info_ssid);
-        DetailItem wifi_info_mac_address = (DetailItem) findViewById(R.id.wifi_info_mac_address);
+        DetailItem manufacturer            = (DetailItem) findViewById(R.id.manufacturer);
+        DetailItem model                   = (DetailItem) findViewById(R.id.model);
+        DetailItem serial                  = (DetailItem) findViewById(R.id.serial);
+        DetailItem phone_number            = (DetailItem) findViewById(R.id.phone_number);
+        DetailItem phone_network_type      = (DetailItem) findViewById(R.id.phone_network_type);
+        DetailItem phone_device_id         = (DetailItem) findViewById(R.id.phone_device_id);
+        DetailItem sim_serial_number       = (DetailItem) findViewById(R.id.sim_serial_number);
+        DetailItem wifi_info_ssid          = (DetailItem) findViewById(R.id.wifi_info_ssid);
+        DetailItem wifi_info_mac_address   = (DetailItem) findViewById(R.id.wifi_info_mac_address);
+        DetailItem settingsSecureAndroidId = (DetailItem) findViewById(R.id.settingsSecureAndroidId);
 
-        manufacturer.getEditText().setText(appInfo.buildManufacturer);
-        model.getEditText().setText(appInfo.buildModel);
-        serial.getEditText().setText(appInfo.buildSerial);
-        phone_number.getEditText().setText(appInfo.telephonyGetLine1Number);
-        phone_network_type.getEditText().setText(appInfo.telephonyGetNetworkType);
-        phone_device_id.getEditText().setText(appInfo.telephonyGetDeviceId);
-        sim_serial_number.getEditText().setText(appInfo.telephonyGetSimSerialNumber);
-        wifi_info_ssid.getEditText().setText(appInfo.wifiInfoGetSSID);
-        wifi_info_mac_address.getEditText().setText(appInfo.wifiInfoGetMacAddress);
+        manufacturer.getEditText()           .setText(appInfo.buildManufacturer);
+        model.getEditText()                  .setText(appInfo.buildModel);
+        serial.getEditText()                 .setText(appInfo.buildSerial);
+        phone_number.getEditText()           .setText(appInfo.telephonyGetLine1Number);
+        phone_network_type.getEditText()     .setText(appInfo.telephonyGetNetworkType);
+        phone_device_id.getEditText()        .setText(appInfo.telephonyGetDeviceId);
+        sim_serial_number.getEditText()      .setText(appInfo.telephonyGetSimSerialNumber);
+        wifi_info_ssid.getEditText()         .setText(appInfo.wifiInfoGetSSID);
+        wifi_info_mac_address.getEditText()  .setText(appInfo.wifiInfoGetMacAddress);
+        settingsSecureAndroidId.getEditText().setText(appInfo.settingsSecureAndroidId);
     }
 
     private AppInfo uiToAppInfo() {
-        DetailItem manufacturer          = (DetailItem) findViewById(R.id.manufacturer);
-        DetailItem model                 = (DetailItem) findViewById(R.id.model);
-        DetailItem serial                = (DetailItem) findViewById(R.id.serial);
-        DetailItem phone_number          = (DetailItem) findViewById(R.id.phone_number);
-        DetailItem phone_network_type    = (DetailItem) findViewById(R.id.phone_network_type);
-        DetailItem phone_device_id       = (DetailItem) findViewById(R.id.phone_device_id);
-        DetailItem sim_serial_number     = (DetailItem) findViewById(R.id.sim_serial_number);
-        DetailItem wifi_info_ssid        = (DetailItem) findViewById(R.id.wifi_info_ssid);
-        DetailItem wifi_info_mac_address = (DetailItem) findViewById(R.id.wifi_info_mac_address);
+        DetailItem manufacturer            = (DetailItem) findViewById(R.id.manufacturer);
+        DetailItem model                   = (DetailItem) findViewById(R.id.model);
+        DetailItem serial                  = (DetailItem) findViewById(R.id.serial);
+        DetailItem phone_number            = (DetailItem) findViewById(R.id.phone_number);
+        DetailItem phone_network_type      = (DetailItem) findViewById(R.id.phone_network_type);
+        DetailItem phone_device_id         = (DetailItem) findViewById(R.id.phone_device_id);
+        DetailItem sim_serial_number       = (DetailItem) findViewById(R.id.sim_serial_number);
+        DetailItem wifi_info_ssid          = (DetailItem) findViewById(R.id.wifi_info_ssid);
+        DetailItem wifi_info_mac_address   = (DetailItem) findViewById(R.id.wifi_info_mac_address);
+        DetailItem settingsSecureAndroidId = (DetailItem) findViewById(R.id.settingsSecureAndroidId);
 
         AppInfo appInfo = new AppInfo();
-        appInfo.buildManufacturer = manufacturer.getEditText().getText().toString();
-        appInfo.buildModel = model.getEditText().getText().toString();
-        appInfo.buildSerial = serial.getEditText().getText().toString();
-        appInfo.telephonyGetLine1Number = phone_number.getEditText().getText().toString();
-        appInfo.telephonyGetNetworkType = phone_network_type.getEditText().getText().toString();
-        appInfo.telephonyGetDeviceId = phone_device_id.getEditText().getText().toString();
+        appInfo.buildManufacturer           = manufacturer.getEditText().getText().toString();
+        appInfo.buildModel                  = model.getEditText().getText().toString();
+        appInfo.buildSerial                 = serial.getEditText().getText().toString();
+        appInfo.telephonyGetLine1Number     = phone_number.getEditText().getText().toString();
+        appInfo.telephonyGetNetworkType     = phone_network_type.getEditText().getText().toString();
+        appInfo.telephonyGetDeviceId        = phone_device_id.getEditText().getText().toString();
         appInfo.telephonyGetSimSerialNumber = sim_serial_number.getEditText().getText().toString();
-        appInfo.wifiInfoGetSSID = wifi_info_ssid.getEditText().getText().toString();
-        appInfo.wifiInfoGetMacAddress = wifi_info_mac_address.getEditText().getText().toString();
+        appInfo.wifiInfoGetSSID             = wifi_info_ssid.getEditText().getText().toString();
+        appInfo.wifiInfoGetMacAddress       = wifi_info_mac_address.getEditText().getText().toString();
+        appInfo.settingsSecureAndroidId     = settingsSecureAndroidId.getEditText().getText().toString();
 
         return appInfo;
     }
@@ -445,6 +449,7 @@ public class DetailActivity extends AppCompatActivity {
                 appInfo.settingsSecureAndroidId = serverResult.getDataJson().getString("settingsSecureAndroidId");
                 appInfo.webUserAgent = serverResult.getDataJson().getString("webUserAgent");
                 appInfo.displayDip = serverResult.getDataJson().getString("displayDip");
+                appInfo.settingsSecureAndroidId = serverResult.getDataJson().getString("settingsSecureAndroidId");
 
                 uiHandler.post(() -> appInfoToUi(appInfo));
                 Snackbar.make(view, "远程随机成功！可用点数 -2！", Snackbar.LENGTH_LONG).show();
@@ -549,5 +554,10 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void onMenuDownloadSolution(MenuItem item) {
+    }
+
+    public void onClickAndroidId(View view) {
+        DetailItem detailItem = (DetailItem) view;
+        detailItem.getEditText().setText(RandomHelper.getInstance().randomAndroidId());
     }
 }

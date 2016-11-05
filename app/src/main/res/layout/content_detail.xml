@@ -110,6 +110,16 @@
             app:icon_text="{fa-tasks}"
             />
 
+        <com.sollyu.android.appenv.view.DetailItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClickAndroidId"
+            android:id="@+id/settingsSecureAndroidId"
+            app:hint="Android Id"
+            app:icon_button="{fa_random}"
+            app:icon_text="{fa-fax}"
+            />
+
     </LinearLayout>
 
 

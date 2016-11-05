@@ -53,6 +53,9 @@
 
 -keep class android.** {*;}
 
+-keepclassmembers class com.sollyu.android.appenv.module.AppInfo {
+    public <fields>;
+}
 -keep class * implements de.robv.android.xposed.IXposedHookLoadPackage {
     public void handleLoadPackage(de.robv.android.xposed.callbacks.XC_LoadPackage$LoadPackageParam);
 }
