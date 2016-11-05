@@ -2,6 +2,7 @@ package com.sollyu.android.appenv;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.provider.Settings;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
@@ -111,8 +112,10 @@ public class MainXposed implements IXposedHookLoadPackage, IXposedHookZygoteInit
             }
 
             if (!OtherHelper.getInstance().isNull(packageAppInfo.settingsSecureAndroidId)) {
-                XposedHookHelper.getInstances(loadPackageParam).Settings.System.getString("android_id", packageAppInfo.settingsSecureAndroidId);
+                XposedHookHelper.getInstances(loadPackageParam).Settings.System.getString(Settings.Secure.ANDROID_ID, packageAppInfo.settingsSecureAndroidId);
             }
+
+
         } catch (Throwable throwable) {
             Log.e(TAG, "handleLoadPackage: " + throwable.getLocalizedMessage(), throwable);
         }

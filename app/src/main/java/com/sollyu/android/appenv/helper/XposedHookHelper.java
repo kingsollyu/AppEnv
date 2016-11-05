@@ -15,6 +15,8 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
  */
 public class XposedHookHelper {
 
+    private static final String TAG = "AppEnv";
+
     public BuildImpl     Build     = null;
     public TelephonyImpl Telephony = null;
     public WifiImpl      Wifi      = null;
@@ -330,7 +332,16 @@ public class XposedHookHelper {
                 XposedBridge.hookAllMethods(android.provider.Settings.System.class, "getString", new XC_MethodHook() {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                        if (param.args.length == 2 && param.args[1] != null && hashMap.containsKey(param.args[1].toString())) {
+                        if (param.args.length > 1 && param.args[1] != null && hashMap.containsKey(param.args[1].toString())) {
+                            param.setResult(hashMap.get(param.args[1].toString()));
+                        }
+                    }
+                });
+
+                XposedBridge.hookAllMethods(android.provider.Settings.Secure.class, "getString", new XC_MethodHook() {
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        if (param.args.length > 1 && param.args[1] != null && hashMap.containsKey(param.args[1].toString())) {
                             param.setResult(hashMap.get(param.args[1].toString()));
                         }
                     }

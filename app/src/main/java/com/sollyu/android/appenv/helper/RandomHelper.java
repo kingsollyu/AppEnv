@@ -80,32 +80,6 @@ public class RandomHelper {
         return hashMap;
     }
 
-    public AppInfo randomAll() {
-        ArrayList<String>       manufacturerStringArrayList = PhoneHelper.getInstance().getManufacturerList();
-        String                  randomManufacturer          = manufacturerStringArrayList.get(randomInt(0, manufacturerStringArrayList.size() - 1));
-        HashMap<String, String> hashMap                     = PhoneHelper.getInstance().getModelList(randomManufacturer);
-
-        ArrayList<String> selectStringArrayList = new ArrayList<>();
-        for (Map.Entry<String, String> entry : hashMap.entrySet()) {
-            if (!selectStringArrayList.contains(entry.getKey())) {
-                selectStringArrayList.add(entry.getKey());
-            }
-        }
-
-        AppInfo appInfo = new AppInfo();
-        appInfo.buildManufacturer = randomManufacturer;
-        appInfo.buildModel = hashMap.get(selectStringArrayList.get(randomInt(0, selectStringArrayList.size() - 1)));
-        appInfo.buildSerial = randomBuildSerial();
-        appInfo.telephonyGetLine1Number = randomTelephonyGetLine1Number();
-        appInfo.telephonyGetDeviceId = randomTelephonyGetDeviceId();
-        appInfo.telephonyGetNetworkType = String.valueOf(randomInt(0, 15));
-        appInfo.telephonyGetSimSerialNumber = randomTelephonySimSerialNumber();
-        appInfo.wifiInfoGetSSID = randomWifiInfoSSID();
-        appInfo.wifiInfoGetMacAddress = randomWifiInfoMacAddress();
-
-        return appInfo;
-    }
-
     public String randomTelephonyGetDeviceId() {
         String imeiCode = "86" + randomString(12, false, false, true);
         return imeiCode + IMEIGen.genCode(imeiCode);
@@ -122,5 +96,36 @@ public class RandomHelper {
 
     public String randomWifiInfoMacAddress() {
         return RandomMac.getMacAddrWithFormat(":");
+    }
+
+    public String randomAndroidId() {
+        return randomString(15, true, false, true);
+    }
+
+    public AppInfo randomAll() {
+        ArrayList<String>       manufacturerStringArrayList = PhoneHelper.getInstance().getManufacturerList();
+        String                  randomManufacturer          = manufacturerStringArrayList.get(randomInt(0, manufacturerStringArrayList.size() - 1));
+        HashMap<String, String> hashMap                     = PhoneHelper.getInstance().getModelList(randomManufacturer);
+
+        ArrayList<String> selectStringArrayList = new ArrayList<>();
+        for (Map.Entry<String, String> entry : hashMap.entrySet()) {
+            if (!selectStringArrayList.contains(entry.getKey())) {
+                selectStringArrayList.add(entry.getKey());
+            }
+        }
+
+        AppInfo appInfo = new AppInfo();
+        appInfo.buildManufacturer           = randomManufacturer;
+        appInfo.buildModel                  = hashMap.get(selectStringArrayList.get(randomInt(0, selectStringArrayList.size() - 1)));
+        appInfo.buildSerial                 = randomBuildSerial();
+        appInfo.telephonyGetLine1Number     = randomTelephonyGetLine1Number();
+        appInfo.telephonyGetDeviceId        = randomTelephonyGetDeviceId();
+        appInfo.telephonyGetNetworkType     = String.valueOf(randomInt(0, 15));
+        appInfo.telephonyGetSimSerialNumber = randomTelephonySimSerialNumber();
+        appInfo.wifiInfoGetSSID             = randomWifiInfoSSID();
+        appInfo.wifiInfoGetMacAddress       = randomWifiInfoMacAddress();
+        appInfo.settingsSecureAndroidId     = randomAndroidId();
+
+        return appInfo;
     }
 }
