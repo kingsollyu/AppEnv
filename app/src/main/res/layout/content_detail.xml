@@ -103,6 +103,16 @@
         <com.sollyu.android.appenv.view.DetailItem
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="onClickSimSubscriberId"
+            android:id="@+id/sim_subscriber_id"
+            app:hint="@string/sim_subscriber_id"
+            app:icon_button="{fa_random}"
+            app:icon_text="{fa-certificate}"
+            />
+
+        <com.sollyu.android.appenv.view.DetailItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:onClick="onClickWifiInfoSSID"
             android:id="@+id/wifi_info_ssid"
             app:hint="@string/wifi_info_ssid"

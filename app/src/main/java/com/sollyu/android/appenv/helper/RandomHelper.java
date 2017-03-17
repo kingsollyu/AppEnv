@@ -170,10 +170,15 @@ public class RandomHelper {
         appInfo.telephonyGetDeviceId        = randomTelephonyGetDeviceId();
         appInfo.telephonyGetNetworkType     = String.valueOf(randomInt(0, 15));
         appInfo.telephonyGetSimSerialNumber = randomTelephonySimSerialNumber();
+        appInfo.telephonyGetSubscriberId    = randomSimSubscriberId();
         appInfo.wifiInfoGetSSID             = randomWifiInfoSSID();
         appInfo.wifiInfoGetMacAddress       = randomWifiInfoMacAddress();
         appInfo.settingsSecureAndroidId     = randomAndroidId();
 
         return appInfo;
+    }
+
+    public String randomSimSubscriberId() {
+        return randomString(20, false, false, true);
     }
 }

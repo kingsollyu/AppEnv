@@ -211,6 +211,7 @@ public class DetailActivity extends AppCompatActivity {
         DetailItem phone_network_type      = (DetailItem) findViewById(R.id.phone_network_type);
         DetailItem phone_device_id         = (DetailItem) findViewById(R.id.phone_device_id);
         DetailItem sim_serial_number       = (DetailItem) findViewById(R.id.sim_serial_number);
+        DetailItem sim_subscriber_id       = (DetailItem) findViewById(R.id.sim_subscriber_id);
         DetailItem wifi_info_ssid          = (DetailItem) findViewById(R.id.wifi_info_ssid);
         DetailItem wifi_info_mac_address   = (DetailItem) findViewById(R.id.wifi_info_mac_address);
         DetailItem settingsSecureAndroidId = (DetailItem) findViewById(R.id.settingsSecureAndroidId);
@@ -223,6 +224,7 @@ public class DetailActivity extends AppCompatActivity {
         phone_network_type.getEditText()     .setText(appInfo.telephonyGetNetworkType);
         phone_device_id.getEditText()        .setText(appInfo.telephonyGetDeviceId);
         sim_serial_number.getEditText()      .setText(appInfo.telephonyGetSimSerialNumber);
+        sim_subscriber_id.getEditText()      .setText(appInfo.telephonyGetSubscriberId);
         wifi_info_ssid.getEditText()         .setText(appInfo.wifiInfoGetSSID);
         wifi_info_mac_address.getEditText()  .setText(appInfo.wifiInfoGetMacAddress);
         settingsSecureAndroidId.getEditText().setText(appInfo.settingsSecureAndroidId);
@@ -237,6 +239,7 @@ public class DetailActivity extends AppCompatActivity {
         DetailItem phone_network_type      = (DetailItem) findViewById(R.id.phone_network_type);
         DetailItem phone_device_id         = (DetailItem) findViewById(R.id.phone_device_id);
         DetailItem sim_serial_number       = (DetailItem) findViewById(R.id.sim_serial_number);
+        DetailItem sim_subscriber_id       = (DetailItem) findViewById(R.id.sim_subscriber_id);
         DetailItem wifi_info_ssid          = (DetailItem) findViewById(R.id.wifi_info_ssid);
         DetailItem wifi_info_mac_address   = (DetailItem) findViewById(R.id.wifi_info_mac_address);
         DetailItem settingsSecureAndroidId = (DetailItem) findViewById(R.id.settingsSecureAndroidId);
@@ -250,6 +253,7 @@ public class DetailActivity extends AppCompatActivity {
         appInfo.telephonyGetNetworkType     = phone_network_type.getEditText().getText().toString();
         appInfo.telephonyGetDeviceId        = phone_device_id.getEditText().getText().toString();
         appInfo.telephonyGetSimSerialNumber = sim_serial_number.getEditText().getText().toString();
+        appInfo.telephonyGetSubscriberId    = sim_subscriber_id.getEditText().getText().toString();
         appInfo.wifiInfoGetSSID             = wifi_info_ssid.getEditText().getText().toString();
         appInfo.wifiInfoGetMacAddress       = wifi_info_mac_address.getEditText().getText().toString();
         appInfo.settingsSecureAndroidId     = settingsSecureAndroidId.getEditText().getText().toString();
@@ -568,5 +572,10 @@ public class DetailActivity extends AppCompatActivity {
     public void onClickVersionName(View view) {
         DetailItem detailItem = (DetailItem) view;
         detailItem.getEditText().setText(RandomHelper.getInstance().randomBuildVersionName());
+    }
+
+    public void onClickSimSubscriberId(View view) {
+        DetailItem detailItem = (DetailItem) view;
+        detailItem.getEditText().setText(RandomHelper.getInstance().randomSimSubscriberId());
     }
 }

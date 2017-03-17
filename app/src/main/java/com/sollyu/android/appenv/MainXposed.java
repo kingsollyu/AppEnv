@@ -105,6 +105,9 @@ public class MainXposed implements IXposedHookLoadPackage, IXposedHookZygoteInit
             if (!OtherHelper.getInstance().isNull(packageAppInfo.telephonyGetSimSerialNumber)) {
                 XposedHookHelper.getInstances(loadPackageParam).Telephony.getSimSerialNumber(packageAppInfo.telephonyGetSimSerialNumber);
             }
+            if (!OtherHelper.getInstance().isNull(packageAppInfo.telephonyGetSubscriberId)) {
+                XposedHookHelper.getInstances(loadPackageParam).Telephony.getSubscriberId(packageAppInfo.telephonyGetSubscriberId);
+            }
 
 
             if (!OtherHelper.getInstance().isNull(packageAppInfo.wifiInfoGetSSID)) {

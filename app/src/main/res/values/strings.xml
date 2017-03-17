@@ -103,4 +103,5 @@
     <string name="download_solution">下载方案</string>
     <string name="solution">方案选项</string>
     <string name="versionName">软件版本</string>
+    <string name="sim_subscriber_id">ICCID</string>
 </resources>
