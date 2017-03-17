@@ -8,8 +8,8 @@
         <option name="gradleHome" value="$APPLICATION_HOME_DIR$/gradle/gradle-2.14.1" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/app" />
+            <option value="/Volumes/exFAT/Mac/Developer/AndroidStudioProjects/AppEnv" />
+            <option value="/Volumes/exFAT/Mac/Developer/AndroidStudioProjects/AppEnv/app" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
