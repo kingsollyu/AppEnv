@@ -53,6 +53,16 @@
         <com.sollyu.android.appenv.view.DetailItem
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="onClickVersionName"
+            android:id="@+id/versionName"
+            app:hint="@string/versionName"
+            app:icon_button="{fa_random}"
+            app:icon_text="{fa-bolt}"
+            />
+
+        <com.sollyu.android.appenv.view.DetailItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:onClick="onClickLineNumber"
             android:id="@+id/phone_number"
             app:hint="@string/phone_number"

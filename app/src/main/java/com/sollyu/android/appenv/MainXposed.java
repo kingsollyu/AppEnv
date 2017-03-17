@@ -77,6 +77,9 @@ public class MainXposed implements IXposedHookLoadPackage, IXposedHookZygoteInit
             if (!OtherHelper.getInstance().isNull(packageAppInfo.buildSerial)) {
                 XposedHookHelper.getInstances(loadPackageParam).Build.SERIAL(packageAppInfo.buildSerial);
             }
+            if (!OtherHelper.getInstance().isNull(packageAppInfo.buildVersionRelease)) {
+                XposedHookHelper.getInstances(loadPackageParam).Build.Version.RELEASE(packageAppInfo.buildVersionRelease);
+            }
 
             if (!OtherHelper.getInstance().isNull(packageAppInfo.telephonyGetLine1Number)) {
                 XposedHookHelper.getInstances(loadPackageParam).Telephony.getLine1Number(packageAppInfo.telephonyGetLine1Number);

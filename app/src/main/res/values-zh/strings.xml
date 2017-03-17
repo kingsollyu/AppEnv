@@ -127,4 +127,5 @@
     <string name="delete_solution">删除方案</string>
     <string name="download_solution">下载方案</string>
     <string name="solution">方案选项</string>
+    <string name="versionName">软件版本</string>
 </resources>

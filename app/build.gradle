@@ -2,15 +2,15 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId "com.sollyu.android.appenv"
         minSdkVersion 17
         targetSdkVersion 24
         jackOptions { enabled true }
 
-        versionCode 510
-        versionName "1.0.0.510"
+        versionCode 506
+        versionName "3.1.0.506"
 
         buildConfigField "String", "BUGLY_APPID", '"900058009"'
     }
@@ -25,7 +25,7 @@ android {
         }
     }
     productFlavors {
-        develop {
+        QQ406861884 {
             applicationIdSuffix ".dev"
             versionNameSuffix ' dev'
         }

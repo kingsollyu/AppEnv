@@ -206,6 +206,7 @@ public class DetailActivity extends AppCompatActivity {
         DetailItem manufacturer            = (DetailItem) findViewById(R.id.manufacturer);
         DetailItem model                   = (DetailItem) findViewById(R.id.model);
         DetailItem serial                  = (DetailItem) findViewById(R.id.serial);
+        DetailItem versionName             = (DetailItem) findViewById(R.id.versionName);
         DetailItem phone_number            = (DetailItem) findViewById(R.id.phone_number);
         DetailItem phone_network_type      = (DetailItem) findViewById(R.id.phone_network_type);
         DetailItem phone_device_id         = (DetailItem) findViewById(R.id.phone_device_id);
@@ -217,6 +218,7 @@ public class DetailActivity extends AppCompatActivity {
         manufacturer.getEditText()           .setText(appInfo.buildManufacturer);
         model.getEditText()                  .setText(appInfo.buildModel);
         serial.getEditText()                 .setText(appInfo.buildSerial);
+        versionName.getEditText()            .setText(appInfo.buildVersionRelease);
         phone_number.getEditText()           .setText(appInfo.telephonyGetLine1Number);
         phone_network_type.getEditText()     .setText(appInfo.telephonyGetNetworkType);
         phone_device_id.getEditText()        .setText(appInfo.telephonyGetDeviceId);
@@ -230,6 +232,7 @@ public class DetailActivity extends AppCompatActivity {
         DetailItem manufacturer            = (DetailItem) findViewById(R.id.manufacturer);
         DetailItem model                   = (DetailItem) findViewById(R.id.model);
         DetailItem serial                  = (DetailItem) findViewById(R.id.serial);
+        DetailItem versionName             = (DetailItem) findViewById(R.id.versionName);
         DetailItem phone_number            = (DetailItem) findViewById(R.id.phone_number);
         DetailItem phone_network_type      = (DetailItem) findViewById(R.id.phone_network_type);
         DetailItem phone_device_id         = (DetailItem) findViewById(R.id.phone_device_id);
@@ -242,6 +245,7 @@ public class DetailActivity extends AppCompatActivity {
         appInfo.buildManufacturer           = manufacturer.getEditText().getText().toString();
         appInfo.buildModel                  = model.getEditText().getText().toString();
         appInfo.buildSerial                 = serial.getEditText().getText().toString();
+        appInfo.buildVersionRelease         = versionName.getEditText().getText().toString();
         appInfo.telephonyGetLine1Number     = phone_number.getEditText().getText().toString();
         appInfo.telephonyGetNetworkType     = phone_network_type.getEditText().getText().toString();
         appInfo.telephonyGetDeviceId        = phone_device_id.getEditText().getText().toString();
@@ -559,5 +563,10 @@ public class DetailActivity extends AppCompatActivity {
     public void onClickAndroidId(View view) {
         DetailItem detailItem = (DetailItem) view;
         detailItem.getEditText().setText(RandomHelper.getInstance().randomAndroidId());
+    }
+
+    public void onClickVersionName(View view) {
+        DetailItem detailItem = (DetailItem) view;
+        detailItem.getEditText().setText(RandomHelper.getInstance().randomBuildVersionName());
     }
 }
