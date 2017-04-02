@@ -2,8 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file:///Volumes/exFAT/Mac/Developer/AndroidStudioProjects/AppEnv/AppEnv.iml" filepath="/Volumes/exFAT/Mac/Developer/AndroidStudioProjects/AppEnv/AppEnv.iml" />
       <module fileurl="file:///Volumes/exFAT/Mac/Developer/AndroidStudioProjects/AppEnv/app/app.iml" filepath="/Volumes/exFAT/Mac/Developer/AndroidStudioProjects/AppEnv/app/app.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/AppEnv.iml" filepath="$PROJECT_DIR$/AppEnv.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+>>>>>>> custom/QQ406861884
     </modules>
   </component>
 </project>

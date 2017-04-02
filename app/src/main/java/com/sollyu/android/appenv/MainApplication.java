@@ -5,7 +5,6 @@ import android.app.Application;
 import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.sollyu.android.appenv.helper.PhoneHelper;
 import com.tencent.bugly.Bugly;
-import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
 
@@ -45,7 +44,7 @@ public class MainApplication extends Application {
         CrashReport.initCrashReport(getApplicationContext(), BuildConfig.BUGLY_APPID, BuildConfig.DEBUG);
 
         Bugly.init(getApplicationContext(), BuildConfig.BUGLY_APPID, BuildConfig.DEBUG);
-        Beta.init(getApplicationContext(), BuildConfig.DEBUG);
+        // Beta.init(getApplicationContext(), BuildConfig.DEBUG);
 
         // 释放文件
         try {
