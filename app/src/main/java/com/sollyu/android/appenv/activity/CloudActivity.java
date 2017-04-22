@@ -1,7 +1,9 @@
 package com.sollyu.android.appenv.activity;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -26,22 +28,25 @@ import com.sollyu.android.appenv.helper.SolutionHelper;
 import com.sollyu.android.appenv.helper.TokenHelper;
 
 import org.apache.commons.io.FileUtils;
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.io.File;
 import java.io.IOException;
 
-public class CloudActivity extends AppCompatActivity {
+@ContentView(R.layout.activity_cloud)
+public class CloudActivity extends BaseActivity {
 
     private static final String TAG = "AppEnv";
 
-    private AwesomeTextView infoAwesomeTextView = null;
+    @ViewInject(R.id.info)
+    private AwesomeTextView infoAwesomeTextView;
 
     private Handler uiHandler = new Handler();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cloud);
+    protected void initView() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -50,14 +55,13 @@ public class CloudActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        infoAwesomeTextView = (AwesomeTextView) findViewById(R.id.info);
-
         if (!TokenHelper.getInstance().isActivate()) {
             startActivityForResult(new Intent(this, LoginActivity.class), 0);
         }else{
             checkTokenIsWork();
         }
     }
+
 
     @SuppressWarnings("deprecation")
     @Override
@@ -81,25 +85,42 @@ public class CloudActivity extends AppCompatActivity {
     }
 
     private void checkTokenIsWork() {
-        new Thread(() -> {
-            TokenHelper.ServerResult serverResult = TokenHelper.getInstance().info(TokenHelper.getInstance().getToken());
-            if (serverResult.getRet() != 200) {
-                TokenHelper.getInstance().setActivate(false);
-                AlertDialog.Builder builder = new AlertDialog.Builder(CloudActivity.this);
-                builder.setTitle("提示");
-                builder.setMessage("您的激活码已经不可以继续使用\n原因: " + serverResult.getMsg());
-                builder.setPositiveButton("重新输入激活码", (dialog, which) -> startActivityForResult(new Intent(CloudActivity.this, LoginActivity.class), 0));
-                builder.setNegativeButton("关闭", (dialog, which) -> CloudActivity.this.finish());
-                builder.setCancelable(false);
-                uiHandler.post(() -> builder.create().show());
-            } else {
-                uiHandler.post(() -> infoAwesomeTextView.setText("令牌: " + TokenHelper.getInstance().getToken() + "\n" +
-                        "已用: " + serverResult.getDataJson().getString("times") + "\n" +
-                        "总共: " + serverResult.getDataJson().getString("range")));
+        AsyncTask<Object, Object, TokenHelper.ServerResult> checkTokenIsWork = new AsyncTask<Object, Object, TokenHelper.ServerResult>() {
+            @Override
+            protected TokenHelper.ServerResult doInBackground(Object... params) {
+                return TokenHelper.getInstance().info(TokenHelper.getInstance().getToken());
             }
 
+            @Override
+            protected void onPostExecute(TokenHelper.ServerResult serverResult) {
 
-        }).start();
+                if (serverResult.getRet() != 200) {
+                    TokenHelper.getInstance().setActivate(false);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CloudActivity.this);
+                    builder.setTitle("提示");
+                    builder.setMessage("您的激活码已经不可以继续使用\n原因: " + serverResult.getMsg());
+                    builder.setPositiveButton("重新输入激活码", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startActivityForResult(new Intent(CloudActivity.this, LoginActivity.class), 0);
+                        }
+                    });
+                    builder.setNegativeButton("关闭", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            CloudActivity.this.finish();
+                        }
+                    });
+                    builder.setCancelable(false);
+                    builder.create().show();
+                } else {
+                    infoAwesomeTextView.setText("令牌: " + TokenHelper.getInstance().getToken() + "\n" +
+                            "已用: " + serverResult.getDataJson().getString("times") + "\n" +
+                            "总共: " + serverResult.getDataJson().getString("range"));
+                }
+            }
+        };
+        checkTokenIsWork.execute();
     }
 
     public void onClickUpload(View view) {
@@ -108,35 +129,55 @@ public class CloudActivity extends AppCompatActivity {
             return;
         }
 
+        AsyncTask<Object, Object, Object> uploadTask = new AsyncTask<Object, Object, Object>() {
+
+            private ProgressDialog progressDialog = null;
+
+            @Override
+            protected void onPreExecute() {
+                progressDialog = ProgressDialog.show(getActivity(), getString(R.string.wait), getString(R.string.processing), true);
+            }
+
+            @Override
+            protected Object doInBackground(Object... params) {
+                try {
+                    String appSettingContent    = "";
+                    String xposedSettingContent = "";
+                    String solutionContent      = "";
+
+                    File appSettingFile    = new File("/data/data/" + BuildConfig.APPLICATION_ID + "/shared_prefs/" + BuildConfig.APPLICATION_ID + "_preferences.xml");
+                    File xposedSettingFile = new File("/data/data/" + BuildConfig.APPLICATION_ID + "/shared_prefs/XPOSED.xml");
+                    File solutionFile      = SolutionHelper.SOLUTION_FILE;
+
+                    if (appSettingFile.exists()) {
+                        appSettingContent = FileUtils.readFileToString(appSettingFile, "UTF-8");
+                    }
+
+                    if (xposedSettingFile.exists()) {
+                        xposedSettingContent = FileUtils.readFileToString(xposedSettingFile, "UTF-8");
+                    }
+
+                    if (solutionFile.exists()) {
+                        solutionContent = FileUtils.readFileToString(solutionFile, "UTF-8");
+                    }
+
+                    TokenHelper.ServerResult serverResult = TokenHelper.getInstance().upload(appSettingContent, xposedSettingContent, solutionContent);
+
+                    if (serverResult.getRet() != 200) {
+                        throw new RuntimeException(serverResult.getMsg());
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        };
+        uploadTask.execute();
+
         ProgressDialog progressDialog = ProgressDialog.show(view.getContext(), getString(R.string.wait), getString(R.string.processing), true);
         new Thread(() -> {
             try {
-                String appSettingContent    = "";
-                String xposedSettingContent = "";
-                String solutionContent      = "";
 
-                File appSettingFile    = new File("/data/data/" + BuildConfig.APPLICATION_ID + "/shared_prefs/" + BuildConfig.APPLICATION_ID + "_preferences.xml");
-                File xposedSettingFile = new File("/data/data/" + BuildConfig.APPLICATION_ID + "/shared_prefs/XPOSED.xml");
-                File solutionFile      = SolutionHelper.SOLUTION_FILE;
-
-                if (appSettingFile.exists()) {
-                    appSettingContent = FileUtils.readFileToString(appSettingFile, "UTF-8");
-                }
-
-                if (xposedSettingFile.exists()) {
-                    xposedSettingContent = FileUtils.readFileToString(xposedSettingFile, "UTF-8");
-                }
-
-                if (solutionFile.exists()) {
-                    solutionContent = FileUtils.readFileToString(solutionFile, "UTF-8");
-                }
-
-
-                TokenHelper.ServerResult serverResult = TokenHelper.getInstance().upload(appSettingContent, xposedSettingContent, solutionContent);
-
-                if (serverResult.getRet() != 200) {
-                    throw new RuntimeException(serverResult.getMsg());
-                }
 
                 Snackbar.make(view, R.string.upload_success, Snackbar.LENGTH_LONG).show();
             } catch (Exception e) {
