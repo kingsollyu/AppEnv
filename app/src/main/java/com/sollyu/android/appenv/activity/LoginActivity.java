@@ -1,11 +1,12 @@
 package com.sollyu.android.appenv.activity;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
@@ -14,7 +15,11 @@ import com.sollyu.android.appenv.R;
 import com.sollyu.android.appenv.helper.OtherHelper;
 import com.sollyu.android.appenv.helper.TokenHelper;
 
-public class LoginActivity extends AppCompatActivity {
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.ViewInject;
+
+@ContentView(R.layout.activity_login)
+public class LoginActivity extends BaseActivity {
 
     private static final String TAG = "AppEnv";
 
@@ -23,11 +28,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private Handler uiHandler = new Handler();
 
+    @ViewInject(R.id.activity_login) private RelativeLayout mLoginContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
         tokenBootstrapEditText = (BootstrapEditText) findViewById(R.id.edit_text_token);
         activateBootstrapButton = (BootstrapButton) findViewById(R.id.button_activate);
@@ -61,29 +67,45 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        new Thread(() -> {
-            TokenHelper.ServerResult serverResult = TokenHelper.getInstance().info(tokenBootstrapEditText.getText().toString());
-            if (serverResult.getRet() != 200) {
-                uiHandler.post(() -> {
-                    tokenBootstrapEditText.setBootstrapBrand(DefaultBootstrapBrand.DANGER);
-                    activateBootstrapButton.setBootstrapBrand(DefaultBootstrapBrand.DANGER);
-                    Snackbar.make(view, serverResult.getMsg(), Snackbar.LENGTH_LONG).show();
-                });
+        AsyncTask<Object, Object, TokenHelper.ServerResult> asyncTask = new AsyncTask<Object, Object, TokenHelper.ServerResult>() {
+            private String inputTokenString = null;
 
-                uiHandler.postDelayed(() -> {
-                    tokenBootstrapEditText.setBootstrapBrand(DefaultBootstrapBrand.INFO);
-                    activateBootstrapButton.setBootstrapBrand(DefaultBootstrapBrand.INFO);
-                }, 5000);
-
-                TokenHelper.getInstance().setActivate(false);
-                return;
+            @Override
+            protected void onPreExecute() {
+                inputTokenString = tokenBootstrapEditText.getText().toString();
             }
 
-            // 保存Token并设置状态为激活
-            TokenHelper.getInstance().setToken(tokenBootstrapEditText.getText().toString());
-            TokenHelper.getInstance().setActivate(true);
-            setResult(1);
-            LoginActivity.this.finish();
-        }).start();
+            @Override
+            protected TokenHelper.ServerResult doInBackground(Object... params) {
+                return TokenHelper.getInstance().info(inputTokenString);
+            }
+
+            @Override
+            protected void onPostExecute(TokenHelper.ServerResult serverResult) {
+                if (serverResult.getRet() != 200) {
+                    tokenBootstrapEditText.setBootstrapBrand(DefaultBootstrapBrand.DANGER);
+                    activateBootstrapButton.setBootstrapBrand(DefaultBootstrapBrand.DANGER);
+                    Snackbar.make(mLoginContent, serverResult.getMsg(), Snackbar.LENGTH_LONG).show();
+
+                    uiHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            tokenBootstrapEditText.setBootstrapBrand(DefaultBootstrapBrand.INFO);
+                            activateBootstrapButton.setBootstrapBrand(DefaultBootstrapBrand.INFO);
+                        }
+                    }, 5000);
+
+                    TokenHelper.getInstance().setActivate(false);
+                } else {
+                    // 保存Token并设置状态为激活
+                    TokenHelper.getInstance().setToken(tokenBootstrapEditText.getText().toString());
+                    TokenHelper.getInstance().setActivate(true);
+                    setResult(1);
+                    LoginActivity.this.finish();
+                }
+            }
+        };
+
+        asyncTask.execute();
     }
 }

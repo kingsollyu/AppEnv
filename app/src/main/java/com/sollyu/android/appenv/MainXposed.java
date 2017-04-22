@@ -51,7 +51,7 @@ public class MainXposed implements IXposedHookLoadPackage, IXposedHookZygoteInit
 
             xSharedPreferences.reload();
 
-            AppInfo packageAppInfo = JSON.toJavaObject(JSON.parseObject(xSharedPreferences.getString(loadPackageParam.packageName, "{}")), AppInfo.class);
+            final AppInfo packageAppInfo = JSON.toJavaObject(JSON.parseObject(xSharedPreferences.getString(loadPackageParam.packageName, "{}")), AppInfo.class);
 
             // 当前应用是一个用户程序
             if (OtherHelper.getInstance().isUserAppllication(loadPackageParam.appInfo)) {

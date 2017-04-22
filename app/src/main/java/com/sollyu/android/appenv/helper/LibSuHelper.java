@@ -51,15 +51,6 @@ public class LibSuHelper {
         rootSession.addCommand(command, code, onCommandResultListener);
     }
 
-    public void addCommand(String command, int code, OnCommandResultListener onCommandResultListener) {
-        addCommand(command, code, (commandCode, exitCode, output) -> {
-            if (exitCode != code)
-                onCommandResultListener.onFailure(code);
-            else
-                onCommandResultListener.onSuccess(code);
-        });
-    }
-
     public interface OnCommandResultListener {
         void onSuccess(int exitCode);
 

@@ -23,15 +23,18 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        uiHandler.postDelayed(() -> {
-            if (!MainApplication.getInstance().isXposedWork()) {
-                startActivity(new Intent(SplashActivity.this, XposedNotWorkActivity.class));
-                SplashActivity.this.finish();
-                return;
-            }
+        uiHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (!MainApplication.getInstance().isXposedWork()) {
+                    startActivity(new Intent(SplashActivity.this, XposedNotWorkActivity.class));
+                    SplashActivity.this.finish();
+                    return;
+                }
 
-            startActivity(new Intent(SplashActivity.this, MainActivity.class));
-            SplashActivity.this.finish();
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                SplashActivity.this.finish();
+            }
         }, splashTimeOut);
     }
 }
