@@ -7,7 +7,6 @@ android {
         applicationId "com.sollyu.android.appenv"
         minSdkVersion 17
         targetSdkVersion 24
-        jackOptions { enabled true }
 
         versionCode 506
         versionName "3.1.0.506"
@@ -31,10 +30,6 @@ android {
         }
         official {
         }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
     }
     task buildnumberplusone {
         Properties props = new Properties()
