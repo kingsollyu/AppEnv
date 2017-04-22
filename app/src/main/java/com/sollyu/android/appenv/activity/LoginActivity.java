@@ -1,5 +1,6 @@
 package com.sollyu.android.appenv.activity;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -69,10 +70,12 @@ public class LoginActivity extends BaseActivity {
 
         AsyncTask<Object, Object, TokenHelper.ServerResult> asyncTask = new AsyncTask<Object, Object, TokenHelper.ServerResult>() {
             private String inputTokenString = null;
+            private ProgressDialog progressDialog = null;
 
             @Override
             protected void onPreExecute() {
                 inputTokenString = tokenBootstrapEditText.getText().toString();
+                progressDialog = ProgressDialog.show(getActivity(), getString(R.string.wait), getString(R.string.processing), true);
             }
 
             @Override
@@ -82,6 +85,7 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             protected void onPostExecute(TokenHelper.ServerResult serverResult) {
+                progressDialog.dismiss();
                 if (serverResult.getRet() != 200) {
                     tokenBootstrapEditText.setBootstrapBrand(DefaultBootstrapBrand.DANGER);
                     activateBootstrapButton.setBootstrapBrand(DefaultBootstrapBrand.DANGER);

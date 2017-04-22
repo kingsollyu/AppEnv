@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -100,19 +101,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             reportPhoneInfo();
         }
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                applicationInfos = MainActivity.this.getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
-                Collections.sort(applicationInfos, new ApplicationInfo.DisplayNameComparator(MainActivity.this.getPackageManager()));
-                uiHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        MainActivity.this.onRefresh();
-                    }
-                });
-            }
-        });
+        MainActivity.this.onRefresh();
     }
 
     @Override
@@ -203,32 +192,52 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public synchronized void onRefresh() {
-        _NormalRecyclerViewAdapter.notifyItemRangeRemoved(0, _DisplayApplicationInfo.size());
-        _DisplayApplicationInfo.clear();
-
-        ArrayList<String> ignorePackageName = new ArrayList<>();
-        ignorePackageName.add("android");
-        ignorePackageName.add(BuildConfig.APPLICATION_ID);
-        ignorePackageName.add("de.robv.android.xposed.installer");
-
-        int hasConfigIndex = 0;
-        for (ApplicationInfo applicationInfo : applicationInfos) {
-            if (ignorePackageName.contains(applicationInfo.packageName)) {
-                continue;
+        AsyncTask<Object, Object, Object> asyncTask = new AsyncTask<Object, Object, Object>() {
+            @Override
+            protected void onPreExecute() {
+                _NormalRecyclerViewAdapter.notifyItemRangeRemoved(0, _DisplayApplicationInfo.size());
+                _DisplayApplicationInfo.clear();
             }
 
-            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("show_system_app", false) || OtherHelper.getInstance().isUserAppllication(applicationInfo)) {
-                if (XposedSharedPreferencesHelper.getInstance().get(applicationInfo.packageName) != null) {
-                    _DisplayApplicationInfo.add(hasConfigIndex++, applicationInfo);
-                } else {
-                    _DisplayApplicationInfo.add(applicationInfo);
+            @Override
+            protected Object doInBackground(Object... params) {
+                ArrayList<String> ignorePackageName = new ArrayList<>();
+                ignorePackageName.add("android");
+                ignorePackageName.add(BuildConfig.APPLICATION_ID);
+                ignorePackageName.add("de.robv.android.xposed.installer");
+
+                int hasConfigIndex = 0;
+
+                applicationInfos = MainActivity.this.getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
+                Collections.sort(applicationInfos, new ApplicationInfo.DisplayNameComparator(MainActivity.this.getPackageManager()));
+
+                for (ApplicationInfo applicationInfo : applicationInfos) {
+                    if (ignorePackageName.contains(applicationInfo.packageName)) {
+                        continue;
+                    }
+
+                    if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("show_system_app", false) || OtherHelper.getInstance().isUserAppllication(applicationInfo)) {
+                        if (XposedSharedPreferencesHelper.getInstance().get(applicationInfo.packageName) != null) {
+                            _DisplayApplicationInfo.add(hasConfigIndex++, applicationInfo);
+                        } else {
+                            _DisplayApplicationInfo.add(applicationInfo);
+                        }
+                    }
                 }
+                return null;
             }
-        }
-        _NormalRecyclerViewAdapter.setmOriginalValues(_DisplayApplicationInfo);
-        _NormalRecyclerViewAdapter.notifyDataSetChanged();
-        _SwipeRefreshLayout.setRefreshing(false);
+
+            @Override
+            protected void onPostExecute(Object o) {
+                _NormalRecyclerViewAdapter.setmOriginalValues(_DisplayApplicationInfo);
+                _NormalRecyclerViewAdapter.notifyDataSetChanged();
+                _SwipeRefreshLayout.setRefreshing(false);
+            }
+        };
+        asyncTask.execute();
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -240,7 +249,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         if (requestCode == START_SETTING_ACTIVITY_REQUEST_CODE && resultCode == 1) {
             onRefresh();
         }
-
     }
 
     private void reportPhoneInfo() {

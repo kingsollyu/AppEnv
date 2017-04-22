@@ -74,6 +74,7 @@ public class DetailActivity extends BaseActivity {
     @Override
     protected void initView() {
         setSupportActionBar(mToolbar);
+        applicationInfo = getIntent().getParcelableExtra("applicationInfo");
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setHomeButtonEnabled(true);
@@ -103,7 +104,7 @@ public class DetailActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        applicationInfo = getIntent().getParcelableExtra("applicationInfo");
+
 
         try {
             PhoneHelper.getInstance().reload(this);
@@ -341,7 +342,7 @@ public class DetailActivity extends BaseActivity {
         Snackbar.make(view, R.string.save_config_success, Snackbar.LENGTH_LONG).show();
     }
 
-    public void onClickManufacturer(View view) {
+    public void onClickManufacturer(final View view) {
         final ArrayList<String> selectStringArrayList = PhoneHelper.getInstance().getManufacturerList();
 
         DialogPlus dialogPlus = DialogPlus.newDialog(view.getContext())
@@ -350,7 +351,7 @@ public class DetailActivity extends BaseActivity {
                 .setAdapter(new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, selectStringArrayList))
                 .setOnItemClickListener(new OnItemClickListener() {
                     @Override
-                    public void onItemClick(DialogPlus dialog, Object item, View view, int position) {
+                    public void onItemClick(DialogPlus dialog, Object item, View view1, int position) {
                         DetailItem detailItem = (DetailItem) view;
                         detailItem.getEditText().setText(selectStringArrayList.get(position));
                         dialog.dismiss();
@@ -364,7 +365,7 @@ public class DetailActivity extends BaseActivity {
         dialogPlus.show();
     }
 
-    public void onClickModel(View view) {
+    public void onClickModel(final View view) {
         DetailItem                    buildManufacturer = (DetailItem) findViewById(R.id.manufacturer);
         final HashMap<String, String> hashMap           = PhoneHelper.getInstance().getModelList(buildManufacturer.getEditText().getText().toString());
 
@@ -382,7 +383,7 @@ public class DetailActivity extends BaseActivity {
                 .setAdapter(new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, selectStringArrayList))
                 .setOnItemClickListener(new OnItemClickListener() {
                     @Override
-                    public void onItemClick(DialogPlus dialog, Object item, View view, int position) {
+                    public void onItemClick(DialogPlus dialog, Object item, View view1, int position) {
                         DetailItem detailItem = (DetailItem) view;
                         detailItem.getEditText().setText(hashMap.get(selectStringArrayList.get(position)));
                         dialog.dismiss();
@@ -406,7 +407,7 @@ public class DetailActivity extends BaseActivity {
         detailItem.getEditText().setText(RandomHelper.getInstance().randomTelephonyGetLine1Number());
     }
 
-    public void onClickNetworkType(View view) {
+    public void onClickNetworkType(final View view) {
         final HashMap<String, Object> hashMap = RandomHelper.getInstance().getTelephonyGetNetworkTypeList();
         final ArrayList<String> displayArrayList = new ArrayList<>();
 
@@ -422,7 +423,7 @@ public class DetailActivity extends BaseActivity {
                 .setAdapter(new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, displayArrayList))
                 .setOnItemClickListener(new OnItemClickListener() {
                     @Override
-                    public void onItemClick(DialogPlus dialog, Object item, View view, int position) {
+                    public void onItemClick(DialogPlus dialog, Object item, View view1, int position) {
                         DetailItem detailItem = (DetailItem) view;
                         detailItem.getEditText().setText(String.valueOf(hashMap.get(displayArrayList.get(position))));
                         dialog.dismiss();
@@ -513,6 +514,7 @@ public class DetailActivity extends BaseActivity {
 
             @Override
             protected void onPostExecute(Object o) {
+                progressDialog.dismiss();
                 if (o != null && o instanceof AppInfo) {
                     appInfoToUi((AppInfo) o);
                     Snackbar.make(mDetailContent, "远程随机成功！可用点数 -2！", Snackbar.LENGTH_LONG).show();
