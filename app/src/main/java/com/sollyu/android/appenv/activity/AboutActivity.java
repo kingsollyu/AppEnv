@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.sollyu.android.appenv.BuildConfig;
@@ -24,14 +25,16 @@ public class AboutActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(v -> {
-            try {
-                OtherHelper.getInstance().sendEmail(v.getContext(), "mailto:admin@sollyu.com");
-            } catch (Exception e) {
-                Snackbar.make(v, "Not fine email app.", Snackbar.LENGTH_LONG).show();
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    OtherHelper.getInstance().sendEmail(v.getContext(), "mailto:admin@sollyu.com");
+                } catch (Exception e) {
+                    Snackbar.make(v, "Not fine email app.", Snackbar.LENGTH_LONG).show();
+                }
             }
         });
-
         if (getSupportActionBar() != null) {
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

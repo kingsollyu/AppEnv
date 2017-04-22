@@ -34,6 +34,16 @@ public class XposedNotWorkActivity extends AppCompatActivity {
         }
     }
 
-    private View.OnClickListener openXposedInstallerOnClickListener = v -> OtherHelper.getInstance().openApplication(v.getContext(), "de.robv.android.xposed.installer");
-    private View.OnClickListener installXposedOnClickListener       = v -> OtherHelper.getInstance().openMarket(v.getContext(), "de.robv.android.xposed.installer");
+    private View.OnClickListener openXposedInstallerOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            OtherHelper.getInstance().openApplication(v.getContext(), "de.robv.android.xposed.installer");
+        }
+    };
+    private View.OnClickListener installXposedOnClickListener       = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            OtherHelper.getInstance().openMarket(v.getContext(), "de.robv.android.xposed.installer");
+        }
+    };
 }

@@ -4,11 +4,11 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -17,7 +17,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -37,6 +36,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ListHolder;
+import com.orhanobut.dialogplus.OnItemClickListener;
 import com.sollyu.android.appenv.BuildConfig;
 import com.sollyu.android.appenv.R;
 import com.sollyu.android.appenv.helper.AppEnvSharedPreferencesHelper;
@@ -54,7 +54,9 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
+import eu.chainfire.libsuperuser.Shell;
+
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = "AppEnv";
 
@@ -78,12 +80,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).show());
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -103,11 +101,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             reportPhoneInfo();
         }
 
-        new Thread(() -> {
-            applicationInfos = MainActivity.this.getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
-            Collections.sort(applicationInfos, new ApplicationInfo.DisplayNameComparator(MainActivity.this.getPackageManager()));
-            uiHandler.post(this::onRefresh);
-        }).start();
+        MainActivity.this.onRefresh();
     }
 
     @Override
@@ -178,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_refresh) {
-            uiHandler.post(this::onRefresh);
+            MainActivity.this.onRefresh();
         } else if (id == R.id.action_about) {
             startActivity(new Intent(this, AboutActivity.class));
         } else if (id == R.id.nav_donate) {
@@ -198,32 +192,52 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public synchronized void onRefresh() {
-        _NormalRecyclerViewAdapter.notifyItemRangeRemoved(0, _DisplayApplicationInfo.size());
-        _DisplayApplicationInfo.clear();
-
-        ArrayList<String> ignorePackageName = new ArrayList<>();
-        ignorePackageName.add("android");
-        ignorePackageName.add(BuildConfig.APPLICATION_ID);
-        ignorePackageName.add("de.robv.android.xposed.installer");
-
-        int hasConfigIndex = 0;
-        for (ApplicationInfo applicationInfo : applicationInfos) {
-            if (ignorePackageName.contains(applicationInfo.packageName)) {
-                continue;
+        AsyncTask<Object, Object, Object> asyncTask = new AsyncTask<Object, Object, Object>() {
+            @Override
+            protected void onPreExecute() {
+                _NormalRecyclerViewAdapter.notifyItemRangeRemoved(0, _DisplayApplicationInfo.size());
+                _DisplayApplicationInfo.clear();
             }
 
-            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("show_system_app", false) || OtherHelper.getInstance().isUserAppllication(applicationInfo)) {
-                if (XposedSharedPreferencesHelper.getInstance().get(applicationInfo.packageName) != null) {
-                    _DisplayApplicationInfo.add(hasConfigIndex++, applicationInfo);
-                } else {
-                    _DisplayApplicationInfo.add(applicationInfo);
+            @Override
+            protected Object doInBackground(Object... params) {
+                ArrayList<String> ignorePackageName = new ArrayList<>();
+                ignorePackageName.add("android");
+                ignorePackageName.add(BuildConfig.APPLICATION_ID);
+                ignorePackageName.add("de.robv.android.xposed.installer");
+
+                int hasConfigIndex = 0;
+
+                applicationInfos = MainActivity.this.getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
+                Collections.sort(applicationInfos, new ApplicationInfo.DisplayNameComparator(MainActivity.this.getPackageManager()));
+
+                for (ApplicationInfo applicationInfo : applicationInfos) {
+                    if (ignorePackageName.contains(applicationInfo.packageName)) {
+                        continue;
+                    }
+
+                    if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("show_system_app", false) || OtherHelper.getInstance().isUserAppllication(applicationInfo)) {
+                        if (XposedSharedPreferencesHelper.getInstance().get(applicationInfo.packageName) != null) {
+                            _DisplayApplicationInfo.add(hasConfigIndex++, applicationInfo);
+                        } else {
+                            _DisplayApplicationInfo.add(applicationInfo);
+                        }
+                    }
                 }
+                return null;
             }
-        }
-        _NormalRecyclerViewAdapter.setmOriginalValues(_DisplayApplicationInfo);
-        _NormalRecyclerViewAdapter.notifyDataSetChanged();
-        _SwipeRefreshLayout.setRefreshing(false);
+
+            @Override
+            protected void onPostExecute(Object o) {
+                _NormalRecyclerViewAdapter.setmOriginalValues(_DisplayApplicationInfo);
+                _NormalRecyclerViewAdapter.notifyDataSetChanged();
+                _SwipeRefreshLayout.setRefreshing(false);
+            }
+        };
+        asyncTask.execute();
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -235,13 +249,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (requestCode == START_SETTING_ACTIVITY_REQUEST_CODE && resultCode == 1) {
             onRefresh();
         }
-
     }
 
     private void reportPhoneInfo() {
-        new Thread(() -> {
-            if (!AppEnvSharedPreferencesHelper.getInstance().isReportPhone())
-                AppEnvSharedPreferencesHelper.getInstance().setReportPhone(TokenHelper.getInstance().devices(MainActivity.this).getRet() == 200);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (!AppEnvSharedPreferencesHelper.getInstance().isReportPhone())
+                    AppEnvSharedPreferencesHelper.getInstance().setReportPhone(TokenHelper.getInstance().devices(MainActivity.this).getRet() == 200);
+            }
         }).start();
     }
 
@@ -272,91 +288,105 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         @Override
-        public void onBindViewHolder(NormalRecyclerViewAdapter.NormalTextViewHolder holder, int position) {
-            ApplicationInfo applicationInfo = _DisplayApplicationInfo.get(position);
-            holder.textView1.setText(applicationInfo.loadLabel(getPackageManager()));
-            holder.textView2.setText(applicationInfo.packageName);
-            holder.imageView.setImageDrawable(applicationInfo.loadIcon(getPackageManager()));
+        public void onBindViewHolder(final NormalRecyclerViewAdapter.NormalTextViewHolder holder, int position) {
+            holder.applicationInfo = _DisplayApplicationInfo.get(position);;
+            holder.textView1.setText(holder.applicationInfo.loadLabel(getPackageManager()));
+            holder.textView2.setText(holder.applicationInfo.packageName);
+            holder.imageView.setImageDrawable(holder.applicationInfo.loadIcon(getPackageManager()));
 
-            AppInfo appInfo = XposedSharedPreferencesHelper.getInstance().get(applicationInfo.packageName);
+            AppInfo appInfo = XposedSharedPreferencesHelper.getInstance().get(holder.applicationInfo.packageName);
             Log.d(TAG, "onBindViewHolder: " + JSON.toJSONString(appInfo));
             holder.textView1.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), appInfo != null ? R.color.bootstrap_brand_success : android.R.color.primary_text_light));
 
-            holder.itemView.setOnClickListener(v -> {
-                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                intent.putExtra("applicationInfo", applicationInfo);
-                MainActivity.this.startActivityForResult(intent, START_DETAIL_ACTIVITY_REQUEST_CODE);
-            });
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    {
+                        List<HashMap<String, Object>> mapList = new ArrayList<>();
 
-            holder.itemView.setOnLongClickListener(v -> {
-                List<HashMap<String, Object>> mapList = new ArrayList<>();
+                        HashMap<String, Object> openItem = new HashMap<>();
+                        openItem.put("title", getString(R.string.open));
+                        openItem.put("icon", R.drawable.ic_crop_landscape);
+                        mapList.add(openItem);
 
-                HashMap<String, Object> openItem = new HashMap<>();
-                openItem.put("title", getString(R.string.open));
-                openItem.put("icon", R.drawable.ic_crop_landscape);
-                mapList.add(openItem);
+                        openItem = new HashMap<>();
+                        openItem.put("title", getString(R.string.random));
+                        openItem.put("icon", R.drawable.ic_auto_fix);
+                        mapList.add(openItem);
 
-                openItem = new HashMap<>();
-                openItem.put("title", getString(R.string.random));
-                openItem.put("icon", R.drawable.ic_auto_fix);
-                mapList.add(openItem);
+                        openItem = new HashMap<>();
+                        openItem.put("title", getString(R.string.detail));
+                        openItem.put("icon", R.drawable.ic_info_outline);
+                        mapList.add(openItem);
 
-                openItem = new HashMap<>();
-                openItem.put("title", getString(R.string.detail));
-                openItem.put("icon", R.drawable.ic_info_outline);
-                mapList.add(openItem);
+                        openItem = new HashMap<>();
+                        openItem.put("title", getString(R.string.delete));
+                        openItem.put("icon", R.drawable.ic_delete);
+                        mapList.add(openItem);
 
-                openItem = new HashMap<>();
-                openItem.put("title", getString(R.string.delete));
-                openItem.put("icon", R.drawable.ic_delete);
-                mapList.add(openItem);
+                        SimpleAdapter simpleAdapter = new SimpleAdapter(
+                                holder.itemView.getContext(),
+                                mapList,
+                                R.layout.dialog_plus_content,
+                                new String[]{"title", "icon"},
+                                new int[]{R.id.text_view, R.id.image_view});
 
-                SimpleAdapter simpleAdapter = new SimpleAdapter(
-                        holder.itemView.getContext(),
-                        mapList,
-                        R.layout.dialog_plus_content,
-                        new String[]{"title", "icon"},
-                        new int[]{R.id.text_view, R.id.image_view});
+                        DialogPlus dialogPlus = DialogPlus.newDialog(holder.itemView.getContext())
+                                .setExpanded(false)
+                                .setContentHolder(new ListHolder())
+                                .setHeader(R.layout.dialog_plus_header)
+                                .setAdapter(simpleAdapter)
+                                .setOnItemClickListener(new OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(DialogPlus dialog, Object item, final View view, int position1) {
+                                        dialog.dismiss();
+                                        switch (position1) {
+                                            case 0: // Open
+                                                holder.itemView.performClick();
+                                                break;
+                                            case 1: // Random
+                                                XposedSharedPreferencesHelper.getInstance().set(holder.textView2.getText().toString(), RandomHelper.getInstance().randomAll());
+                                                uiHandler.postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        Snackbar.make(view, R.string.random_success, Snackbar.LENGTH_LONG).setAction(R.string.force_stop, new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View v) {
+                                                                LibSuHelper.getInstance().addCommand("am force-stop " + holder.applicationInfo.packageName, 0, new Shell.OnCommandResultListener() {
+                                                                    @Override
+                                                                    public void onCommandResult(int commandCode, int exitCode, List<String> output) {
+                                                                        if (exitCode != 0)
+                                                                            Snackbar.make(findViewById(R.id.content_main), getString(R.string.force_stop_error) + exitCode, Snackbar.LENGTH_LONG).show();
+                                                                        else
+                                                                            Snackbar.make(findViewById(R.id.content_main), R.string.force_stop_success, Snackbar.LENGTH_LONG).show();
+                                                                    }
+                                                                });
+                                                            }
+                                                        }).show();
+                                                    }
+                                                }, 250);
 
-                DialogPlus dialogPlus = DialogPlus.newDialog(holder.itemView.getContext())
-                        .setExpanded(false)
-                        .setContentHolder(new ListHolder())
-                        .setHeader(R.layout.dialog_plus_header)
-                        .setAdapter(simpleAdapter)
-                        .setOnItemClickListener((dialog, item, view, position1) -> {
-                            dialog.dismiss();
-                            switch (position1) {
-                                case 0: // Open
-                                    holder.itemView.performClick();
-                                    break;
-                                case 1: // Random
-                                    XposedSharedPreferencesHelper.getInstance().set(holder.textView2.getText().toString(), RandomHelper.getInstance().randomAll());
-                                    uiHandler.postDelayed(() -> Snackbar.make(view, R.string.random_success, Snackbar.LENGTH_LONG).setAction(R.string.force_stop, v1 -> {
-                                        LibSuHelper.getInstance().addCommand("am force-stop " + applicationInfo.packageName, 0, (commandCode, exitCode, output) -> {
-                                            if (exitCode != 0)
-                                                Snackbar.make(findViewById(R.id.content_main), getString(R.string.force_stop_error) + exitCode, Snackbar.LENGTH_LONG).show();
-                                            else
-                                                Snackbar.make(findViewById(R.id.content_main), R.string.force_stop_success, Snackbar.LENGTH_LONG).show();
-                                        });
-                                    }).show(), 250);
-                                    onRefresh();
-                                    break;
-                                case 2: // Detail
-                                    OtherHelper.getInstance().openAppDetails(holder.itemView.getContext(), holder.textView2.getText().toString());
-                                    break;
-                                case 3: // Delete
-                                    XposedSharedPreferencesHelper.getInstance().remove(holder.textView2.getText().toString());
-                                    uiHandler.post(MainActivity.this::onRefresh);
-                                    break;
-                            }
-                        })
-                        .create();
+                                                onRefresh();
+                                                break;
+                                            case 2: // Detail
+                                                OtherHelper.getInstance().openAppDetails(holder.itemView.getContext(), holder.textView2.getText().toString());
+                                                break;
+                                            case 3: // Delete
+                                                XposedSharedPreferencesHelper.getInstance().remove(holder.textView2.getText().toString());
+                                                MainActivity.this.onRefresh();
+                                                break;
+                                        }
+                                    }
+                                })
+                                .create();
 
-                ((TextView) dialogPlus.getHeaderView().findViewById(R.id.text_view1)).setText(holder.textView1.getText());
-                ((TextView) dialogPlus.getHeaderView().findViewById(R.id.text_view2)).setText(holder.textView2.getText());
+                        ((TextView) dialogPlus.getHeaderView().findViewById(R.id.text_view1)).setText(holder.textView1.getText());
+                        ((TextView) dialogPlus.getHeaderView().findViewById(R.id.text_view2)).setText(holder.textView2.getText());
 
-                dialogPlus.show();
-                return true;
+                        dialogPlus.show();
+                        return true;
+                    }
+                }
             });
         }
 
@@ -409,10 +439,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             };
         }
 
-        class NormalTextViewHolder extends RecyclerView.ViewHolder {
+        class NormalTextViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             private TextView  textView1;
             private TextView  textView2;
             private ImageView imageView;
+            private ApplicationInfo applicationInfo;
 
             NormalTextViewHolder(View itemView) {
                 super(itemView);
@@ -420,6 +451,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 textView1 = (TextView) itemView.findViewById(R.id.text1);
                 textView2 = (TextView) itemView.findViewById(R.id.text2);
                 imageView = (ImageView) itemView.findViewById(R.id.image_view);
+
+                itemView.setOnClickListener(this);
+
+            }
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                intent.putExtra("applicationInfo", applicationInfo);
+                MainActivity.this.startActivityForResult(intent, START_DETAIL_ACTIVITY_REQUEST_CODE);
             }
         }
     }

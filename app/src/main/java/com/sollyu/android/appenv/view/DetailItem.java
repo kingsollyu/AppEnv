@@ -36,7 +36,7 @@ public class DetailItem extends LinearLayout {
         super(context);
     }
 
-    public DetailItem(Context context, AttributeSet attrs) {
+    public DetailItem(final Context context, AttributeSet attrs) {
         super(context, attrs);
 
         this.setOrientation(LinearLayout.HORIZONTAL);
@@ -67,15 +67,17 @@ public class DetailItem extends LinearLayout {
 
         onClickMethodName = attrs.getAttributeValue(ANDROID_NAME_SPACE, "onClick");
         buttonAwesomeTextView.setTextSize(OtherHelper.getInstance().sp2px(this.getContext(), 10));
-        buttonAwesomeTextView.setOnClickListener(v -> {
-            try {
-                Method method = context.getClass().getMethod(onClickMethodName, View.class);
-                method.invoke(context, DetailItem.this);
-            } catch (Exception e) {
-                e.printStackTrace();
+        buttonAwesomeTextView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Method method = context.getClass().getMethod(onClickMethodName, View.class);
+                    method.invoke(context, DetailItem.this);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
-
 
         typedArray.recycle();
 
