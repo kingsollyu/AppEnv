@@ -69,6 +69,10 @@
 -dontwarn org.apache.log4j.**
 -dontwarn okio.**
 
+-keepclassmembers class * extends org.xutils.** { public protected *;}
+-keepclassmembers @org.xutils.db.annotation.* class * {*;}
+-keepclassmembers @org.xutils.http.annotation.* class * {*;}
+-keepclassmembers class * { @org.xutils.view.annotation.Event <methods>;}
 -keepclassmembers class com.sollyu.android.appenv.module.AppInfo {public <fields>;}
 -keep class * implements de.robv.android.xposed.IXposedHookLoadPackage { public void handleLoadPackage(de.robv.android.xposed.callbacks.XC_LoadPackage$LoadPackageParam); }
 -keep class com.sollyu.android.appenv.MainApplication { public boolean isXposedWork();}
