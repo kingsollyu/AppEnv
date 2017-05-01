@@ -47,18 +47,28 @@
 
 # 抛出异常时保留代码行号，在异常分析中可以方便定位
 -keepattributes SourceFile,LineNumberTable
+-keepattributes Signature,*Annotation*
+-keepattributes EnclosingMethod
 
 # 混淆时所采用的算法
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
 
 -keep class android.** {*;}
+-keep class org.apache.log4j.** { *;}
+-keep class org.xutils.** { *;}
+-keep class okio.** { *;}
+-keep class com.alibaba.fastjson.** { *;}
+-keep class com.tencent.bugly.** { *;}
+-keep class com.orhanobut.dialogplus.** { *;}
+-keep class org.greenrobot.eventbus.** { *;}
+-keep class com.github.clans.fab.** { *;}
+-keep class com.lqr.optionitemview.** { *;}
+-keep class com.kyleduo.switchbutton.** { *;}
+-keep class eu.chainfire.libsuperuser.** { *;}
 
--keepclassmembers class com.sollyu.android.appenv.module.AppInfo {
-    public <fields>;
-}
--keep class * implements de.robv.android.xposed.IXposedHookLoadPackage {
-    public void handleLoadPackage(de.robv.android.xposed.callbacks.XC_LoadPackage$LoadPackageParam);
-}
--keep class com.sollyu.android.appenv.MainApplication {
-    public boolean isXposedWork();
-}
+-dontwarn org.apache.log4j.**
+-dontwarn okio.**
+
+-keepclassmembers class com.sollyu.android.appenv.module.AppInfo {public <fields>;}
+-keep class * implements de.robv.android.xposed.IXposedHookLoadPackage { public void handleLoadPackage(de.robv.android.xposed.callbacks.XC_LoadPackage$LoadPackageParam); }
+-keep class com.sollyu.android.appenv.MainApplication { public boolean isXposedWork();}
