@@ -31,21 +31,6 @@ android {
         official {
         }
     }
-    task buildnumberplusone {
-        Properties props = new Properties()
-        File propsFile = new File('gradle.properties')
-        props.load(propsFile.newDataInputStream())
-        Integer allBuildCount =  Integer.parseInt(props.getProperty("allBuildCount", "1"))
-        Integer versionBuild  = Integer.parseInt(props.getProperty("versionBuild", "1"))
-        String  versionSuffix = props.getProperty("versionSuffix", "1.0.0")
-
-        props.setProperty("allBuildCount", String.valueOf(allBuildCount + 1))
-        props.setProperty("versionBuild" , String.valueOf(versionBuild + 1))
-        props.store(propsFile.newWriter(), "gradle auto stroe")
-
-        // defaultConfig.versionName = versionSuffix + '.' + versionBuild
-        // defaultConfig.versionCode = allBuildCount
-    }
     android.applicationVariants.all { variant ->
         variant.outputs.each { output ->
             output.outputFile = new File(output.outputFile.parent, applicationId + "-" + buildType.name + "-v" + defaultConfig.versionName + "-" + defaultConfig.versionCode + "-" + variant.productFlavors[0].name + ".apk");
