@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.sollyu.android.appenv.helper.PhoneHelper;
+import com.sollyu.android.logg.Logg;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -22,17 +23,20 @@ import java.io.InputStream;
  * 联系: sollyu@qq.com
  * 说明:
  */
-public class MainApplication extends Application {
+public class MainApplication extends Application implements Thread.UncaughtExceptionHandler {
 
     private static MainApplication instance = null;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        instance = this;
+        MainApplication.instance = this;
 
         // Android-Bootstrap 图标注册
         TypefaceProvider.registerDefaultIconSets();
+
+        Logg.init("AppEnv");
+        Thread.setDefaultUncaughtExceptionHandler(this);
 
         MobclickAgent.startWithConfigure(new MobclickAgent.UMAnalyticsConfig(this, "558a1cb667e58e7649000228", BuildConfig.FLAVOR));
         MobclickAgent.setCatchUncaughtExceptions(false);
@@ -46,6 +50,8 @@ public class MainApplication extends Application {
 
         Bugly.init(getApplicationContext(), BuildConfig.BUGLY_APPID, BuildConfig.DEBUG);
         Beta.init(getApplicationContext(), BuildConfig.DEBUG);
+
+        MainConfig.getInstance().init();
 
         // 释放文件
         try {
@@ -70,7 +76,7 @@ public class MainApplication extends Application {
         return swapStream.toByteArray();
     }
 
-    public static MainApplication getInstance() {
+    public synchronized static MainApplication getInstance() {
         return instance;
     }
 
@@ -79,5 +85,10 @@ public class MainApplication extends Application {
      */
     public boolean isXposedWork() {
         return false;
+    }
+
+    @Override
+    public void uncaughtException(Thread t, Throwable e) {
+        Logg.L.error(e.getMessage(), e);
     }
 }

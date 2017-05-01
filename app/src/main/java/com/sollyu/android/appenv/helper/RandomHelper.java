@@ -102,6 +102,53 @@ public class RandomHelper {
         return randomString(15, true, false, true);
     }
 
+    public String randomBuildVersionName() {
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        stringArrayList.add("Android 5.1");
+        stringArrayList.add("Android 4.4.4");
+        stringArrayList.add("Android 6.0.1");
+        stringArrayList.add("Android 5.1.1");
+        stringArrayList.add("Android 6.0");
+        stringArrayList.add("Android 4.4.2");
+        stringArrayList.add("Android 5.0.2");
+        stringArrayList.add("Android 4.3");
+        stringArrayList.add("Android 5.0");
+        stringArrayList.add("Android 4.2.2");
+        stringArrayList.add("Android 4.4");
+        stringArrayList.add("Android 4.1.2");
+        stringArrayList.add("Android 5.0.1");
+        stringArrayList.add("Android 4.2.1");
+        stringArrayList.add("Android 4.1.1");
+        stringArrayList.add("Android 4.4.3");
+        stringArrayList.add("Android 4.0.4");
+        stringArrayList.add("Android 4.0.3");
+        stringArrayList.add("Android 4.2");
+        stringArrayList.add("Android 4.1");
+        stringArrayList.add("Android 2.3.6");
+        stringArrayList.add("Android 5.1.0");
+        stringArrayList.add("Android 4.4.5");
+        stringArrayList.add("Android 4.0");
+        stringArrayList.add("Android 4.3.1");
+        stringArrayList.add("Android 4.4.0");
+        stringArrayList.add("Android 5.0.5");
+        stringArrayList.add("Android 5.12");
+        stringArrayList.add("Android 5.3 ");
+        stringArrayList.add("Android 6.0.2");
+        stringArrayList.add("Android 6.1");
+        stringArrayList.add("Android 2.2.2");
+        stringArrayList.add("Android 4.3.0");
+        stringArrayList.add("Android 4.2.3");
+        stringArrayList.add("Android 4.2.9");
+        stringArrayList.add("Android 4.4.1");
+        stringArrayList.add("Android 2.2.3");
+        stringArrayList.add("Android 2.3.4");
+        stringArrayList.add("Android 3.1.2");
+        stringArrayList.add("Android 5.2");
+        stringArrayList.add("Android 4.5");
+
+        return stringArrayList.get(RandomHelper.getInstance().randomInt(0, stringArrayList.size()));
+    }
+
     public AppInfo randomAll() {
         ArrayList<String>       manufacturerStringArrayList = PhoneHelper.getInstance().getManufacturerList();
         String                  randomManufacturer          = manufacturerStringArrayList.get(randomInt(0, manufacturerStringArrayList.size() - 1));
@@ -118,14 +165,20 @@ public class RandomHelper {
         appInfo.buildManufacturer           = randomManufacturer;
         appInfo.buildModel                  = hashMap.get(selectStringArrayList.get(randomInt(0, selectStringArrayList.size() - 1)));
         appInfo.buildSerial                 = randomBuildSerial();
+        appInfo.buildVersionRelease         = randomBuildVersionName();
         appInfo.telephonyGetLine1Number     = randomTelephonyGetLine1Number();
         appInfo.telephonyGetDeviceId        = randomTelephonyGetDeviceId();
         appInfo.telephonyGetNetworkType     = String.valueOf(randomInt(0, 15));
         appInfo.telephonyGetSimSerialNumber = randomTelephonySimSerialNumber();
+        appInfo.telephonyGetSubscriberId    = randomSimSubscriberId();
         appInfo.wifiInfoGetSSID             = randomWifiInfoSSID();
         appInfo.wifiInfoGetMacAddress       = randomWifiInfoMacAddress();
         appInfo.settingsSecureAndroidId     = randomAndroidId();
 
         return appInfo;
+    }
+
+    public String randomSimSubscriberId() {
+        return randomString(20, false, false, true);
     }
 }

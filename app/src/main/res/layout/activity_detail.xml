@@ -29,62 +29,63 @@
         android:id="@+id/fab"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingRight="10dp"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        app:menu_labels_ellipsize="end"
-        app:menu_labels_singleLine="true"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        app:layout_behavior="com.sollyu.android.appenv.utils.FloatingActionMenuBehavior"
+        app:menu_labels_ellipsize="end"
+        app:menu_labels_singleLine="true"
         app:srcCompat="@android:drawable/ic_dialog_email">
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/menu_random_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_refresh_w"
             android:onClick="onClickRandomAll"
+            android:src="@drawable/ic_refresh_w"
             app:fab_colorNormal="#43A047"
-            app:fab_size="mini"
-            app:fab_label="@string/random_all" />
+            app:fab_label="@string/random_all"
+            app:fab_size="mini"/>
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/menu_run_app"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_video_youtube_w"
             android:onClick="onClickRunApp"
+            android:src="@drawable/ic_video_youtube_w"
             app:fab_colorNormal="#1565C0"
-            app:fab_size="mini"
-            app:fab_label="@string/run_app" />
+            app:fab_label="@string/run_app"
+            app:fab_size="mini"/>
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/menu_clear_app"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_remove_circle_w"
             android:onClick="onClickClearApp"
-            app:fab_size="mini"
-            app:fab_label="@string/wipe_data" />
+            android:src="@drawable/ic_remove_circle_w"
+            app:fab_label="@string/wipe_data"
+            app:fab_size="mini"/>
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/menu_force_stop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_cancel_w"
             android:onClick="onClickForceStopApp"
-            app:fab_size="mini"
-            app:fab_label="@string/force_stop_app" />
+            android:src="@drawable/ic_cancel_w"
+            app:fab_label="@string/force_stop_app"
+            app:fab_size="mini"/>
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/menu_save_config"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_save_w"
             android:onClick="onClickSaveConfig"
+            android:src="@drawable/ic_save_w"
             app:fab_colorNormal="#FFB805"
-            app:fab_size="mini"
-            app:fab_label="@string/save_config" />
+            app:fab_label="@string/save_config"
+            app:fab_size="mini"/>
 
 
     </com.github.clans.fab.FloatingActionMenu>
