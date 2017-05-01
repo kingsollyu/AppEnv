@@ -1,8 +1,13 @@
 package com.sollyu.android.appenv;
 
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.provider.Settings;
+import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
@@ -119,6 +124,44 @@ public class MainXposed implements IXposedHookLoadPackage, IXposedHookZygoteInit
 
             if (!OtherHelper.getInstance().isNull(packageAppInfo.settingsSecureAndroidId)) {
                 XposedHookHelper.getInstances(loadPackageParam).Settings.System.getString(Settings.Secure.ANDROID_ID, packageAppInfo.settingsSecureAndroidId);
+            }
+
+            if (!TextUtils.isEmpty(packageAppInfo.displayDip)) {
+                Class CompatibilityInfo = XposedHelpers.findClass("android.content.res.CompatibilityInfo", loadPackageParam.classLoader);
+                XposedHelpers.findAndHookMethod(Resources.class, "updateConfiguration", Configuration.class, DisplayMetrics.class, CompatibilityInfo, new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        int v0 = 0;
+                        try {
+                            v0 = Integer.parseInt(packageAppInfo.displayDip);
+
+                            if (param.args[0] != null) {
+                                DisplayMetrics displayMetrics;
+                                Configuration configuration = new Configuration((Configuration) param.args[0]);
+                                if(param.args[1] != null) {
+                                    displayMetrics = new DisplayMetrics();
+                                    displayMetrics.setTo((DisplayMetrics) param.args[1]);
+                                    param.args[1] = displayMetrics;
+                                }
+                                else {
+                                    displayMetrics = ((Resources)param.thisObject).getDisplayMetrics();
+                                }
+
+                                if(v0 > 0) {
+                                    displayMetrics.density = (((float)v0)) / 160f;
+                                    displayMetrics.densityDpi = v0;
+                                    if(Build.VERSION.SDK_INT >= 17) {
+                                        XposedHelpers.setIntField(configuration, "densityDpi", v0);
+                                    }
+                                }
+
+                                param.args[0] = configuration;
+                            }
+                        } catch (NumberFormatException e) {
+                            Log.e(TAG, "displayDip:" + e.getMessage(), e);
+                        }
+                    }
+                });
             }
 
 

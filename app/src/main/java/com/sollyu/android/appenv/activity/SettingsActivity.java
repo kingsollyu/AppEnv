@@ -1,16 +1,18 @@
 package com.sollyu.android.appenv.activity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.kyleduo.switchbutton.SwitchButton;
+import com.sollyu.android.appenv.MainConfig;
 import com.sollyu.android.appenv.R;
 import com.tencent.bugly.beta.Beta;
+
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
 
 /**
  * 作者: Sollyu
@@ -18,21 +20,29 @@ import com.tencent.bugly.beta.Beta;
  * 联系: sollyu@qq.com
  * 说明:
  */
-public class SettingsActivity extends AppCompatActivity {
+@ContentView(R.layout.activity_settings)
+public class SettingsActivity extends BaseActivity {
     private boolean isChanged = false;
 
+    @ViewInject(R.id.toolbar)
+    private Toolbar mToolbar;
+
+    @ViewInject(R.id.sbShowSystemApp)
+    private SwitchButton mSbShowSystemApp;
+
+
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initView() {
+        setSupportActionBar(mToolbar);
 
         if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(R.string.settings);
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        this.getFragmentManager().beginTransaction().replace(android.R.id.content, new PrefsFragment(this)).commit();
+        mSbShowSystemApp.setCheckedImmediately(MainConfig.getInstance().isShowSystemApp());
     }
-
 
     @SuppressWarnings("deprecation")
     @Override
@@ -53,63 +63,22 @@ public class SettingsActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    public static class PrefsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener, Preference.OnPreferenceChangeListener {
-
-        public PrefsFragment() {
-        }
-
-
-        @SuppressLint("ValidFragment")
-        private PrefsFragment(SettingsActivity settingsActivity) {
-            this.settingsActivity = settingsActivity;
-        }
-
-        private SettingsActivity settingsActivity = null;
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-
-            addPreferencesFromResource(R.xml.content_settings);
-
-            findPreference("show_system_app").setOnPreferenceChangeListener(this);
-            findPreference("about").setOnPreferenceClickListener(this);
-            findPreference("update").setOnPreferenceClickListener(this);
-        }
-
-        /**
-         * Called when a Preference has been clicked.
-         *
-         * @param preference The Preference that was clicked.
-         * @return True if the click was handled.
-         */
-        @Override
-        public boolean onPreferenceClick(Preference preference) {
-            switch (preference.getKey()) {
-                case "about":
-                    startActivity(new Intent(settingsActivity, AboutActivity.class));
-                    break;
-                case "update":
-                    Beta.checkUpgrade();
-                    break;
-            }
-            return false;
-        }
-
-        /**
-         * Called when a Preference has been changed by the user. This is
-         * called before the state of the Preference is about to be updated and
-         * before the state is persisted.
-         *
-         * @param preference The changed Preference.
-         * @param newValue   The new value of the Preference.
-         * @return True to update the state of the Preference with the new value.
-         */
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object newValue) {
-            settingsActivity.isChanged = !settingsActivity.isChanged;
-            return true;
-        }
+    @SuppressWarnings("unused")
+    @Event(R.id.oivCheckUpdate)
+    private void onClickCheckUpdate(View view) {
+        Beta.checkUpgrade();
     }
 
+    @SuppressWarnings("unused")
+    @Event(R.id.oivAbout)
+    private void onClickAbout(View view) {
+        getActivity().startActivity(new Intent(getActivity(), AboutActivity.class));
+    }
+
+    @SuppressWarnings("unused")
+    @Event(R.id.sbShowSystemApp)
+    private void onClickShowSystemApp(View view) {
+        isChanged = true;
+        MainConfig.getInstance().setShowSystemApp(mSbShowSystemApp.isChecked());
+    }
 }

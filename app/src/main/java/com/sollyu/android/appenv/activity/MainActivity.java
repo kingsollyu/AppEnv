@@ -51,8 +51,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import eu.chainfire.libsuperuser.Shell;
 
@@ -60,8 +58,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private static final String TAG = "AppEnv";
 
-    private Handler         uiHandler       = new Handler();
-    private ExecutorService executorService = Executors.newFixedThreadPool(1);
+    private Handler uiHandler = new Handler();
 
     private NormalRecyclerViewAdapter _NormalRecyclerViewAdapter = null;
     private SwipeRefreshLayout        _SwipeRefreshLayout        = null;
@@ -80,7 +77,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout          drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
@@ -238,7 +235,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -289,7 +285,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         @Override
         public void onBindViewHolder(final NormalRecyclerViewAdapter.NormalTextViewHolder holder, int position) {
-            holder.applicationInfo = _DisplayApplicationInfo.get(position);;
+            holder.applicationInfo = _DisplayApplicationInfo.get(position);
+            ;
             holder.textView1.setText(holder.applicationInfo.loadLabel(getPackageManager()));
             holder.textView2.setText(holder.applicationInfo.packageName);
             holder.imageView.setImageDrawable(holder.applicationInfo.loadIcon(getPackageManager()));
@@ -324,61 +321,50 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         openItem.put("icon", R.drawable.ic_delete);
                         mapList.add(openItem);
 
-                        SimpleAdapter simpleAdapter = new SimpleAdapter(
-                                holder.itemView.getContext(),
-                                mapList,
-                                R.layout.dialog_plus_content,
-                                new String[]{"title", "icon"},
-                                new int[]{R.id.text_view, R.id.image_view});
+                        SimpleAdapter simpleAdapter = new SimpleAdapter(holder.itemView.getContext(), mapList, R.layout.dialog_plus_content, new String[]{"title", "icon"}, new int[]{R.id.text_view, R.id.image_view});
 
-                        DialogPlus dialogPlus = DialogPlus.newDialog(holder.itemView.getContext())
-                                .setExpanded(false)
-                                .setContentHolder(new ListHolder())
-                                .setHeader(R.layout.dialog_plus_header)
-                                .setAdapter(simpleAdapter)
-                                .setOnItemClickListener(new OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(DialogPlus dialog, Object item, final View view, int position1) {
-                                        dialog.dismiss();
-                                        switch (position1) {
-                                            case 0: // Open
-                                                holder.itemView.performClick();
-                                                break;
-                                            case 1: // Random
-                                                XposedSharedPreferencesHelper.getInstance().set(holder.textView2.getText().toString(), RandomHelper.getInstance().randomAll());
-                                                uiHandler.postDelayed(new Runnable() {
+                        DialogPlus dialogPlus = DialogPlus.newDialog(holder.itemView.getContext()).setExpanded(false).setContentHolder(new ListHolder()).setHeader(R.layout.dialog_plus_header).setAdapter(simpleAdapter).setOnItemClickListener(new OnItemClickListener() {
+                            @Override
+                            public void onItemClick(DialogPlus dialog, Object item, final View view, int position1) {
+                                dialog.dismiss();
+                                switch (position1) {
+                                    case 0: // Open
+                                        holder.itemView.performClick();
+                                        break;
+                                    case 1: // Random
+                                        XposedSharedPreferencesHelper.getInstance().set(holder.textView2.getText().toString(), RandomHelper.getInstance().randomAll());
+                                        uiHandler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Snackbar.make(view, R.string.random_success, Snackbar.LENGTH_LONG).setAction(R.string.force_stop, new View.OnClickListener() {
                                                     @Override
-                                                    public void run() {
-                                                        Snackbar.make(view, R.string.random_success, Snackbar.LENGTH_LONG).setAction(R.string.force_stop, new View.OnClickListener() {
+                                                    public void onClick(View v) {
+                                                        LibSuHelper.getInstance().addCommand("am force-stop " + holder.applicationInfo.packageName, 0, new Shell.OnCommandResultListener() {
                                                             @Override
-                                                            public void onClick(View v) {
-                                                                LibSuHelper.getInstance().addCommand("am force-stop " + holder.applicationInfo.packageName, 0, new Shell.OnCommandResultListener() {
-                                                                    @Override
-                                                                    public void onCommandResult(int commandCode, int exitCode, List<String> output) {
-                                                                        if (exitCode != 0)
-                                                                            Snackbar.make(findViewById(R.id.content_main), getString(R.string.force_stop_error) + exitCode, Snackbar.LENGTH_LONG).show();
-                                                                        else
-                                                                            Snackbar.make(findViewById(R.id.content_main), R.string.force_stop_success, Snackbar.LENGTH_LONG).show();
-                                                                    }
-                                                                });
+                                                            public void onCommandResult(int commandCode, int exitCode, List<String> output) {
+                                                                if (exitCode != 0)
+                                                                    Snackbar.make(findViewById(R.id.content_main), getString(R.string.force_stop_error) + exitCode, Snackbar.LENGTH_LONG).show();
+                                                                else
+                                                                    Snackbar.make(findViewById(R.id.content_main), R.string.force_stop_success, Snackbar.LENGTH_LONG).show();
                                                             }
-                                                        }).show();
+                                                        });
                                                     }
-                                                }, 250);
+                                                }).show();
+                                            }
+                                        }, 250);
 
-                                                onRefresh();
-                                                break;
-                                            case 2: // Detail
-                                                OtherHelper.getInstance().openAppDetails(holder.itemView.getContext(), holder.textView2.getText().toString());
-                                                break;
-                                            case 3: // Delete
-                                                XposedSharedPreferencesHelper.getInstance().remove(holder.textView2.getText().toString());
-                                                MainActivity.this.onRefresh();
-                                                break;
-                                        }
-                                    }
-                                })
-                                .create();
+                                        onRefresh();
+                                        break;
+                                    case 2: // Detail
+                                        OtherHelper.getInstance().openAppDetails(holder.itemView.getContext(), holder.textView2.getText().toString());
+                                        break;
+                                    case 3: // Delete
+                                        XposedSharedPreferencesHelper.getInstance().remove(holder.textView2.getText().toString());
+                                        MainActivity.this.onRefresh();
+                                        break;
+                                }
+                            }
+                        }).create();
 
                         ((TextView) dialogPlus.getHeaderView().findViewById(R.id.text_view1)).setText(holder.textView1.getText());
                         ((TextView) dialogPlus.getHeaderView().findViewById(R.id.text_view2)).setText(holder.textView2.getText());
@@ -440,9 +426,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
 
         class NormalTextViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            private TextView  textView1;
-            private TextView  textView2;
-            private ImageView imageView;
+            private TextView        textView1;
+            private TextView        textView2;
+            private ImageView       imageView;
             private ApplicationInfo applicationInfo;
 
             NormalTextViewHolder(View itemView) {

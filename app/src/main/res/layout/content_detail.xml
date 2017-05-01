@@ -21,125 +21,134 @@
         android:paddingBottom="128dp">
 
         <com.sollyu.android.appenv.view.DetailItem
+            android:id="@+id/manufacturer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onClickManufacturer"
-            android:id="@+id/manufacturer"
             app:hint="@string/manufacturer"
             app:icon_button="{fa_caret_square_o_down}"
             app:icon_text="{fa_university}"
             />
 
         <com.sollyu.android.appenv.view.DetailItem
+            android:id="@+id/model"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onClickModel"
-            android:id="@+id/model"
             app:hint="@string/model"
             app:icon_button="{fa_caret_square_o_down}"
             app:icon_text="{fa_university}"
             />
 
         <com.sollyu.android.appenv.view.DetailItem
+            android:id="@+id/serial"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onClickSerial"
-            android:id="@+id/serial"
             app:hint="@string/serial"
             app:icon_button="{fa_random}"
             app:icon_text="{fa-tty}"
             />
 
         <com.sollyu.android.appenv.view.DetailItem
+            android:id="@+id/versionName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onClickVersionName"
-            android:id="@+id/versionName"
             app:hint="@string/versionName"
             app:icon_button="{fa_random}"
             app:icon_text="{fa-bolt}"
             />
 
         <com.sollyu.android.appenv.view.DetailItem
+            android:id="@+id/phone_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onClickLineNumber"
-            android:id="@+id/phone_number"
             app:hint="@string/phone_number"
             app:icon_button="{fa_random}"
             app:icon_text="{fa-phone}"
             />
 
         <com.sollyu.android.appenv.view.DetailItem
+            android:id="@+id/phone_network_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onClickNetworkType"
-            android:id="@+id/phone_network_type"
             app:hint="@string/phone_network_type"
             app:icon_button="{fa_caret_square_o_down}"
             app:icon_text="{fa-rss}"
             />
 
         <com.sollyu.android.appenv.view.DetailItem
+            android:id="@+id/phone_device_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onClickDeviceId"
-            android:id="@+id/phone_device_id"
             app:hint="@string/phone_device_id"
             app:icon_button="{fa_random}"
             app:icon_text="{fa-barcode}"
             />
 
         <com.sollyu.android.appenv.view.DetailItem
+            android:id="@+id/sim_serial_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onClickSimSerialNumber"
-            android:id="@+id/sim_serial_number"
             app:hint="@string/sim_serial_number"
             app:icon_button="{fa_random}"
             app:icon_text="{fa-sliders}"
             />
 
         <com.sollyu.android.appenv.view.DetailItem
+            android:id="@+id/sim_subscriber_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onClickSimSubscriberId"
-            android:id="@+id/sim_subscriber_id"
             app:hint="@string/sim_subscriber_id"
             app:icon_button="{fa_random}"
             app:icon_text="{fa-certificate}"
             />
 
         <com.sollyu.android.appenv.view.DetailItem
+            android:id="@+id/wifi_info_ssid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onClickWifiInfoSSID"
-            android:id="@+id/wifi_info_ssid"
             app:hint="@string/wifi_info_ssid"
             app:icon_button="{fa_random}"
             app:icon_text="{fa-wifi}"
             />
 
         <com.sollyu.android.appenv.view.DetailItem
+            android:id="@+id/wifi_info_mac_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onClickWifiInfoMacAddress"
-            android:id="@+id/wifi_info_mac_address"
             app:hint="@string/wifi_info_mac_address"
             app:icon_button="{fa_random}"
             app:icon_text="{fa-tasks}"
             />
 
         <com.sollyu.android.appenv.view.DetailItem
+            android:id="@+id/settingsSecureAndroidId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onClickAndroidId"
-            android:id="@+id/settingsSecureAndroidId"
             app:hint="Android Id"
             app:icon_button="{fa_random}"
             app:icon_text="{fa-fax}"
             />
 
+        <com.sollyu.android.appenv.view.DetailItem
+            android:id="@+id/diDisplayDip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClickDisplayDpi"
+            app:hint="DPI"
+            app:icon_button="{fa-times}"
+            app:icon_text="{fa-television}"
+            />
     </LinearLayout>
 
 
