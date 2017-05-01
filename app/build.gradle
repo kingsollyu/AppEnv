@@ -8,8 +8,8 @@ android {
         minSdkVersion 17
         targetSdkVersion 25
 
-        versionCode 580
-        versionName "3.1.0.580"
+        versionCode 581
+        versionName "3.1.0.581"
 
         buildConfigField "String", "BUGLY_APPID", '"900058009"'
     }
