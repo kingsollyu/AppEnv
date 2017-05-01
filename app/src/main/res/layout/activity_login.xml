@@ -24,7 +24,7 @@
             android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="因租用网上服务器费用比较贵，所以云端功能暂定为收费300次/1元的价格进行收费(无时间限制)。收费功能均为使用服务器的功能，不付费不影响正常功能的使用。"
+            android:text="因租用网上服务器费用比较贵，所以云端功能暂定为收费300次/1元的价格进行收费(无时间限制)。\n\n收费功能均为使用服务器的功能，不付费不影响正常功能的使用。\n\n激活码没有机型绑定和时间限制，您可以绑定任意多的手机，也可以在任意时间使用（但愿我还支付的起服务器的价格）。\n\n本人淘宝基本上不在线，买了激活码可以通过淘宝界面里的自助查询来获得您的激活码。\n\n祝您生活开心，万事如意(•̀ᴗ•́)و"
             android:textAlignment="viewStart"/>
     </com.beardedhen.androidbootstrap.BootstrapWell>
 

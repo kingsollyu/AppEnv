@@ -14,6 +14,8 @@ import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
+import qiu.niorgai.StatusBarCompat;
+
 /**
  * 作者: Sollyu
  * 时间: 16/11/2
@@ -39,6 +41,7 @@ public class SettingsActivity extends BaseActivity {
             getSupportActionBar().setTitle(R.string.settings);
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            StatusBarCompat.setStatusBarColor(getActivity(), getActivity().getResources().getColor(R.color.colorPrimaryDark));
         }
 
         mSbShowSystemApp.setCheckedImmediately(MainConfig.getInstance().isShowSystemApp());

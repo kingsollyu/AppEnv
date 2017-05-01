@@ -42,7 +42,8 @@
         <activity
             android:name=".activity.DetailActivity"
             android:label="@string/detail"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden">
         </activity>
         <activity
             android:name=".activity.CloudActivity"
