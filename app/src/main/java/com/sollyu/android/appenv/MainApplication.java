@@ -12,6 +12,7 @@ import com.umeng.analytics.MobclickAgent;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.apache.log4j.Level;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,6 +37,7 @@ public class MainApplication extends Application implements Thread.UncaughtExcep
         TypefaceProvider.registerDefaultIconSets();
 
         Logg.init("AppEnv");
+        Logg.L.setLevel(BuildConfig.DEBUG ? Level.ALL : Level.OFF);
         Thread.setDefaultUncaughtExceptionHandler(this);
 
         MobclickAgent.startWithConfigure(new MobclickAgent.UMAnalyticsConfig(this, "558a1cb667e58e7649000228", BuildConfig.FLAVOR));
