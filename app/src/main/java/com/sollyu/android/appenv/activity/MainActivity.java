@@ -192,6 +192,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         AsyncTask<Object, Object, Object> asyncTask = new AsyncTask<Object, Object, Object>() {
             @Override
             protected void onPreExecute() {
+                _SwipeRefreshLayout.setRefreshing(true);
                 _NormalRecyclerViewAdapter.notifyItemRangeRemoved(0, _DisplayApplicationInfo.size());
                 _DisplayApplicationInfo.clear();
             }

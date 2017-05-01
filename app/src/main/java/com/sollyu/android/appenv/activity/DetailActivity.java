@@ -30,7 +30,6 @@ import com.orhanobut.dialogplus.ListHolder;
 import com.orhanobut.dialogplus.OnItemClickListener;
 import com.sollyu.android.appenv.R;
 import com.sollyu.android.appenv.helper.LibSuHelper;
-import com.sollyu.android.appenv.helper.OtherHelper;
 import com.sollyu.android.appenv.helper.PhoneHelper;
 import com.sollyu.android.appenv.helper.RandomHelper;
 import com.sollyu.android.appenv.helper.SolutionHelper;
@@ -130,8 +129,12 @@ public class DetailActivity extends BaseActivity {
             return;
         }
 
-        if (!OtherHelper.getInstance().isUserAppllication(applicationInfo)) {
-            Snackbar.make(mDetailContent, "不建议修改系统应用，修改系统应用可能会手机无法启动", Snackbar.LENGTH_LONG).show();
+        if (applicationInfo.packageName.equals(XposedSharedPreferencesHelper.KEY_ALL)) {
+            Snackbar.make(mDetailContent, "不建议修改系统应用，修改系统应用可能会手机无法启动", Snackbar.LENGTH_INDEFINITE).show();
+        }
+
+        if (applicationInfo.packageName.equals(XposedSharedPreferencesHelper.KEY_USER)) {
+            Snackbar.make(mDetailContent, "拦截第三方是指您没有设置的程序, 已经设置过的依然有效", Snackbar.LENGTH_INDEFINITE).show();
         }
 
         if (applicationInfo.packageName.equals("com.sina.weibo")) {

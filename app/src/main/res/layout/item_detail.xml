@@ -11,8 +11,7 @@
         android:layout_height="wrap_content"
         app:bootstrapText="H"
         app:fontAwesomeIcon="fa_android"
-        app:typicon="ty_anchor"
-        />
+        app:typicon="ty_anchor"/>
 
     <android.support.v7.widget.AppCompatEditText
         android:id="@+id/etContent"
@@ -22,10 +21,10 @@
 
     <com.beardedhen.androidbootstrap.AwesomeTextView
         android:id="@+id/tvButton"
-        android:layout_width="wrap_content"
+        android:layout_width="20dp"
         android:layout_height="wrap_content"
+        android:textSize="18sp"
         app:bootstrapText="H"
         app:fontAwesomeIcon="fa_android"
-        app:typicon="ty_anchor"
-        />
+        app:typicon="ty_anchor"/>
 </LinearLayout>

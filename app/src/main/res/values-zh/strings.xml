@@ -45,6 +45,13 @@
                     "请不要使用本软件做任何违法事情， 包括刷单之类操作，如您使用本软件出现任何违法法律，一切后果由您自行承担和作者无关。<br><br>"
 
                     "<h2>本版更新</h2>"
+                    "+ 增加DPI拦截<br>"
+                    "~ 修正设置界面太丑<br>"
+                    "~ 优化拦截详情界面<br>"
+                    "~ 增加版本号 (ง •̀_•́)ง <br>"
+                    "<br>"
+
+                    "<h2>上版更新</h2>"
                     "+ 支持Android 7.0<br>"
                     "+ 随机生成IMEI增加识别算法<br>"
                     "+ 支持云端服务<br>"
@@ -53,12 +60,15 @@
                     "<br>"
 
                     "<h2>开源组许可</h2>"
-                    "FastJson             => <a href="https://github.com/alibaba/fastjson/blob/master/license.txt">Apache 2.0 license</a>.<br>"
-                    "OkHttp               => <a href="https://raw.githubusercontent.com/square/okhttp/master/LICENSE.txt">Apache 2.0 license</a>.<br>"
-                    "LibSuperuser         => <a href="https://raw.githubusercontent.com/Chainfire/libsuperuser/master/LICENSE">Apache 2.0 license</a>.<br>"
-                    "FloatingActionButton => <a href="https://raw.githubusercontent.com/Clans/FloatingActionButton/master/LICENSE">Apache 2.0 license</a>.<br>"
-                    "Commons-IO           => <a href="https://raw.githubusercontent.com/apache/commons-io/master/LICENSE.txt">Apache 2.0 license</a>.<br>"
-                    "Android-Bootstrap    => <a href="https://raw.githubusercontent.com/Bearded-Hen/Android-Bootstrap/master/LICENSE.txt">The MIT License</a><br>"
+                    "FastJson             : <a href="https://github.com/alibaba/fastjson/blob/master/license.txt">Apache 2.0 license</a>.<br>"
+                    "OkHttp               : <a href="https://raw.githubusercontent.com/square/okhttp/master/LICENSE.txt">Apache 2.0 license</a>.<br>"
+                    "LibSuperuser         : <a href="https://raw.githubusercontent.com/Chainfire/libsuperuser/master/LICENSE">Apache 2.0 license</a>.<br>"
+                    "FloatingActionButton : <a href="https://raw.githubusercontent.com/Clans/FloatingActionButton/master/LICENSE">Apache 2.0 license</a>.<br>"
+                    "Commons-IO           : <a href="https://raw.githubusercontent.com/apache/commons-io/master/LICENSE.txt">Apache 2.0 license</a>.<br>"
+                    "Android-Bootstrap    : <a href="https://raw.githubusercontent.com/Bearded-Hen/Android-Bootstrap/master/LICENSE.txt">The MIT License</a><br>"
+                    "StatusBarCompat      : <a href="https://github.com/niorgai/StatusBarCompat/raw/master/License.md">The MIT License</a><br>"
+                    "SwitchButton         : <a href="https://raw.githubusercontent.com/apache/commons-io/master/LICENSE.txt">Apache 2.0 license</a><br>"
+                    "xUtils3              : <a href="https://raw.githubusercontent.com/wyouflf/xUtils3/master/LICENSE">Apache 2.0 license</a><br>"
 
                     "<br>"
                     "<br>"
@@ -89,7 +99,7 @@
     <string name="order">咨询购买?</string>
     <string name="token_can_not_null">激活码不能为空</string>
     <string name="wait">请稍候</string>
-    <string name="processing">正在处理...</string>
+    <string name="processing">正在处理…</string>
     <string name="upload">上传</string>
     <string name="download">下载</string>
     <string name="get_last_phone_list">获得最新机型列表</string>

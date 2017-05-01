@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 
 import com.beardedhen.androidbootstrap.AwesomeTextView;
 import com.sollyu.android.appenv.R;
-import com.sollyu.android.appenv.helper.OtherHelper;
 import com.sollyu.android.logg.Logg;
 
 import org.xutils.view.annotation.ViewInject;
@@ -27,9 +26,9 @@ import java.lang.reflect.Method;
  */
 public class DetailItem extends LinearLayout {
 
-    @ViewInject(R.id.tvIcon)     AwesomeTextView   iconAwesomeTextView   = null;
+    @ViewInject(R.id.tvIcon)    AwesomeTextView   iconAwesomeTextView   = null;
     @ViewInject(R.id.tvButton)  AwesomeTextView   buttonAwesomeTextView = null;
-    @ViewInject(R.id.etContent)   AppCompatEditText editText              = null;
+    @ViewInject(R.id.etContent) AppCompatEditText editText              = null;
 
     private String onClickMethodName = null;
 
@@ -60,7 +59,6 @@ public class DetailItem extends LinearLayout {
         }
 
         onClickMethodName = attrs.getAttributeValue(ANDROID_NAME_SPACE, "onClick");
-        buttonAwesomeTextView.setTextSize(OtherHelper.getInstance().sp2px(this.getContext(), 10));
         buttonAwesomeTextView.setOnClickListener(v -> {
             try {
                 Method method = context.getClass().getMethod(onClickMethodName, View.class);
@@ -76,6 +74,7 @@ public class DetailItem extends LinearLayout {
     public AwesomeTextView getButton() {
         return buttonAwesomeTextView;
     }
+
     public AwesomeTextView getIcon() {
         return iconAwesomeTextView;
     }

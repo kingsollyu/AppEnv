@@ -8,8 +8,8 @@ android {
         minSdkVersion 17
         targetSdkVersion 25
 
-        versionCode 560
-        versionName "3.1.0.560"
+        versionCode 570
+        versionName "3.1.0.570"
 
         buildConfigField "String", "BUGLY_APPID", '"900058009"'
     }
@@ -30,21 +30,6 @@ android {
         }
         official {
         }
-    }
-    task buildnumberplusone {
-        Properties props = new Properties()
-        File propsFile = new File('gradle.properties')
-        props.load(propsFile.newDataInputStream())
-        Integer allBuildCount =  Integer.parseInt(props.getProperty("allBuildCount", "1"))
-        Integer versionBuild  = Integer.parseInt(props.getProperty("versionBuild", "1"))
-        String  versionSuffix = props.getProperty("versionSuffix", "1.0.0")
-
-        props.setProperty("allBuildCount", String.valueOf(allBuildCount + 1))
-        props.setProperty("versionBuild" , String.valueOf(versionBuild + 1))
-        props.store(propsFile.newWriter(), "gradle auto stroe")
-
-        // defaultConfig.versionName = versionSuffix + '.' + versionBuild
-        // defaultConfig.versionCode = allBuildCount
     }
     android.applicationVariants.all { variant ->
         variant.outputs.each { output ->
@@ -86,6 +71,9 @@ dependencies {
     compile 'com.kyleduo.switchbutton:library:1.4.5'
 
     compile 'com.lqr.optionitemview:library:1.0.7'
+
+    //StatusBarCompat - https://github.com/niorgai/StatusBarCompat
+    compile 'com.github.niorgai:StatusBarCompat:2.1.3'
 }
 
 repositories {
