@@ -1,6 +1,7 @@
 package com.sollyu.android.appenv.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,7 +25,6 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.github.clans.fab.FloatingActionMenu;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ListHolder;
 import com.orhanobut.dialogplus.OnItemClickListener;
@@ -66,14 +66,21 @@ public class DetailActivity extends BaseActivity {
 
     private Handler uiHandler = new Handler();
 
-    @ViewInject(R.id.toolbar)
-    private Toolbar mToolbar;
+    @ViewInject(R.id.toolbar)        Toolbar    mToolbar;
+    @ViewInject(R.id.content_detail) ScrollView mDetailContent;
 
-    @ViewInject(R.id.content_detail)
-    private ScrollView mDetailContent;
-
-    @ViewInject(R.id.fab)
-    private FloatingActionMenu mFloatingActionMenu;
+    @ViewInject(R.id.manufacturer)            DetailItem mManufacturer;
+    @ViewInject(R.id.model)                   DetailItem mModel;
+    @ViewInject(R.id.serial)                  DetailItem mSerial;
+    @ViewInject(R.id.versionName)             DetailItem mVersionName;
+    @ViewInject(R.id.phone_number)            DetailItem mLineNumber;
+    @ViewInject(R.id.phone_network_type)      DetailItem mNetworkType;
+    @ViewInject(R.id.phone_device_id)         DetailItem mDeviceId;
+    @ViewInject(R.id.sim_serial_number)       DetailItem mSimSerialNumber;
+    @ViewInject(R.id.sim_subscriber_id)       DetailItem mSimSubscriberId;
+    @ViewInject(R.id.wifi_info_ssid)          DetailItem mWifiInfoSSID;
+    @ViewInject(R.id.wifi_info_mac_address)   DetailItem mWifiInfoMacAddress;
+    @ViewInject(R.id.settingsSecureAndroidId) DetailItem mSettingsSecureAndroidId;
 
     @Override
     protected void initView() {
@@ -116,12 +123,7 @@ public class DetailActivity extends BaseActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.error);
             builder.setMessage("程序出现严重错误: \n" + Log.getStackTraceString(e));
-            builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    getActivity().finish();
-                }
-            });
+            builder.setPositiveButton(android.R.string.ok, (dialog, which) -> getActivity().finish());
             builder.setCancelable(false);
             builder.create().show();
             return;
@@ -185,6 +187,7 @@ public class DetailActivity extends BaseActivity {
      * @param menu m
      * @return b
      */
+    @SuppressLint("RestrictedApi")
     @Override
     protected boolean onPrepareOptionsPanel(View view, Menu menu) {
         if (menu != null) {
@@ -229,60 +232,35 @@ public class DetailActivity extends BaseActivity {
         if (appInfo == null)
             return;
 
-        DetailItem manufacturer            = (DetailItem) findViewById(R.id.manufacturer);
-        DetailItem model                   = (DetailItem) findViewById(R.id.model);
-        DetailItem serial                  = (DetailItem) findViewById(R.id.serial);
-        DetailItem versionName             = (DetailItem) findViewById(R.id.versionName);
-        DetailItem phone_number            = (DetailItem) findViewById(R.id.phone_number);
-        DetailItem phone_network_type      = (DetailItem) findViewById(R.id.phone_network_type);
-        DetailItem phone_device_id         = (DetailItem) findViewById(R.id.phone_device_id);
-        DetailItem sim_serial_number       = (DetailItem) findViewById(R.id.sim_serial_number);
-        DetailItem sim_subscriber_id       = (DetailItem) findViewById(R.id.sim_subscriber_id);
-        DetailItem wifi_info_ssid          = (DetailItem) findViewById(R.id.wifi_info_ssid);
-        DetailItem wifi_info_mac_address   = (DetailItem) findViewById(R.id.wifi_info_mac_address);
-        DetailItem settingsSecureAndroidId = (DetailItem) findViewById(R.id.settingsSecureAndroidId);
-
-        manufacturer.getEditText()           .setText(appInfo.buildManufacturer);
-        model.getEditText()                  .setText(appInfo.buildModel);
-        serial.getEditText()                 .setText(appInfo.buildSerial);
-        versionName.getEditText()            .setText(appInfo.buildVersionRelease);
-        phone_number.getEditText()           .setText(appInfo.telephonyGetLine1Number);
-        phone_network_type.getEditText()     .setText(appInfo.telephonyGetNetworkType);
-        phone_device_id.getEditText()        .setText(appInfo.telephonyGetDeviceId);
-        sim_serial_number.getEditText()      .setText(appInfo.telephonyGetSimSerialNumber);
-        sim_subscriber_id.getEditText()      .setText(appInfo.telephonyGetSubscriberId);
-        wifi_info_ssid.getEditText()         .setText(appInfo.wifiInfoGetSSID);
-        wifi_info_mac_address.getEditText()  .setText(appInfo.wifiInfoGetMacAddress);
-        settingsSecureAndroidId.getEditText().setText(appInfo.settingsSecureAndroidId);
+        mManufacturer.getEditText()           .setText(appInfo.buildManufacturer);
+        mModel.getEditText()                  .setText(appInfo.buildModel);
+        mSerial.getEditText()                 .setText(appInfo.buildSerial);
+        mVersionName.getEditText()            .setText(appInfo.buildVersionRelease);
+        mLineNumber.getEditText()           .setText(appInfo.telephonyGetLine1Number);
+        mNetworkType.getEditText()     .setText(appInfo.telephonyGetNetworkType);
+        mDeviceId.getEditText()        .setText(appInfo.telephonyGetDeviceId);
+        mSimSerialNumber.getEditText()      .setText(appInfo.telephonyGetSimSerialNumber);
+        mSimSubscriberId.getEditText()      .setText(appInfo.telephonyGetSubscriberId);
+        mWifiInfoSSID.getEditText()         .setText(appInfo.wifiInfoGetSSID);
+        mWifiInfoMacAddress.getEditText()  .setText(appInfo.wifiInfoGetMacAddress);
+        mSettingsSecureAndroidId.getEditText().setText(appInfo.settingsSecureAndroidId);
     }
 
     private AppInfo uiToAppInfo() {
-        DetailItem manufacturer            = (DetailItem) findViewById(R.id.manufacturer);
-        DetailItem model                   = (DetailItem) findViewById(R.id.model);
-        DetailItem serial                  = (DetailItem) findViewById(R.id.serial);
-        DetailItem versionName             = (DetailItem) findViewById(R.id.versionName);
-        DetailItem phone_number            = (DetailItem) findViewById(R.id.phone_number);
-        DetailItem phone_network_type      = (DetailItem) findViewById(R.id.phone_network_type);
-        DetailItem phone_device_id         = (DetailItem) findViewById(R.id.phone_device_id);
-        DetailItem sim_serial_number       = (DetailItem) findViewById(R.id.sim_serial_number);
-        DetailItem sim_subscriber_id       = (DetailItem) findViewById(R.id.sim_subscriber_id);
-        DetailItem wifi_info_ssid          = (DetailItem) findViewById(R.id.wifi_info_ssid);
-        DetailItem wifi_info_mac_address   = (DetailItem) findViewById(R.id.wifi_info_mac_address);
-        DetailItem settingsSecureAndroidId = (DetailItem) findViewById(R.id.settingsSecureAndroidId);
 
         AppInfo appInfo = new AppInfo();
-        appInfo.buildManufacturer           = manufacturer.getEditText().getText().toString();
-        appInfo.buildModel                  = model.getEditText().getText().toString();
-        appInfo.buildSerial                 = serial.getEditText().getText().toString();
-        appInfo.buildVersionRelease         = versionName.getEditText().getText().toString();
-        appInfo.telephonyGetLine1Number     = phone_number.getEditText().getText().toString();
-        appInfo.telephonyGetNetworkType     = phone_network_type.getEditText().getText().toString();
-        appInfo.telephonyGetDeviceId        = phone_device_id.getEditText().getText().toString();
-        appInfo.telephonyGetSimSerialNumber = sim_serial_number.getEditText().getText().toString();
-        appInfo.telephonyGetSubscriberId    = sim_subscriber_id.getEditText().getText().toString();
-        appInfo.wifiInfoGetSSID             = wifi_info_ssid.getEditText().getText().toString();
-        appInfo.wifiInfoGetMacAddress       = wifi_info_mac_address.getEditText().getText().toString();
-        appInfo.settingsSecureAndroidId     = settingsSecureAndroidId.getEditText().getText().toString();
+        appInfo.buildManufacturer           = mManufacturer.getEditText().getText().toString();
+        appInfo.buildModel                  = mModel.getEditText().getText().toString();
+        appInfo.buildSerial                 = mSerial.getEditText().getText().toString();
+        appInfo.buildVersionRelease         = mVersionName.getEditText().getText().toString();
+        appInfo.telephonyGetLine1Number     = mLineNumber.getEditText().getText().toString();
+        appInfo.telephonyGetNetworkType     = mNetworkType.getEditText().getText().toString();
+        appInfo.telephonyGetDeviceId        = mDeviceId.getEditText().getText().toString();
+        appInfo.telephonyGetSimSerialNumber = mSimSerialNumber.getEditText().getText().toString();
+        appInfo.telephonyGetSubscriberId    = mSimSubscriberId.getEditText().getText().toString();
+        appInfo.wifiInfoGetSSID             = mWifiInfoSSID.getEditText().getText().toString();
+        appInfo.wifiInfoGetMacAddress       = mWifiInfoMacAddress.getEditText().getText().toString();
+        appInfo.settingsSecureAndroidId     = mSettingsSecureAndroidId.getEditText().getText().toString();
 
         return appInfo;
     }
@@ -370,8 +348,7 @@ public class DetailActivity extends BaseActivity {
     }
 
     public void onClickModel(final View view) {
-        DetailItem                    buildManufacturer = (DetailItem) findViewById(R.id.manufacturer);
-        final HashMap<String, String> hashMap           = PhoneHelper.getInstance().getModelList(buildManufacturer.getEditText().getText().toString());
+        final HashMap<String, String> hashMap = PhoneHelper.getInstance().getModelList(mManufacturer.getEditText().getText().toString());
 
         final ArrayList<String> selectStringArrayList = new ArrayList<>();
         for (Map.Entry<String, String> entry : hashMap.entrySet()) {
@@ -581,7 +558,6 @@ public class DetailActivity extends BaseActivity {
     }
 
     public void onMenuLoadSolution(MenuItem item) {
-        final View              view             = findViewById(R.id.content_detail);
         final ArrayList<String> displayArrayList = SolutionHelper.getInstance().list();
         if (displayArrayList.size() == 0) {
             Snackbar.make(mDetailContent, "没有任何方案", Snackbar.LENGTH_LONG).show();
@@ -590,10 +566,10 @@ public class DetailActivity extends BaseActivity {
 
         Collections.sort(displayArrayList, String.CASE_INSENSITIVE_ORDER);
 
-        DialogPlus dialogPlus = DialogPlus.newDialog(view.getContext())
+        DialogPlus dialogPlus = DialogPlus.newDialog(getActivity())
                 .setHeader(R.layout.dialog_plus_header)
                 .setContentHolder(new ListHolder())
-                .setAdapter(new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, displayArrayList))
+                .setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, displayArrayList))
                 .setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(DialogPlus dialog, Object item, View view, int position) {

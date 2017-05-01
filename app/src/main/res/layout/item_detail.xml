@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="horizontal">
+
+    <com.beardedhen.androidbootstrap.AwesomeTextView
+        android:id="@+id/tvIcon"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        app:bootstrapText="H"
+        app:fontAwesomeIcon="fa_android"
+        app:typicon="ty_anchor"
+        />
+
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/etContent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+
+    <com.beardedhen.androidbootstrap.AwesomeTextView
+        android:id="@+id/tvButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:bootstrapText="H"
+        app:fontAwesomeIcon="fa_android"
+        app:typicon="ty_anchor"
+        />
+</LinearLayout>
