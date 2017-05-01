@@ -65,7 +65,8 @@ public class AppInfo {
 
     public String displayDip = null;
 
-    public String systemCpuInfo = null;
+    public String systemCpuInfo  = null;
+    public String systemLanguage = null;
 
     @Override
     public String toString() {

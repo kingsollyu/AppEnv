@@ -149,6 +149,16 @@
             app:icon_button="{fa-times}"
             app:icon_text="{fa-television}"
             />
+
+        <com.sollyu.android.appenv.view.DetailItem
+            android:id="@+id/diLanguage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClickLanguage"
+            app:hint="语言"
+            app:icon_button="{fa_caret_square_o_down}"
+            app:icon_text="{fa-language}"
+            />
     </LinearLayout>
 
 

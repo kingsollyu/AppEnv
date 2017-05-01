@@ -1,10 +1,12 @@
 package com.sollyu.android.appenv;
 
+import android.app.Activity;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -15,6 +17,8 @@ import com.sollyu.android.appenv.helper.OtherHelper;
 import com.sollyu.android.appenv.helper.XposedHookHelper;
 import com.sollyu.android.appenv.helper.XposedSharedPreferencesHelper;
 import com.sollyu.android.appenv.module.AppInfo;
+
+import java.util.Locale;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
@@ -126,18 +130,45 @@ public class MainXposed implements IXposedHookLoadPackage, IXposedHookZygoteInit
                 XposedHookHelper.getInstances(loadPackageParam).Settings.System.getString(Settings.Secure.ANDROID_ID, packageAppInfo.settingsSecureAndroidId);
             }
 
-            if (!TextUtils.isEmpty(packageAppInfo.displayDip)) {
+
+            if (!TextUtils.isEmpty(packageAppInfo.displayDip) || !TextUtils.isEmpty(packageAppInfo.systemLanguage)) {
                 Class CompatibilityInfo = XposedHelpers.findClass("android.content.res.CompatibilityInfo", loadPackageParam.classLoader);
                 XposedHelpers.findAndHookMethod(Resources.class, "updateConfiguration", Configuration.class, DisplayMetrics.class, CompatibilityInfo, new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                        int v0 = 0;
-                        try {
-                            v0 = Integer.parseInt(packageAppInfo.displayDip);
 
-                            if (param.args[0] != null) {
+                        Configuration configuration = null;
+
+                        if (param.args[0] != null) {
+                            configuration = new Configuration((Configuration) param.args[0]);
+                        }
+
+                        if (configuration == null) {
+                            return;
+                        }
+
+
+                        // 拦截语言
+                        if (!TextUtils.isEmpty(packageAppInfo.systemLanguage)) {
+                            String[] localeParts = packageAppInfo.systemLanguage.split("_", 3);
+                            String   language    = localeParts[0];
+                            String   region      = (localeParts.length >= 2) ? localeParts[1] : "";
+                            String   variant     = (localeParts.length >= 3) ? localeParts[2] : "";
+
+                            Locale locale = new Locale(language, region, variant);
+                            Locale.setDefault(locale);
+                            configuration.locale = locale;
+                            if (Build.VERSION.SDK_INT >= 17) {
+                                configuration.setLayoutDirection(locale);
+                            }
+                        }
+
+                        // 拦截DPI
+                        if (!TextUtils.isEmpty(packageAppInfo.displayDip)) {
+                            try {
+                                int v0 = Integer.parseInt(packageAppInfo.displayDip);
                                 DisplayMetrics displayMetrics;
-                                Configuration configuration = new Configuration((Configuration) param.args[0]);
+
                                 if(param.args[1] != null) {
                                     displayMetrics = new DisplayMetrics();
                                     displayMetrics.setTo((DisplayMetrics) param.args[1]);
@@ -154,16 +185,24 @@ public class MainXposed implements IXposedHookLoadPackage, IXposedHookZygoteInit
                                         XposedHelpers.setIntField(configuration, "densityDpi", v0);
                                     }
                                 }
-
-                                param.args[0] = configuration;
+                            } catch (Throwable throwable) {
+                                Log.e(TAG, throwable.getMessage(), throwable);
                             }
-                        } catch (NumberFormatException e) {
-                            Log.e(TAG, "displayDip:" + e.getMessage(), e);
                         }
+
+                        param.args[0] = configuration;
                     }
                 });
             }
 
+            XposedHelpers.findAndHookMethod(Activity.class, "onCreate", Bundle.class, new XC_MethodHook() {
+                @Override
+                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                    Activity activity = (Activity) param.thisObject;
+                    Log.d(TAG, activity.getResources().getConfiguration().locale.getLanguage());
+                    super.afterHookedMethod(param);
+                }
+            });
 
         } catch (Throwable throwable) {
             Log.e(TAG, "handleLoadPackage: " + throwable.getLocalizedMessage(), throwable);
