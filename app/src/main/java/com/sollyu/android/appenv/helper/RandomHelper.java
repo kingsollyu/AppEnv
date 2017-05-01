@@ -149,6 +149,20 @@ public class RandomHelper {
         return stringArrayList.get(RandomHelper.getInstance().randomInt(0, stringArrayList.size()));
     }
 
+    public HashMap<String, Object> getSystemLanguage() {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("00.zh_CN" , "zh_CN");
+        hashMap.put("01.en_US" , "en_US");
+        return hashMap;
+    }
+
+    public String randomSystemLanguage() {
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        stringArrayList.add("zh_CN");
+        stringArrayList.add("en_US");
+        return stringArrayList.get(RandomHelper.getInstance().randomInt(0, stringArrayList.size()));
+    }
+
     public AppInfo randomAll() {
         ArrayList<String>       manufacturerStringArrayList = PhoneHelper.getInstance().getManufacturerList();
         String                  randomManufacturer          = manufacturerStringArrayList.get(randomInt(0, manufacturerStringArrayList.size() - 1));
@@ -174,6 +188,7 @@ public class RandomHelper {
         appInfo.wifiInfoGetSSID             = randomWifiInfoSSID();
         appInfo.wifiInfoGetMacAddress       = randomWifiInfoMacAddress();
         appInfo.settingsSecureAndroidId     = randomAndroidId();
+        appInfo.systemLanguage              = randomSystemLanguage();
 
         return appInfo;
     }

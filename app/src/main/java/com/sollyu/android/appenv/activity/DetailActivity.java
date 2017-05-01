@@ -81,6 +81,7 @@ public class DetailActivity extends BaseActivity {
     @ViewInject(R.id.wifi_info_mac_address)   DetailItem mWifiInfoMacAddress;
     @ViewInject(R.id.settingsSecureAndroidId) DetailItem mSettingsSecureAndroidId;
     @ViewInject(R.id.diDisplayDip)            DetailItem mDisplayDpi;
+    @ViewInject(R.id.diLanguage)              DetailItem mLanguage;
 
     @Override
     protected void initView() {
@@ -249,6 +250,7 @@ public class DetailActivity extends BaseActivity {
         mWifiInfoMacAddress.getEditText()     .setText(appInfo.wifiInfoGetMacAddress);
         mSettingsSecureAndroidId.getEditText().setText(appInfo.settingsSecureAndroidId);
         mDisplayDpi.getEditText()             .setText(appInfo.displayDip);
+        mLanguage.getEditText()               .setText(appInfo.systemLanguage);
     }
 
     private AppInfo uiToAppInfo() {
@@ -267,6 +269,8 @@ public class DetailActivity extends BaseActivity {
         appInfo.wifiInfoGetMacAddress       = mWifiInfoMacAddress.getEditText().getText().toString();
         appInfo.settingsSecureAndroidId     = mSettingsSecureAndroidId.getEditText().getText().toString();
         appInfo.displayDip                  = mDisplayDpi.getEditText().getText().toString();
+        appInfo.systemLanguage              = mLanguage.getEditText().getText().toString();
+
         return appInfo;
     }
 
@@ -312,14 +316,11 @@ public class DetailActivity extends BaseActivity {
     }
 
     public void onClickForceStopApp(View view) {
-        LibSuHelper.getInstance().addCommand("am force-stop " + applicationInfo.packageName, 0, new Shell.OnCommandResultListener() {
-            @Override
-            public void onCommandResult(int commandCode, int exitCode, List<String> output) {
-                if (exitCode != 0)
-                    Snackbar.make(mDetailContent, getString(R.string.force_stop_error) + exitCode, Snackbar.LENGTH_LONG).show();
-                else
-                    Snackbar.make(mDetailContent, R.string.force_stop_success, Snackbar.LENGTH_LONG).show();
-            }
+        LibSuHelper.getInstance().addCommand("am force-stop " + applicationInfo.packageName, 0, (commandCode, exitCode, output) -> {
+            if (exitCode != 0)
+                Snackbar.make(mDetailContent, getString(R.string.force_stop_error) + exitCode, Snackbar.LENGTH_LONG).show();
+            else
+                Snackbar.make(mDetailContent, R.string.force_stop_success, Snackbar.LENGTH_LONG).show();
         });
     }
 
@@ -336,13 +337,10 @@ public class DetailActivity extends BaseActivity {
                 .setHeader(R.layout.dialog_plus_header)
                 .setContentHolder(new ListHolder())
                 .setAdapter(new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, selectStringArrayList))
-                .setOnItemClickListener(new OnItemClickListener() {
-                    @Override
-                    public void onItemClick(DialogPlus dialog, Object item, View view1, int position) {
-                        DetailItem detailItem = (DetailItem) view;
-                        detailItem.getEditText().setText(selectStringArrayList.get(position));
-                        dialog.dismiss();
-                    }
+                .setOnItemClickListener((dialog, item, view1, position) -> {
+                    DetailItem detailItem = (DetailItem) view;
+                    detailItem.getEditText().setText(selectStringArrayList.get(position));
+                    dialog.dismiss();
                 })
                 .setExpanded(true)
                 .create();
@@ -367,13 +365,10 @@ public class DetailActivity extends BaseActivity {
                 .setHeader(R.layout.dialog_plus_header)
                 .setContentHolder(new ListHolder())
                 .setAdapter(new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, selectStringArrayList))
-                .setOnItemClickListener(new OnItemClickListener() {
-                    @Override
-                    public void onItemClick(DialogPlus dialog, Object item, View view1, int position) {
-                        DetailItem detailItem = (DetailItem) view;
-                        detailItem.getEditText().setText(hashMap.get(selectStringArrayList.get(position)));
-                        dialog.dismiss();
-                    }
+                .setOnItemClickListener((dialog, item, view1, position) -> {
+                    DetailItem detailItem = (DetailItem) view;
+                    detailItem.getEditText().setText(hashMap.get(selectStringArrayList.get(position)));
+                    dialog.dismiss();
                 })
                 .setExpanded(true)
                 .create();
@@ -600,18 +595,10 @@ public class DetailActivity extends BaseActivity {
                 .setHeader(R.layout.dialog_plus_header)
                 .setContentHolder(new ListHolder())
                 .setAdapter(new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, displayArrayList))
-                .setOnItemClickListener(new OnItemClickListener() {
-                    @Override
-                    public void onItemClick(DialogPlus dialog, Object item, final View view, final int position) {
-                        dialog.dismiss();
-                        SolutionHelper.getInstance().remove(displayArrayList.get(position));
-                        uiHandler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                Snackbar.make(mDetailContent, "删除方案成功: " + displayArrayList.get(position), Snackbar.LENGTH_LONG).show();
-                            }
-                        }, 250);
-                    }
+                .setOnItemClickListener((dialog, item1, view1, position) -> {
+                    dialog.dismiss();
+                    SolutionHelper.getInstance().remove(displayArrayList.get(position));
+                    uiHandler.postDelayed(() -> Snackbar.make(mDetailContent, "删除方案成功: " + displayArrayList.get(position), Snackbar.LENGTH_LONG).show(), 250);
                 })
                 .setExpanded(true)
                 .create();
@@ -642,5 +629,32 @@ public class DetailActivity extends BaseActivity {
 
     public void onClickDisplayDpi(View view) {
         Snackbar.make(mDetailContent, "考虑手机屏幕尺寸不同，DPI不提示随机功能", Snackbar.LENGTH_LONG).show();
+    }
+
+    public void onClickLanguage(View view) {
+        final HashMap<String, Object> hashMap = RandomHelper.getInstance().getSystemLanguage();
+        final ArrayList<String> displayArrayList = new ArrayList<>();
+
+        for (Map.Entry<String, Object> entry : hashMap.entrySet()) {
+            displayArrayList.add(entry.getKey());
+        }
+
+        Collections.sort(displayArrayList, String.CASE_INSENSITIVE_ORDER);
+
+        DialogPlus dialogPlus = DialogPlus.newDialog(view.getContext())
+                .setHeader(R.layout.dialog_plus_header)
+                .setContentHolder(new ListHolder())
+                .setAdapter(new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, displayArrayList))
+                .setOnItemClickListener((dialog, item, view1, position) -> {
+                    DetailItem detailItem = (DetailItem) view;
+                    detailItem.getEditText().setText(String.valueOf(hashMap.get(displayArrayList.get(position))));
+                    dialog.dismiss();
+                })
+                .setExpanded(true)
+                .create();
+
+        ((TextView) dialogPlus.getHeaderView().findViewById(R.id.text_view1)).setText(R.string.phone_network_type);
+
+        dialogPlus.show();
     }
 }
