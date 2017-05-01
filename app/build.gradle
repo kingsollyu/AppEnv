@@ -29,6 +29,7 @@ android {
             versionNameSuffix ' dev'
         }
         official {
+            applicationId "com.sollyu.xposed.hook.model"
         }
     }
     android.applicationVariants.all { variant ->
