@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.github.clans.fab.FloatingActionMenu;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ListHolder;
 import com.orhanobut.dialogplus.OnItemClickListener;
@@ -70,6 +71,9 @@ public class DetailActivity extends BaseActivity {
 
     @ViewInject(R.id.content_detail)
     private ScrollView mDetailContent;
+
+    @ViewInject(R.id.fab)
+    private FloatingActionMenu mFloatingActionMenu;
 
     @Override
     protected void initView() {
@@ -124,14 +128,14 @@ public class DetailActivity extends BaseActivity {
         }
 
         if (!OtherHelper.getInstance().isUserAppllication(applicationInfo)) {
-            Snackbar.make(findViewById(R.id.content_main), "不建议修改系统应用，修改系统应用可能会手机无法启动", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(mDetailContent, "不建议修改系统应用，修改系统应用可能会手机无法启动", Snackbar.LENGTH_LONG).show();
         }
 
         if (applicationInfo.packageName.equals("com.sina.weibo")) {
-            Snackbar.make(findViewById(R.id.content_main), "微博显示的机型有点少，如不能正常显示请更改再尝试", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(mDetailContent, "微博显示的机型有点少，如不能正常显示请更改再尝试", Snackbar.LENGTH_LONG).show();
         }
         if (applicationInfo.packageName.equals("com.qzone")) {
-            Snackbar.make(findViewById(R.id.content_main), "如果您随意填写机型QQ空间将会把您填写的变成小写", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(mDetailContent, "如果您随意填写机型QQ空间将会把您填写的变成小写", Snackbar.LENGTH_LONG).show();
         }
 
         appInfoToUi(XposedSharedPreferencesHelper.getInstance().get(applicationInfo.packageName));
@@ -339,7 +343,7 @@ public class DetailActivity extends BaseActivity {
     public void onClickSaveConfig(View view) {
         activityResultCode = 1;
         XposedSharedPreferencesHelper.getInstance().set(applicationInfo.packageName, uiToAppInfo());
-        Snackbar.make(view, R.string.save_config_success, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(mDetailContent, R.string.save_config_success, Snackbar.LENGTH_LONG).show();
     }
 
     public void onClickManufacturer(final View view) {
@@ -547,7 +551,7 @@ public class DetailActivity extends BaseActivity {
 
         final AppInfo appInfo = uiToAppInfo();
         if (appInfo.isEmpty()) {
-            Snackbar.make(findViewById(R.id.content_detail), "您没有界面中填写任何的内容，保存有何用。", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(mDetailContent, "您没有界面中填写任何的内容，保存有何用。", Snackbar.LENGTH_LONG).show();
             return;
         }
 
@@ -566,9 +570,9 @@ public class DetailActivity extends BaseActivity {
                         throw new RuntimeException("保存方案名称为空");
 
                     SolutionHelper.getInstance().put(editText.getText().toString(), appInfo);
-                    Snackbar.make(findViewById(R.id.content_detail), "保存方案成功: " + editText.getText().toString(), Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(mDetailContent, "保存方案成功: " + editText.getText().toString(), Snackbar.LENGTH_LONG).show();
                 } catch (Throwable throwable) {
-                    Snackbar.make(findViewById(R.id.content_detail), "保存方案失败: " + throwable.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(mDetailContent, "保存方案失败: " + throwable.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
                 }
             }
         });
@@ -580,7 +584,7 @@ public class DetailActivity extends BaseActivity {
         final View              view             = findViewById(R.id.content_detail);
         final ArrayList<String> displayArrayList = SolutionHelper.getInstance().list();
         if (displayArrayList.size() == 0) {
-            Snackbar.make(view, "没有任何方案", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(mDetailContent, "没有任何方案", Snackbar.LENGTH_LONG).show();
             return;
         }
 
@@ -608,7 +612,7 @@ public class DetailActivity extends BaseActivity {
         final View              view             = findViewById(R.id.content_detail);
         final ArrayList<String> displayArrayList = SolutionHelper.getInstance().list();
         if (displayArrayList.size() == 0) {
-            Snackbar.make(view, "没有任何方案", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(mDetailContent, "没有任何方案", Snackbar.LENGTH_LONG).show();
             return;
         }
 
