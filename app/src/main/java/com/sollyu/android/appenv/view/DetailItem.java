@@ -34,7 +34,6 @@ public class DetailItem extends LinearLayout {
     private String onClickMethodName = null;
 
     private static final String ANDROID_NAME_SPACE = "http://schemas.android.com/apk/res/android";
-    private static final String APP_NAME_SPACE     = "http://schemas.android.com/apk/res-auto";
 
     public DetailItem(Context context) {
         super(context);
@@ -72,14 +71,6 @@ public class DetailItem extends LinearLayout {
         });
 
         typedArray.recycle();
-    }
-
-    /**
-     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
-     */
-    private int dip2px(Context context, float dpValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
     }
 
     public AwesomeTextView getButton() {

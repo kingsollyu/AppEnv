@@ -81,6 +81,7 @@ public class DetailActivity extends BaseActivity {
     @ViewInject(R.id.wifi_info_ssid)          DetailItem mWifiInfoSSID;
     @ViewInject(R.id.wifi_info_mac_address)   DetailItem mWifiInfoMacAddress;
     @ViewInject(R.id.settingsSecureAndroidId) DetailItem mSettingsSecureAndroidId;
+    @ViewInject(R.id.diDisplayDip)            DetailItem mDisplayDpi;
 
     @Override
     protected void initView() {
@@ -169,7 +170,7 @@ public class DetailActivity extends BaseActivity {
         if (featureId == Window.FEATURE_ACTION_BAR && menu != null) {
             if (menu.getClass().getSimpleName().equals("MenuBuilder")) {
                 try {
-                    Method m = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
+                    @SuppressLint("PrivateApi") Method m = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
                     m.setAccessible(true);
                     m.invoke(menu, true);
                 } catch (Exception e) {
@@ -193,7 +194,7 @@ public class DetailActivity extends BaseActivity {
         if (menu != null) {
             if (menu.getClass().getSimpleName().equals("MenuBuilder")) {
                 try {
-                    Method m = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
+                    @SuppressLint("PrivateApi") Method m = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
                     m.setAccessible(true);
                     m.invoke(menu, true);
                 } catch (Exception e) {
@@ -236,14 +237,15 @@ public class DetailActivity extends BaseActivity {
         mModel.getEditText()                  .setText(appInfo.buildModel);
         mSerial.getEditText()                 .setText(appInfo.buildSerial);
         mVersionName.getEditText()            .setText(appInfo.buildVersionRelease);
-        mLineNumber.getEditText()           .setText(appInfo.telephonyGetLine1Number);
-        mNetworkType.getEditText()     .setText(appInfo.telephonyGetNetworkType);
-        mDeviceId.getEditText()        .setText(appInfo.telephonyGetDeviceId);
-        mSimSerialNumber.getEditText()      .setText(appInfo.telephonyGetSimSerialNumber);
-        mSimSubscriberId.getEditText()      .setText(appInfo.telephonyGetSubscriberId);
-        mWifiInfoSSID.getEditText()         .setText(appInfo.wifiInfoGetSSID);
-        mWifiInfoMacAddress.getEditText()  .setText(appInfo.wifiInfoGetMacAddress);
+        mLineNumber.getEditText()             .setText(appInfo.telephonyGetLine1Number);
+        mNetworkType.getEditText()            .setText(appInfo.telephonyGetNetworkType);
+        mDeviceId.getEditText()               .setText(appInfo.telephonyGetDeviceId);
+        mSimSerialNumber.getEditText()        .setText(appInfo.telephonyGetSimSerialNumber);
+        mSimSubscriberId.getEditText()        .setText(appInfo.telephonyGetSubscriberId);
+        mWifiInfoSSID.getEditText()           .setText(appInfo.wifiInfoGetSSID);
+        mWifiInfoMacAddress.getEditText()     .setText(appInfo.wifiInfoGetMacAddress);
         mSettingsSecureAndroidId.getEditText().setText(appInfo.settingsSecureAndroidId);
+        mDisplayDpi.getEditText()             .setText(appInfo.displayDip);
     }
 
     private AppInfo uiToAppInfo() {
@@ -261,7 +263,7 @@ public class DetailActivity extends BaseActivity {
         appInfo.wifiInfoGetSSID             = mWifiInfoSSID.getEditText().getText().toString();
         appInfo.wifiInfoGetMacAddress       = mWifiInfoMacAddress.getEditText().getText().toString();
         appInfo.settingsSecureAndroidId     = mSettingsSecureAndroidId.getEditText().getText().toString();
-
+        appInfo.displayDip                  = mDisplayDpi.getEditText().getText().toString();
         return appInfo;
     }
 
@@ -402,13 +404,10 @@ public class DetailActivity extends BaseActivity {
                 .setHeader(R.layout.dialog_plus_header)
                 .setContentHolder(new ListHolder())
                 .setAdapter(new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, displayArrayList))
-                .setOnItemClickListener(new OnItemClickListener() {
-                    @Override
-                    public void onItemClick(DialogPlus dialog, Object item, View view1, int position) {
-                        DetailItem detailItem = (DetailItem) view;
-                        detailItem.getEditText().setText(String.valueOf(hashMap.get(displayArrayList.get(position))));
-                        dialog.dismiss();
-                    }
+                .setOnItemClickListener((dialog, item, view1, position) -> {
+                    DetailItem detailItem = (DetailItem) view;
+                    detailItem.getEditText().setText(String.valueOf(hashMap.get(displayArrayList.get(position))));
+                    dialog.dismiss();
                 })
                 .setExpanded(true)
                 .create();
@@ -636,5 +635,9 @@ public class DetailActivity extends BaseActivity {
     public void onClickSimSubscriberId(View view) {
         DetailItem detailItem = (DetailItem) view;
         detailItem.getEditText().setText(RandomHelper.getInstance().randomSimSubscriberId());
+    }
+
+    public void onClickDisplayDpi(View view) {
+        Snackbar.make(mDetailContent, "考虑手机屏幕尺寸不同，DPI不提示随机功能", Snackbar.LENGTH_LONG).show();
     }
 }
