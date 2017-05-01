@@ -4,8 +4,9 @@ import android.app.Application;
 
 import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.sollyu.android.appenv.helper.PhoneHelper;
-import com.sollyu.android.appenv.utils.Logg;
+import com.sollyu.android.logg.Logg;
 import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
 
@@ -29,12 +30,13 @@ public class MainApplication extends Application implements Thread.UncaughtExcep
     @Override
     public void onCreate() {
         super.onCreate();
-        instance = this;
+        MainApplication.instance = this;
 
         // Android-Bootstrap 图标注册
         TypefaceProvider.registerDefaultIconSets();
 
-        Logg.init(this, "AppEnv");
+        Logg.init("AppEnv");
+        Thread.setDefaultUncaughtExceptionHandler(this);
 
         MobclickAgent.startWithConfigure(new MobclickAgent.UMAnalyticsConfig(this, "558a1cb667e58e7649000228", BuildConfig.FLAVOR));
         MobclickAgent.setCatchUncaughtExceptions(false);
@@ -47,9 +49,9 @@ public class MainApplication extends Application implements Thread.UncaughtExcep
         CrashReport.initCrashReport(getApplicationContext(), BuildConfig.BUGLY_APPID, BuildConfig.DEBUG);
 
         Bugly.init(getApplicationContext(), BuildConfig.BUGLY_APPID, BuildConfig.DEBUG);
-        // Beta.init(getApplicationContext(), BuildConfig.DEBUG);
+        Beta.init(getApplicationContext(), BuildConfig.DEBUG);
 
-        Thread.setDefaultUncaughtExceptionHandler(this);
+        MainConfig.getInstance().init();
 
         // 释放文件
         try {
@@ -74,7 +76,7 @@ public class MainApplication extends Application implements Thread.UncaughtExcep
         return swapStream.toByteArray();
     }
 
-    public static MainApplication getInstance() {
+    public synchronized static MainApplication getInstance() {
         return instance;
     }
 
