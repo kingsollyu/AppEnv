@@ -14,6 +14,16 @@
       "name": "荣耀6 Plus",
       "manufacturer": "HUAWEI",
       "model": "PE-TL10"
+    },
+    {
+      "name": "P10",
+      "manufacturer": "HUAWEI",
+      "model": "VTR-AL00"
+    },
+    {
+      "name": "P10 Plus",
+      "manufacturer": "HUAWEI",
+      "model": "VKY-AL00"
     }
   ],
   "联想": [
@@ -343,6 +353,16 @@
       "model": "SM-G9300"
     },
     {
+      "name": "Galaxy S8",
+      "manufacturer": "samsung",
+      "model": "SM-G9500"
+    },
+    {
+      "name": "Galaxy S8+",
+      "manufacturer": "samsung",
+      "model": "SM-G9550"
+    },
+    {
       "name": "Galaxy C7",
       "manufacturer": "samsung",
       "model": "SM-W2017 "
@@ -361,6 +381,28 @@
       "name": "Galaxy C9 Pro",
       "manufacturer": "samsung",
       "model": "SM-C9000"
+    }
+  ],
+  "索尼": [
+    {
+      "name": "Xperia Z3",
+      "manufacturer": "Sony",
+      "model": "L55t"
+    },
+    {
+      "name": "Xperia Z5 Premium",
+      "manufacturer": "Sony",
+      "model": "E6883"
+    },
+    {
+      "name": "Xperia Z5",
+      "manufacturer": "Sony",
+      "model": "E6683"
+    },
+    {
+      "name": "Xperia Z3+",
+      "manufacturer": "Sony",
+      "model": "E6533"
     }
   ]
 }
