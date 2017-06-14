@@ -54,6 +54,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import eu.chainfire.libsuperuser.Shell;
+import qiu.niorgai.StatusBarCompat;
 
 @ContentView(R.layout.activity_detail)
 public class DetailActivity extends BaseActivity {
@@ -92,6 +93,7 @@ public class DetailActivity extends BaseActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            StatusBarCompat.setStatusBarColor(getActivity(), getActivity().getResources().getColor(R.color.colorPrimaryDark));
 
             switch (applicationInfo.packageName) {
                 case XposedSharedPreferencesHelper.KEY_ALL:

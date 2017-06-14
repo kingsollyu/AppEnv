@@ -2,7 +2,6 @@ package com.sollyu.android.appenv.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -13,12 +12,16 @@ import com.sollyu.android.appenv.BuildConfig;
 import com.sollyu.android.appenv.R;
 import com.sollyu.android.appenv.helper.OtherHelper;
 
-public class AboutActivity extends AppCompatActivity {
+import org.xutils.view.annotation.ContentView;
+
+import qiu.niorgai.StatusBarCompat;
+
+@ContentView(R.layout.activity_about)
+public class AboutActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -32,6 +35,7 @@ public class AboutActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            StatusBarCompat.setStatusBarColor(getActivity(), getActivity().getResources().getColor(R.color.colorPrimaryDark));
         }
 
         TextView textView = (TextView) findViewById(R.id.text_view);

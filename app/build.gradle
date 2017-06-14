@@ -12,8 +12,6 @@ android {
         versionCode 582
         versionName "3.2.0"
 
-        vectorDrawables.useSupportLibrary = true
-
         buildConfigField "String", "BUGLY_APPID", '"900058009"'
     }
     buildTypes {
