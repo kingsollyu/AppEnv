@@ -47,12 +47,15 @@ import com.sollyu.android.appenv.helper.TokenHelper;
 import com.sollyu.android.appenv.helper.XposedSharedPreferencesHelper;
 import com.sollyu.android.appenv.module.AppInfo;
 
+import org.xutils.view.annotation.Event;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 import eu.chainfire.libsuperuser.Shell;
+import qiu.niorgai.StatusBarCompat;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
 
@@ -76,6 +79,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        StatusBarCompat.setStatusBarColor(getActivity(), getActivity().getResources().getColor(R.color.colorPrimaryDark));
 
         DrawerLayout          drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -235,7 +239,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         asyncTask.execute();
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -258,6 +261,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }).start();
     }
 
+    @SuppressWarnings("unused")
+    @Event(R.id.action_hook_all)
     public void onMenuHookAll(MenuItem item) {
         ApplicationInfo applicationInfo = new ApplicationInfo();
         applicationInfo.packageName = XposedSharedPreferencesHelper.KEY_ALL;
@@ -267,6 +272,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         MainActivity.this.startActivityForResult(intent, 0);
     }
 
+    @SuppressWarnings("unused")
+    @Event(R.id.action_hook_user)
     public void onMenuHookUser(MenuItem item) {
         ApplicationInfo applicationInfo = new ApplicationInfo();
         applicationInfo.packageName = XposedSharedPreferencesHelper.KEY_USER;
