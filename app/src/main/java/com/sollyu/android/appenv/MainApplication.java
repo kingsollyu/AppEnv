@@ -3,20 +3,20 @@ package com.sollyu.android.appenv;
 import android.app.Application;
 
 import com.beardedhen.androidbootstrap.TypefaceProvider;
+import com.elvishew.xlog.LogConfiguration;
+import com.elvishew.xlog.LogLevel;
+import com.elvishew.xlog.XLog;
 import com.sollyu.android.appenv.helper.PhoneHelper;
-import com.sollyu.android.logg.Logg;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.apache.log4j.Level;
+import org.xutils.common.util.IOUtil;
+import org.xutils.x;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * 作者: Sollyu
@@ -36,9 +36,12 @@ public class MainApplication extends Application implements Thread.UncaughtExcep
         // Android-Bootstrap 图标注册
         TypefaceProvider.registerDefaultIconSets();
 
-        Logg.init("AppEnv");
-        Logg.L.setLevel(BuildConfig.DEBUG ? Level.ALL : Level.OFF);
+        LogConfiguration logConfiguration = new LogConfiguration.Builder().b().tag("AppEnv").logLevel(BuildConfig.DEBUG ? LogLevel.ALL : LogLevel.ERROR).build();
+        XLog.init(logConfiguration);
         Thread.setDefaultUncaughtExceptionHandler(this);
+
+        x.Ext.init(getInstance());
+        x.Ext.setDebug(BuildConfig.DEBUG);
 
         MobclickAgent.startWithConfigure(new MobclickAgent.UMAnalyticsConfig(this, "558a1cb667e58e7649000228", BuildConfig.FLAVOR));
         MobclickAgent.setCatchUncaughtExceptions(false);
@@ -59,23 +62,13 @@ public class MainApplication extends Application implements Thread.UncaughtExcep
         try {
             File releaseFile = new File(this.getFilesDir(), "phone.json");
             if (!releaseFile.exists()) {
-                FileUtils.writeByteArrayToFile(releaseFile, InputToByte(getAssets().open("phone.json")));
+                FileUtils.writeByteArrayToFile(releaseFile, IOUtil.readBytes(getAssets().open("phone.json")));
             }
 
             PhoneHelper.getInstance().reload(this);
         } catch (Exception e) {
             MobclickAgent.reportError(this, e);
         }
-    }
-
-    public static byte[] InputToByte(InputStream inStream) throws IOException {
-        ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
-        byte[]                buff       = new byte[100];
-        int                   rc         = 0;
-        while ((rc = inStream.read(buff, 0, 100)) > 0) {
-            swapStream.write(buff, 0, rc);
-        }
-        return swapStream.toByteArray();
     }
 
     public synchronized static MainApplication getInstance() {
@@ -91,6 +84,7 @@ public class MainApplication extends Application implements Thread.UncaughtExcep
 
     @Override
     public void uncaughtException(Thread t, Throwable e) {
-        Logg.L.error(e.getMessage(), e);
+        XLog.e(e.getMessage(), e);
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
 }

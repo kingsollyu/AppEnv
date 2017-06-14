@@ -32,7 +32,6 @@ public class SettingsActivity extends BaseActivity {
     @ViewInject(R.id.sbShowSystemApp)
     private SwitchButton mSbShowSystemApp;
 
-
     @Override
     protected void initView() {
         setSupportActionBar(mToolbar);
@@ -83,5 +82,11 @@ public class SettingsActivity extends BaseActivity {
     private void onClickShowSystemApp(View view) {
         isChanged = true;
         MainConfig.getInstance().setShowSystemApp(mSbShowSystemApp.isChecked());
+    }
+
+    @SuppressWarnings("unused")
+    @Event(R.id.oivRandomSetting)
+    private void onClickRandomSetting(View view) {
+        ActivityRandomSetting.launch(view.getContext());
     }
 }

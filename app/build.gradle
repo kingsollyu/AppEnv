@@ -2,14 +2,15 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    buildToolsVersion '25.0.3'
+    flavorDimensions 'default'
     defaultConfig {
         applicationId "com.sollyu.android.appenv"
         minSdkVersion 17
         targetSdkVersion 25
 
-        versionCode 581
-        versionName "3.1.0.581"
+        versionCode 582
+        versionName "3.2.0"
 
         buildConfigField "String", "BUGLY_APPID", '"900058009"'
     }
@@ -24,17 +25,14 @@ android {
         }
     }
     productFlavors {
-        develop {
-            applicationIdSuffix ".dev"
-            versionNameSuffix ' dev'
-        }
         official {
+            dimension     "default"
             applicationId "com.sollyu.xposed.hook.model"
         }
     }
     android.applicationVariants.all { variant ->
         variant.outputs.each { output ->
-            output.outputFile = new File(output.outputFile.parent, applicationId + "-" + buildType.name + "-v" + defaultConfig.versionName + "-" + defaultConfig.versionCode + "-" + variant.productFlavors[0].name + ".apk");
+            output.outputFileName = new File(applicationId + "-" + buildType.name + "-v" + defaultConfig.versionName + "-" + defaultConfig.versionCode + "-" + variant.productFlavors[0].name + "-" + new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC")) + ".apk");
         }
     }
     compileOptions {
@@ -45,16 +43,28 @@ android {
 
 dependencies {
     provided fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.alibaba:fastjson:1.1.54.android'
-    compile 'com.umeng.analytics:analytics:latest.integration'
+    compile 'com.android.support:appcompat-v7:25.4.0'
+    compile 'com.android.support:design:25.4.0'
+    compile 'com.umeng.analytics:analytics:6.1.0'
+    compile 'com.tencent.bugly:crashreport_upgrade:1.3.0'
+
+    //https://github.com/Chainfire/libsuperuser
     compile 'eu.chainfire:libsuperuser:1.0.0.201608240809'
+
+    //https://github.com/alibaba/fastjson
+    compile 'com.alibaba:fastjson:1.1.54.android'
+
+    //https://github.com/square/okhttp
     compile 'com.squareup.okhttp:okhttp:2.7.5'
-    compile 'com.beardedhen:androidbootstrap:2.3.0'
+
+    //https://github.com/Bearded-Hen/AndroidBootstrapSample
+    compile 'com.beardedhen:androidbootstrap:2.3.1'
+
+    //https://github.com/orhanobut/dialogplus
     compile 'com.orhanobut:dialogplus:1.11'
-    compile 'com.tencent.bugly:crashreport_upgrade:1.1.7'
-    compile 'org.apache.commons:commons-io:1.3.2'
+
+    //https://github.com/apache/commons-io
+    compile 'commons-io:commons-io:2.5'
 
     //FloatingActionButton - https://github.com/Clans/FloatingActionButton
     compile 'com.github.clans:fab:1.6.4'
@@ -65,17 +75,20 @@ dependencies {
     //xUtils3简介 - https://github.com/wyouflf/xUtils3
     compile 'org.xutils:xutils:3.5.0'
 
-    // 日志记录库 - https://github.com/kingsollyu/Logg
-    compile 'com.github.kingsollyu:Logg:1.0.0.1'
+    // 日志记录库 - https://github.com/elvishew/xLog
+    compile 'com.elvishew:xlog:1.3.0'
 
     //SwitchButton - https://github.com/kyleduo/SwitchButton
     compile 'com.kyleduo.switchbutton:library:1.4.5'
 
+    //https://github.com/GitLqr/LQROptionItemView
     compile 'com.lqr.optionitemview:library:1.0.7'
 
     //StatusBarCompat - https://github.com/niorgai/StatusBarCompat
     compile 'com.github.niorgai:StatusBarCompat:2.1.3'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 }
+
 
 repositories {
     maven { url 'https://jitpack.io' }

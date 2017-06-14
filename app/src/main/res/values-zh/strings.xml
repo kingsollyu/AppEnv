@@ -25,7 +25,7 @@
             <![CDATA[
                     "<h2>应用变量</h2>"
                     "作者: king.sollyu<br>"
-                    "联系: QQ: 191067617 (C.S.T)<br>"
+                    "联系: QQ: 191067617 (<a href="http://www.9do.org">9do</a>)<br>"
                     "说明: 动态修改软件信息<br>"
                     "依赖: <a href="http://repo.xposed.info/module/de.robv.android.xposed.installer">xposed</a> 或者 <a href="http://en.miui.com/thread-78894-1-1.html">wsm tools</a><br>"
                     "更新: 历史版本<a href="http://appenv.ys168.com/">点击这里</a><br>"
@@ -33,7 +33,7 @@
                     "微信: 公众号: 应用变量<br>"
                     "备注: 本人承接类似软件定制开发(非诚勿扰)<br><br>"
 
-                    "Copyright © <a href="http://www.sollyu.com">Sollyu</a> 2015-2016 Version %1$s<br><br>"
+                    "Copyright © <a href="http://www.sollyu.com">Sollyu</a> 2015-2017 Version %1$s<br><br>"
 
                     "<h2>版本维护</h2>"
                     "如果您是定做用户请尝试联系作者<br>"
@@ -45,19 +45,16 @@
                     "请不要使用本软件做任何违法事情， 包括刷单之类操作，如您使用本软件出现任何违法法律，一切后果由您自行承担和作者无关。<br><br>"
 
                     "<h2>本版更新</h2>"
+                    "+ 增加随机时可选择语言是否随机<br>"
+                    "~ 增加版本号 (ง •̀_•́)ง <br>"
+                    "<br>"
+
+                    "<h2>上版更新</h2>"
                     "+ 增加DPI拦截<br>"
                     "+ 增加软件语言拦截<br>"
                     "~ 修正设置界面太丑<br>"
                     "~ 优化拦截详情界面<br>"
                     "~ 增加版本号 (ง •̀_•́)ง <br>"
-                    "<br>"
-
-                    "<h2>上版更新</h2>"
-                    "+ 支持Android 7.0<br>"
-                    "+ 随机生成IMEI增加识别算法<br>"
-                    "+ 支持云端服务<br>"
-                    "+ 增加英文语言<br>"
-                    "+ 全新界面<br>"
                     "<br>"
 
                     "<h2>开源组许可</h2>"
@@ -70,6 +67,7 @@
                     "StatusBarCompat      : <a href="https://github.com/niorgai/StatusBarCompat/raw/master/License.md">The MIT License</a><br>"
                     "SwitchButton         : <a href="https://raw.githubusercontent.com/apache/commons-io/master/LICENSE.txt">Apache 2.0 license</a><br>"
                     "xUtils3              : <a href="https://raw.githubusercontent.com/wyouflf/xUtils3/master/LICENSE">Apache 2.0 license</a><br>"
+                    "xLog                 : <a href="https://github.com/elvishew/xLog/blob/master/LICENSE">Apache 2.0 license</a><br>"
 
                     "<br>"
                     "<br>"
@@ -140,4 +138,6 @@
     <string name="solution">方案选项</string>
     <string name="versionName">软件版本</string>
     <string name="sim_subscriber_id">ICCID</string>
+    <string name="random_setting">随机设置</string>
+    <string name="random_language">语言随机</string>
 </resources>

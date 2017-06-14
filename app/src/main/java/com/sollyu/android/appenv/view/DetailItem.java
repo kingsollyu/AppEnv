@@ -9,8 +9,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.beardedhen.androidbootstrap.AwesomeTextView;
+import com.elvishew.xlog.XLog;
 import com.sollyu.android.appenv.R;
-import com.sollyu.android.logg.Logg;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -64,7 +64,7 @@ public class DetailItem extends LinearLayout {
                 Method method = context.getClass().getMethod(onClickMethodName, View.class);
                 method.invoke(context, DetailItem.this);
             } catch (Exception e) {
-                Logg.L.error(e.getMessage());
+                XLog.e(e.getMessage());
             }
         });
 

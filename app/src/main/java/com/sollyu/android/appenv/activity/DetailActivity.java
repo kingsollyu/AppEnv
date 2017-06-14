@@ -40,6 +40,7 @@ import com.sollyu.android.appenv.view.DetailItem;
 import com.umeng.analytics.MobclickAgent;
 
 import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
 import java.lang.reflect.Field;
@@ -53,15 +54,16 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import eu.chainfire.libsuperuser.Shell;
+import qiu.niorgai.StatusBarCompat;
 
 @ContentView(R.layout.activity_detail)
 public class DetailActivity extends BaseActivity {
 
     private static final int WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 45;
 
-    private ApplicationInfo applicationInfo                      = null;
-    private Integer         activityResultCode                   = 0;
-    private Boolean         wipeDataConfirm                      = false;
+    private ApplicationInfo applicationInfo    = null;
+    private Integer         activityResultCode = 0;
+    private Boolean         wipeDataConfirm    = false;
 
     private Handler uiHandler = new Handler();
 
@@ -91,6 +93,7 @@ public class DetailActivity extends BaseActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            StatusBarCompat.setStatusBarColor(getActivity(), getActivity().getResources().getColor(R.color.colorPrimaryDark));
 
             switch (applicationInfo.packageName) {
                 case XposedSharedPreferencesHelper.KEY_ALL:
@@ -116,8 +119,6 @@ public class DetailActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
-
         try {
             PhoneHelper.getInstance().reload(this);
         } catch (Exception e) {
@@ -435,6 +436,7 @@ public class DetailActivity extends BaseActivity {
         detailItem.getEditText().setText(RandomHelper.getInstance().randomWifiInfoMacAddress());
     }
 
+    @Event(R.id.menu_clear_app)
     public void onMenuClearConfig(MenuItem item) {
         XposedSharedPreferencesHelper.getInstance().remove(applicationInfo.packageName);
         activityResultCode = 1;
@@ -442,6 +444,7 @@ public class DetailActivity extends BaseActivity {
         DetailActivity.this.finish();
     }
 
+    @Event(R.id.menu_clear_app)
     public void onMenuRemoteRandom(MenuItem item) {
         if (!TokenHelper.getInstance().isActivate()) {
             DetailActivity.this.startActivity(new Intent(DetailActivity.this, LoginActivity.class));
@@ -517,6 +520,7 @@ public class DetailActivity extends BaseActivity {
         asyncTask.execute();
     }
 
+    @Event(R.id.menu_clear_app)
     public void onMenuSaveSolution(MenuItem item) {
         if (ContextCompat.checkSelfPermission(DetailActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(DetailActivity.this, new String[]{Manifest.permission.READ_PHONE_STATE}, WRITE_EXTERNAL_STORAGE_REQUEST_CODE);
@@ -554,6 +558,7 @@ public class DetailActivity extends BaseActivity {
         builder.create().show();
     }
 
+    @Event(R.id.menu_clear_app)
     public void onMenuLoadSolution(MenuItem item) {
         final ArrayList<String> displayArrayList = SolutionHelper.getInstance().list();
         if (displayArrayList.size() == 0) {
@@ -581,6 +586,7 @@ public class DetailActivity extends BaseActivity {
         dialogPlus.show();
     }
 
+    @Event(R.id.menu_clear_app)
     public void onMenuDeleteSolution(MenuItem item) {
         final View              view             = findViewById(R.id.content_detail);
         final ArrayList<String> displayArrayList = SolutionHelper.getInstance().list();
@@ -609,6 +615,7 @@ public class DetailActivity extends BaseActivity {
 
     }
 
+    @Event(R.id.menu_clear_app)
     public void onMenuDownloadSolution(MenuItem item) {
     }
 
@@ -653,7 +660,7 @@ public class DetailActivity extends BaseActivity {
                 .setExpanded(true)
                 .create();
 
-        ((TextView) dialogPlus.getHeaderView().findViewById(R.id.text_view1)).setText(R.string.phone_network_type);
+        ((TextView) dialogPlus.getHeaderView().findViewById(R.id.text_view1)).setText(R.string.random_language);
 
         dialogPlus.show();
     }

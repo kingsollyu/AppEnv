@@ -5,5 +5,6 @@
 .DS_Store
 /build
 /captures
+/app/official
 .externalNativeBuild
 gradle.properties
