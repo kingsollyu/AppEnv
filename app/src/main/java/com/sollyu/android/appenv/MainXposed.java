@@ -70,7 +70,7 @@ public class MainXposed implements IXposedHookLoadPackage, IXposedHookZygoteInit
             // 最后合并全部拦截配置
             packageAppInfo.merge(JSON.toJavaObject(JSON.parseObject(xSharedPreferences.getString(XposedSharedPreferencesHelper.KEY_ALL, "{}")), AppInfo.class));
 
-            Log.d(TAG, "handleLoadPackage: " + packageAppInfo);
+            // Log.d(TAG, "handleLoadPackage: " + packageAppInfo);
 
             // 拦截应用
             if (!OtherHelper.getInstance().isNull(packageAppInfo.buildManufacturer)) {
@@ -146,7 +146,6 @@ public class MainXposed implements IXposedHookLoadPackage, IXposedHookZygoteInit
                         if (configuration == null) {
                             return;
                         }
-
 
                         // 拦截语言
                         if (!TextUtils.isEmpty(packageAppInfo.systemLanguage)) {

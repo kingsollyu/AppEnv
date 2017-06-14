@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group>
-        <item android:title="@string/delete_config"  android:icon="@drawable/ic_delete" android:onClick="onMenuClearConfig" />
+        <item android:title="@string/delete_config" android:icon="@drawable/ic_delete"    android:onClick="onMenuClearConfig" />
         <item android:title="@string/remote_random" android:icon="@drawable/ic_wb_cloudy" android:onClick="onMenuRemoteRandom" />
     </group>
     <item android:title="@string/solution" android:icon="@drawable/ic_menu">
         <menu>
-            <item android:title="@string/save_solution" android:icon="@drawable/ic_save" android:onClick="onMenuSaveSolution"/>
-            <item android:title="@string/load_solution" android:icon="@drawable/ic_folder" android:onClick="onMenuLoadSolution"/>
-            <item android:title="@string/delete_solution" android:icon="@drawable/ic_remove_circle" android:onClick="onMenuDeleteSolution"/>
+            <item android:title="@string/save_solution" android:icon="@drawable/ic_save"           android:onClick="onMenuSaveSolution"/>
+            <item android:title="@string/load_solution" android:icon="@drawable/ic_folder"         android:onClick="onMenuLoadSolution"/>
+            <item android:title="@string/delete_solution" android:icon="@drawable/ic_remove_circle"  android:onClick="onMenuDeleteSolution"/>
             <item android:title="@string/download_solution" android:icon="@drawable/ic_cloud_download" android:onClick="onMenuDownloadSolution" android:visible="false"/>
         </menu>
     </item>
