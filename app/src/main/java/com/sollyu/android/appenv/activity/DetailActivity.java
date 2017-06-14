@@ -653,7 +653,7 @@ public class DetailActivity extends BaseActivity {
                 .setExpanded(true)
                 .create();
 
-        ((TextView) dialogPlus.getHeaderView().findViewById(R.id.text_view1)).setText(R.string.phone_network_type);
+        ((TextView) dialogPlus.getHeaderView().findViewById(R.id.text_view1)).setText(R.string.random_language);
 
         dialogPlus.show();
     }

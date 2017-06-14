@@ -140,4 +140,6 @@
     <string name="solution">方案选项</string>
     <string name="versionName">软件版本</string>
     <string name="sim_subscriber_id">ICCID</string>
+    <string name="random_setting">随机设置</string>
+    <string name="random_language">语言随机</string>
 </resources>

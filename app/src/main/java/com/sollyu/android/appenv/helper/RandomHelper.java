@@ -2,6 +2,7 @@ package com.sollyu.android.appenv.helper;
 
 import android.telephony.TelephonyManager;
 
+import com.sollyu.android.appenv.MainConfig;
 import com.sollyu.android.appenv.module.AppInfo;
 import com.sollyu.android.appenv.utils.IMEIGen;
 import com.sollyu.android.appenv.utils.RandomMac;
@@ -188,7 +189,10 @@ public class RandomHelper {
         appInfo.wifiInfoGetSSID             = randomWifiInfoSSID();
         appInfo.wifiInfoGetMacAddress       = randomWifiInfoMacAddress();
         appInfo.settingsSecureAndroidId     = randomAndroidId();
-        appInfo.systemLanguage              = randomSystemLanguage();
+
+        if (MainConfig.getInstance().getRandomLanguage()) {
+            appInfo.systemLanguage = randomSystemLanguage();
+        }
 
         return appInfo;
     }

@@ -5,10 +5,8 @@
     <string name="install_xposed">INSTALL XPOSED</string>
     <string name="s1">You XPOSED is not work, Please check you XPOSED settings.</string>
     <string name="s2">Not find XPOSED, Please install XPOSED.</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
     <string name="refresh">Refresh</string>
     <string name="settings">Settings</string>
     <string name="cloud">Cloud</string>
@@ -20,7 +18,6 @@
     <string name="random">Random</string>
     <string name="detail">Detail</string>
     <string name="delete">Delete</string>
-
     <string name="about_text">
         <Data>
             <![CDATA[
@@ -104,4 +101,6 @@
     <string name="solution">方案选项</string>
     <string name="versionName">软件版本</string>
     <string name="sim_subscriber_id">ICCID</string>
+    <string name="random_setting">Random Setting</string>
+    <string name="random_language">Language Random</string>
 </resources>

@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 25
     buildToolsVersion '25.0.3'
-    flavorDimensions  'default'
+    flavorDimensions 'default'
     defaultConfig {
         applicationId "com.sollyu.android.appenv"
         minSdkVersion 17
@@ -26,7 +26,7 @@ android {
     }
     productFlavors {
         official {
-            dimension     "default"
+            dimension "default"
             applicationId "com.sollyu.xposed.hook.model"
         }
     }
@@ -74,7 +74,9 @@ dependencies {
 
     //StatusBarCompat - https://github.com/niorgai/StatusBarCompat
     compile 'com.github.niorgai:StatusBarCompat:2.1.3'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 }
+
 
 repositories {
     maven { url 'https://jitpack.io' }

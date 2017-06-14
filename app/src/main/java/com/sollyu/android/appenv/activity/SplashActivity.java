@@ -6,7 +6,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.elvishew.xlog.XLog;
+import com.sollyu.android.appenv.BuildConfig;
 import com.sollyu.android.appenv.MainApplication;
 
 /**
@@ -24,12 +24,8 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        XLog.d("SplashActivity:onCreate: " + getResources().getConfiguration().locale.getLanguage());
-        XLog.d("SplashActivity:onCreate: " + getResources().getConfiguration().locale.getCountry());
-        XLog.d("SplashActivity:onCreate: " + getResources().getConfiguration().locale.getVariant());
-
         uiHandler.postDelayed(() -> {
-            if (!MainApplication.getInstance().isXposedWork()) {
+            if (!BuildConfig.DEBUG && !MainApplication.getInstance().isXposedWork()) {
                 startActivity(new Intent(SplashActivity.this, XposedNotWorkActivity.class));
                 SplashActivity.this.finish();
                 return;
