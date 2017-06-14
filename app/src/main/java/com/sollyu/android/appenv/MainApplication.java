@@ -3,8 +3,10 @@ package com.sollyu.android.appenv;
 import android.app.Application;
 
 import com.beardedhen.androidbootstrap.TypefaceProvider;
+import com.elvishew.xlog.LogConfiguration;
+import com.elvishew.xlog.LogLevel;
+import com.elvishew.xlog.XLog;
 import com.sollyu.android.appenv.helper.PhoneHelper;
-import com.sollyu.android.logg.Logg;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -12,7 +14,6 @@ import com.umeng.analytics.MobclickAgent;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.apache.log4j.Level;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,8 +37,8 @@ public class MainApplication extends Application implements Thread.UncaughtExcep
         // Android-Bootstrap 图标注册
         TypefaceProvider.registerDefaultIconSets();
 
-        Logg.init("AppEnv");
-        Logg.L.setLevel(BuildConfig.DEBUG ? Level.ALL : Level.OFF);
+        LogConfiguration logConfiguration = new LogConfiguration.Builder().b().tag("AppEnv").logLevel(BuildConfig.DEBUG ? LogLevel.ALL : LogLevel.NONE).build();
+        XLog.init(logConfiguration);
         Thread.setDefaultUncaughtExceptionHandler(this);
 
         MobclickAgent.startWithConfigure(new MobclickAgent.UMAnalyticsConfig(this, "558a1cb667e58e7649000228", BuildConfig.FLAVOR));
@@ -91,6 +92,6 @@ public class MainApplication extends Application implements Thread.UncaughtExcep
 
     @Override
     public void uncaughtException(Thread t, Throwable e) {
-        Logg.L.error(e.getMessage(), e);
+        XLog.e(e.getMessage(), e);
     }
 }

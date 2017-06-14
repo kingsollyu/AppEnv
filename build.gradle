@@ -2,10 +2,12 @@
 
 buildscript {
     repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }    // 优先使用阿里云镜像
+        maven { url 'https://dl.google.com/dl/android/maven2/' }                // 更改Google地址
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.4.0-alpha7'
+        classpath 'com.android.tools.build:gradle:3.0.0-alpha3'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -14,6 +16,8 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }    // 优先使用阿里云镜像
+        maven { url 'https://dl.google.com/dl/android/maven2/' }                // 更改Google地址
         jcenter()
     }
 }
