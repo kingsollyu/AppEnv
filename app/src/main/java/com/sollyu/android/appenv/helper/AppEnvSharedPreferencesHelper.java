@@ -39,5 +39,4 @@ public class AppEnvSharedPreferencesHelper {
     public SharedPreferences getSharedPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(MainApplication.getInstance());
     }
-
 }

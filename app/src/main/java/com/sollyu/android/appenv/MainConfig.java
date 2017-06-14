@@ -35,4 +35,12 @@ public class MainConfig {
     public void setShowSystemApp(boolean showSystemApp) {
         getSharedPreferences().edit().putBoolean("show_system_app", showSystemApp).apply();
     }
+
+    public Boolean getRandomLanguage() {
+        return getSharedPreferences().getBoolean("randomLanguage", false);
+    }
+
+    public void setRandomLanguage(Boolean randomLanguage) {
+        getSharedPreferences().edit().putBoolean("randomLanguage", randomLanguage).apply();
+    }
 }
