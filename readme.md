@@ -12,6 +12,7 @@
 
 这里没有截图，是因实在太懒了，大家可以去这两个地址去看，或者下载试用。
 
+  * 博客：<http://www.sollyu.com/hook-model/>
   * 酷安：<http://www.coolapk.com/apk/com.sollyu.xposed.hook.model>
   * Play: <https://play.google.com/store/apps/details?id=com.sollyu.xposed.hook.model>
 
